@@ -9,13 +9,16 @@ function NT_LoadConfig()
 	//------------------------------------------------------------------------------
 	// TeamBoot configuration
 	//------------------------------------------------------------------------------
-	NTConfig_PublicMode = true;
-	NTConfig_Script.push("NTWorldstoneKeep.ntj");
+	NTConfig_PublicMode = false;
+	//NTConfig_Script.push("NTWorldstoneKeep.ntj");
 		NTConfig_CheckSoulKillers = false; 				// End script if Stygian Dolls are found in Throne
 		NTConfig_MakeHotTP = true; 						// Make a hot TP before clearing Throne
 		NTConfig_PreWaveTele = false; 					// Teleport before wave to keep merc close
 		NTConfig_Wave2PSNCheck = false; 				// Heal after wave 2 if poisoned		
 		NTConfig_KillBaal = true;
+		
+	// Cow
+	NTConfig_Script.push("NTCow.ntj");
 	
 	//------------------------------------------------------------------------------
 	// Boss configuration

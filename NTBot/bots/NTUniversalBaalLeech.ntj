@@ -173,9 +173,9 @@ function NT_LeechBaalFighter(){
 				break;
 			case 2:	
 				NTA_ClearPosition(40, false, 1);
-				if(me.GetState(2) != -1){
-					NTTMGR_VisitTown();
-				}
+				// if(me.GetState(2) != -1){
+					// NTTMGR_VisitTown();
+				// }
 				break;
 			case 3:
 				NTA_ClearPosition(40, false, 1);

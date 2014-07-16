@@ -1,0 +1,518 @@
+// D2NT Cow script
+// Version 1.4.3
+// version 0.0.1 modified by hefang
+
+var NTCOW_ShowOverheadStatus = true;
+var NTCOW_PickItemsInstantly = true;
+
+function NTMain() {
+	Include("libs/common/NTCommon.ntl");
+	NTC_IncludeLibs();
+	NTC_IncludeConfig("NTBot/char_configs");
+
+	NT_LoadConfig();
+	NTSI_LoadNIPFiles("NTBot/item_configs");
+
+	NTA_Initialize();
+
+	if(!NTTM_CheckAct(me.act, true)){
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTTM_CheckAct()");
+		return;
+	}
+	
+	NTTMGR_TownManager();
+	
+	if(!NTCOW_CheckCowPortal()){	
+		if(!NTCOW_GetLeg()){
+			NTC_SendMsgToScript("NTBotGame.ntj", "NTCOW_GetLeg()");
+			return false;
+		}
+		
+		var leg = NTCOW_GetLegUnit();
+		if(!leg){
+			NTC_SendMsgToScript("NTBotGame.ntj", "NTCOW_GetLegUnit()");
+		}
+		
+		NTTM_CheckAct(1);
+		
+		var tome = NTCOW_GetTome();
+		if(!tome){
+			NTC_SendMsgToScript("NTBotGame.ntj", "NTCOW_GetTome()");
+		}
+		
+		NTCOW_OpenCowPortal(leg, tome);
+		if(!NTCOW_CheckCowPortal()){	
+			NTC_SendMsgToScript("NTBotGame.ntj", "NTCOW_OpenCowPortal()");
+		}
+	}
+	
+	Print(COLOR_4 + "Cow portal is up, it's time to Moo Moo!");
+	Delay(2000);
+		
+	if(!NTCOW_TakeCowPortal()){
+		NTC_SendMsgToScript("NTBotGame.ntj", "Failed to take Cow Portal.");
+		return;
+	}
+	
+	NTP_DoPrecast();
+	Delay(2000);
+	NTCOW_ClearCowLevel();
+	NTC_SendMsgToScript("NTBotGame.ntj", "SCRIPT_END");
+}
+
+// Internal functions
+function NTCOW_CheckCowPortal(){
+	var _portal = NTC_FindUnit(NTC_UNIT_OBJECT, 60, 5);
+	if(_portal){
+		if(_portal.subareaid == 39){
+			return true;
+		}
+	}
+	else
+		return false;
+}
+
+function NTCOW_GetTP(){
+	var _portals = me.GetItems("tbk");
+
+	if (_portals)
+	{
+		for (var i = 0; i < _portals.length; i++)
+		{
+			if (_portals[i].mode == 0 && (_portals[i].itemloc != 0 || NTConfig_Columns[_portals[i].y][_portals[i].x] > 0))
+			{
+				return _portals[i];
+			}
+		}
+	}
+	return false;
+}
+
+function NTCOW_TakeCowPortal(){
+	var _portal;
+
+	_portal = NTC_FindUnit(NTC_UNIT_OBJECT, 60, 5);
+
+	if(_portal)
+		return NTM_UsePortal("Portal", 39, "dummy", _portal);
+	
+	return false;
+}
+
+function NTCOW_SecondTomeTP(npc, type, amount){
+	var _items;
+	var _counter = 0;
+
+	if(arguments.length < 1)
+		return false;
+
+	if(arguments.length < 2)
+		type = 0;
+
+	if(arguments.length < 0)
+		amount = 1;
+
+	if(amount == 0)
+		return false;
+
+	if(type)
+		_items = npc.GetItems("tbk");
+
+	if(_items)
+	{
+		if(_items.length > 0)
+		{
+			for(var i = 0 ; i < amount ; i++)
+			{
+				if(NTT_ShopItem(_items[0], npc, 2))
+					_counter++;
+			}
+		}
+	}
+	return (_counter > 0);
+}
+
+function NTCOW_GetLegUnit(){
+	var _items, _leg;
+	_items = me.GetItems(88);
+	if(_items){
+		_leg = _items[0];
+	}
+	
+	return _leg;
+}
+
+function NTCOW_GetLeg(){	
+	var _leg;
+	
+	if(!NTTM_TownMove("waypoint")){
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTTM_TownMove(waypoint)");
+		return false;
+	}
+	if(!NTM_TakeWaypoint(4)){
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTM_TakeWaypoint(4)");
+		return false;
+	}
+	
+	NTP_DoPrecast();
+	
+	if(!NTM_MoveToPresetUnit(me.areaid, NTC_UNIT_MONSTER, 737, 10, 10)){
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTM_MoveToPresetUnit()");
+		return false;
+	}
+	
+	if(!NTM_UsePortal("Portal", 38)){
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTM_UsePortal()");
+		return false;
+	}
+	
+	var _wirtbody = NTC_FindUnit(NTC_UNIT_OBJECT, 268);
+	
+	if(!_wirtbody){
+		NTC_SendMsgToScript("NTBotGame.ntj", "Wirt's body not found.");
+		return false;
+	}
+	
+	if(!NTM_MoveTo(_wirtbody.areaid, _wirtbody.x+3, _wirtbody.y)){
+		NTC_SendMsgToScript("NTBotGame.ntj", "Failed to move to Wirt's body.");
+		return false;
+	}
+	
+	if(!NTC_OpenChest(_wirtbody)){
+		NTC_SendMsgToScript("NTBotGame.ntj", "Failed to open Wirt's body for leg.");
+		return false;
+	}
+	
+	NTC_PingDelay(1000);
+	for (i = 0; i < 10; i++){
+		NTC_Delay(NTC_DELAY_FRAME);
+		_leg = NTC_FindUnit(NTC_UNIT_ITEM, 88);
+		if (_leg)
+			break;
+	}
+	
+	if(!NTT_CheckSpace(_leg.xsize, _leg.ysize)){
+		NTTMGR_VisitTown();
+	}
+	
+	for (i = 0; i < 20; i++){
+		if ((i % 5) == 0){
+			if (_leg.mode == 3 || _leg.mode == 5){
+				if (NTC_ClearCursor())
+				NTC_DoClick(NTC_CLICK_LDOWN, NTC_SHIFT_NONE, _leg);
+			}
+		}
+		NTC_PingDelay(100);
+		if (_leg.mode != 3 && _leg.mode != 5){
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+function NTCOW_GetTome(){
+	var _npc, _portal;
+	NTTM_TownMove("akara");
+	
+	for(var i = 0; i < 10; i++)
+	{
+		_npc = NTC_FindUnit(NTC_UNIT_NPC, NTC_NPC_ID_AKARA);
+		
+		if(_npc)
+			break;
+	}
+
+	if(_npc)
+	{
+		if(NTT_DoInteract(_npc))
+		{
+			if(NTT_DoTrade(_npc))
+			{
+				NTT_FillTome(_npc, 1);
+				NTT_FillTome(_npc, 0);
+				NTCOW_SecondTomeTP(_npc, "tbk", 1);
+				
+				_portal = NTCOW_GetTP();
+				
+				if(!_portal)
+				{
+					NTC_SendMsgToScript("NTBotGame.ntj", "NTR_GetTP()");
+					return _portal;
+				}
+			}		
+		}
+		
+		me.Cancel(1);
+	}
+	
+	return _portal;
+}
+
+function NTCOW_OpenCowPortal(leg, tome){
+	var _items = me.GetItems(NTC_UNIT_CUBE);
+	
+	if(!_items || _items.length < 1)
+		return false;
+		
+	var _cube = _items[0];
+	
+	if(!_cube){
+		NTC_SendMsgToScript("NTBotGame.ntj", "No cube found.");
+		return false;
+	}
+	
+	// open inventory
+	SetUIState(0x01, true);
+	
+	// clear cube
+	if(NTCU_CheckCubeInventoryInt() > 0)
+	{
+		if(!NTCU_OpenCubeInt(_items[0]))
+			return false;
+
+		if(NTCU_ClearCubeInt() < 1){
+			NTC_SendMsgToScript("NTBotGame.ntj", "NTCU_ClearCubeInt()");
+			return false;
+		}
+
+		NTCU_CloseCubeInt();
+	}
+	
+	NTCU_OpenCubeInt(_cube);
+	
+	NTCU_MoveItemToCubeInt(_cube, leg);
+	NTCU_MoveItemToCubeInt(_cube, tome);
+	
+	if(!Transmute()){
+		NTC_SendMsgToScript("NTBotGame.ntj", "Transmute()");
+		return false;
+	}
+	
+	NTC_PingDelay(1000);
+	
+	NTCU_CloseCubeInt();
+	
+	Delay(500);
+	
+	me.Cancel(1);
+	
+	return true;
+}
+
+function NTCOW_BuildCowRooms() {
+	var i, j, room, finalRooms = [],
+
+	room = GetRoom();
+
+	do {
+		finalRooms.push([room.x * 5 + room.xsize / 2, room.y * 5 + room.ysize / 2]);		
+	} while (room.GetNext());
+
+	return finalRooms;
+}
+
+function NTCOW_ClearCowLevel() {
+
+	var room, result, myRoom,
+		rooms = NTCOW_BuildCowRooms();
+
+	function RoomSort(a, b) {
+		return GetDistance(myRoom[0], myRoom[1], a[0], a[1]) - GetDistance(myRoom[0], myRoom[1], b[0], b[1]);
+	}
+
+	while (rooms.length > 0) {
+		// get the first room + initialize myRoom var
+		if (!myRoom) {
+			room = GetRoom(me.x, me.y);
+		}
+
+		if (room) {
+			if (room instanceof Array) { // use previous room to calculate distance
+				myRoom = [room[0], room[1]];
+			} else { // create a new room to calculate distance (first room, done only once)
+				myRoom = [room.x * 5 + room.xsize / 2, room.y * 5 + room.ysize / 2];
+			}
+		}
+
+		rooms.sort(RoomSort);
+		room = rooms.shift();
+
+		// result = Pather.getNearestWalkable(room[0], room[1], 10, 2);
+
+		// if (result) {
+			// Pather.moveTo(result[0], result[1], 3);
+
+			// if (!Attack.clear(30)) {
+				// return false;
+			// }
+		// }
+		
+		if(!NTCOW_MoveTo(me.areaid, room[0], room[1], 3, true)){
+			return false;
+		}
+	}
+
+	return true;
+}
+
+function NTCOW_ClearPosition(range, pickitem, safelevel){
+	var _orgx, _orgy;
+	var _skiplist;
+	var _attackcount = 0;
+	var _target;
+	var _distance, _mingid, _mindistance;
+	var _result;
+	
+	switch(arguments.length)
+	{
+	case 0:
+		range = 20;
+	case 1:
+		pickitem = false;
+	default:
+		if(NTConfig_CheckSelfSafe < 0x01 && NTConfig_CheckMercSafe < 0x01)
+			safelevel = 0;
+		break;
+	}
+
+	_orgx = me.x;
+	_orgy = me.y;
+
+	for(var i = 0; i < 3; i++)
+	{
+		_skiplist = new Array();
+
+		while(_attackcount < (i+1)*100)
+		{
+			_mindistance = 1E6;
+
+			_target = NTC_FindUnit(NTC_UNIT_MONSTER);
+
+			if(_target)
+			{
+				do
+				{
+					if(_skiplist.indexOf(_target.gid) < 0)
+					{
+						if(_target.IsAttackable())
+						{
+							if(GetDistance(_orgx, _orgy, _target.x, _target.y) <= range && NTA_IsValidMonster(_target))
+							{
+								_distance = GetDistance(me, _target);
+
+								if(_distance < _mindistance)
+								{
+									_mingid = _target.gid;
+									_mindistance = _distance;
+								}
+							}
+						}
+						else
+							_skiplist.push(_target.gid);
+					}
+				} while(_target.GetNext());
+			}
+
+			if(_mindistance < 1E6)
+			{
+				_target = NTC_FindUnit(NTC_UNIT_MONSTER, _mingid, 1);
+
+				if(_target)
+				{
+					if(NTCOW_ShowOverheadStatus)
+						Say("!Attacking " + _target.name + " (" + (_target.hp * 100 / _target.hpmax).toFixed(0) + "%)");
+
+					_result = NTA_Attack(_target, (_attackcount % 30) == 0);
+					
+					if(NTCOW_ShowOverheadStatus)
+						Say("!Attacking " + _target.name + " (" + (_target.hp * 100 / _target.hpmax).toFixed(0) + "%)");
+
+					switch(_result)
+					{
+						case 1:
+							_skiplist.push(_mingid);
+							break;
+						case 2:
+						case 3:
+							if(NTCOW_PickItemsInstantly && (_target.hp <= 0 || _target.mode == 0 || _target.mode == 12))
+								NTSI_PickItems();
+							_attackcount++;
+							break;
+						default:
+							_attackcount = 1E6;
+					}
+				}
+			}
+			else
+				break;
+		}
+	}
+
+	if(_attackcount > 2)
+	{
+		NTA_NecRaiseArmy();
+	}
+	
+	if(pickitem && _attackcount > 0)
+		NTSI_PickItems();
+	
+	switch(safelevel)
+	{
+		case 1:
+			return NTTMGR_CheckSafe(0x00, NTConfig_CheckMercSafe&0x01);
+		case 2:
+			return NTTMGR_CheckSafe(NTConfig_CheckSelfSafe, NTConfig_CheckMercSafe);
+	}
+
+	return true;
+}
+
+function NTCOW_MoveTo(areaId, x, y, retry, isClearPath){
+	if (x == me.x && y == me.y)
+		return true;
+
+	if (arguments.length < 4)
+		retry = 3;
+	if (arguments.length < 5)
+		isClearPath = false;
+
+	var j;
+	var _path;
+	var _preX, _preY;
+
+	_path = GetPath(areaId, me.x, me.y, x, y, true);
+	if (!_path)
+		return false;
+
+	for (var i = 0; i < _path.length; i++)
+	{
+		for (j = 0; j < retry; j++)
+		{
+			if (NTM_MoveTo(me.areaid, _path[i][0], _path[i][1]))
+				break;
+		}
+
+		if (j >= retry)
+			return false;
+				
+		if (isClearPath)
+		{
+			_preX = me.x;
+			_preY = me.y;
+
+			if(!NTCOW_ClearPosition(30, true))
+				return false;
+
+			NTP_DoPrecast();
+			
+			if (me.x != _preX || me.y != _preY)
+			{
+				if (!NTM_MoveTo(me.areaid, _preX, _preY))
+					return false;
+			}
+		}
+	}
+	
+	return true;
+}

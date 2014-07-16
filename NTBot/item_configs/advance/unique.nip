@@ -130,7 +130,7 @@
 //[Type] == ring && [Quality] == unique # [ManaLeech] >= 7 // Manald Heal
 [Type] == ring && [Quality] == unique # [ItemMaxManaPercent] == 25 // Stone of Jordan
 //[Type] == ring && [Quality] == unique # [MaxHP] == 40 // Dwarf Star
-[Type] == ring && [Quality] == unique # [Dexterity] >= 18 // Raven Frost
+[Type] == ring && [Quality] == unique # [Dexterity] == 20 // Raven Frost
 [Type] == ring && [Quality] == unique # [LifeLeech] >= 1 && [MaxStamina] == 50 // Bul-Kathos' Wedding Band
 //[Type] == ring && [Quality] == unique # [LifeLeech] >= 9 // Carrion Wind
 //[Type] == ring && [Quality] == unique # [PoisonResist] >= 20 && [NormalDamageReduction] >= 7 // Nature's Peace
@@ -161,7 +161,7 @@
 [Name] == LargeCharm && [Quality] == unique
 
 // ##### Grand Charms ##################
-[Name] == GrandCharm && [Quality] == unique
+[Name] == GrandCharm && [Quality] == unique # [ItemAllSkills] >= 1
 
 
 // new ----------------------------------------------------------
