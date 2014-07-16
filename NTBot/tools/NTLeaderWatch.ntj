@@ -1,0 +1,54 @@
+function NTMain(){
+	Include("libs/common/NTCommon.ntl");
+	Include("libs/common/NTTeamBot.ntl");
+	Include("libs/common/NTColorConverter.ntl");
+	NTC_IncludeConfig("NTBot/char_configs");
+	
+	Delay(2000);
+	Print("ÿc3Loaded LeaderWatch script");
+	
+	if(me.name == TB_leader) {return;}	
+	
+	while(1) {
+		CheckLeaderInGame();
+		Delay(500);
+	}	
+}
+
+function CheckLeaderInGame()
+{	
+	var _player;
+	
+	if(!NT_InGame(TB_leader)) {
+		Print("Leader " + TB_leader + " not in game, quit now.");
+		var _area;
+
+		_area = GetArea();
+
+		if(_area)
+			SendCopyData("D2NT Manager", null, 7<<16, COLOR_8 + "Leader not in game, quit (" + _area.name + ")");
+		else
+			SendCopyData("D2NT Manager", null, 7<<16, COLOR_8 + "Leader not in game, quit (unknown area)");
+			
+		Delay(1000 + Math.round(Math.random()*2000));
+		ExitGame();
+	}
+}
+
+function NT_InGame(playerName)
+{
+	var _player;
+
+	_player = GetPlayerUnit();
+
+	if(_player)
+	{
+		do
+		{
+			if(_player.name == playerName)
+				return true;
+		} while(_player.GetNext());
+	}
+
+	return false;
+}

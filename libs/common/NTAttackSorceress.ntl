@@ -1,0 +1,181 @@
+function NTA_DetectAttackPattern() {
+	return NTA_SorceressAttackPatternInt();
+}
+
+function NTA_Attack(target, firstorder) {
+	return NTA_SorceressAttackInt(target, firstorder);
+}
+
+function NTA_SorceressAttackPatternInt() {
+	var _maxindex, _maxskill;
+	var _avgskilllevel = new Array();
+
+	_avgskilllevel[0] = parseInt((me.GetSkill(59, false) + me.GetSkill(39, false) + me.GetSkill(45, false) + me.GetSkill(55, false)) / 4,10);
+	_avgskilllevel[1] = parseInt((me.GetSkill(53, false) + me.GetSkill(38, false) + me.GetSkill(48, false) + me.GetSkill(49, false)) / 4,10);
+	_avgskilllevel[2] = parseInt((me.GetSkill(47, false) + me.GetSkill(36, false) + me.GetSkill(56, false) + me.GetSkill(64, false)) / 4,10);
+	_avgskilllevel[3] = parseInt((me.GetSkill(47, false) + me.GetSkill(36, false) + me.GetSkill(56, false)) / 3,10);
+
+	_maxindex = -1;
+	_maxskill = 0;
+
+	for (var i = 0; i < _avgskilllevel.length; i++) {
+		if (_avgskilllevel[i] > _maxskill) {
+			_maxindex = i;
+			_maxskill = _avgskilllevel[i];
+		}
+	}
+
+	switch (_maxindex) {
+	case 0:
+		// Blizzard + Glacial Spike
+		NTConfig_AttackSkill[1] = 59;
+		NTConfig_AttackSkill[2] = 55;
+		NTConfig_AttackSkill[3] = 59;
+		NTConfig_AttackSkill[4] = 55;
+		break;
+	case 1:
+		// Chain Lightning + Lightning
+		NTConfig_AttackSkill[1] = 49;
+		NTConfig_AttackSkill[3] = 53;
+		break;
+	case 2:
+		// Fire Ball + Frozen Orb
+		NTConfig_AttackSkill[0] = 64;
+		NTConfig_AttackSkill[1] = 47;
+		NTConfig_AttackSkill[3] = 47;
+		NTConfig_AttackSkill[5] = 64;
+		NTConfig_AttackSkill[6] = 55;
+		break;
+	case 3:
+		// Fire Ball + Meteor
+		NTConfig_AttackSkill[1] = 56;
+		NTConfig_AttackSkill[2] = 47;
+		NTConfig_AttackSkill[3] = 56;
+		NTConfig_AttackSkill[4] = 47;
+		break;
+	}
+
+	return (NTConfig_AttackSkill[1] && NTConfig_AttackSkill[3]);
+}
+
+function NTA_SorceressAttackInt(target, firstorder) {
+	if(!target) {
+		Print("Invalid target");
+		return 1;
+	}
+	
+	if((target.classid >= 742) && GetDistance(me, target) < 6){
+		NTA_MoveAwayFromMonster(target, 10 , 3);
+	}	
+
+	var _primaryindex;
+	
+	if (NTC_GetSkillLevel(58) && me.GetState(30) == 0) { // check for ES recast
+		NTC_CastSkill(58, NTC_HAND_RIGHT);
+	}
+	
+	var _caststatic = true;
+
+	if (NTConfig_StaticBossesOnly) {_caststatic = NTConfig_StaticBossesSelect.indexOf(target.name) > -1;}
+
+	if (_caststatic && NTConfig_CastStatic < 100 && parseInt(target.hp * 100 / target.hpmax) > NTConfig_CastStatic && NTA_GetResistance(target, NTA_DAMAGE_LIGHTNING) < 100) {
+		var _staticlevel = NTC_GetSkillLevel(42);
+
+		if (_staticlevel > 0) {
+			var _staticrange;
+			var _castx, _casty;
+
+			_staticrange = Math.floor((5 + _staticlevel - 1) * 2 / 3);
+
+			if (GetDistance(me, target) > _staticrange || !CheckCollision(me, target, 6)) {
+				var _pos = me.GetOptimalAttackPos(target.areaid, target.x, target.y, _staticrange, 6);
+
+				if (_pos) NTM_MoveTo(target.areaid, _pos[0], _pos[1], 0, false, false);
+			}
+
+			if (target.x < me.x) _castx = me.x - 1;
+			else if (target.x > me.x) _castx = me.x + 1;
+			else _castx = me.x;
+
+			if (target.y < me.y) _casty = me.y - 1;
+			else if (target.y > me.y) _casty = me.y + 1;
+			else _casty = me.y;
+
+			if (!CheckCollision(target.areaid, _castx, _casty, 1)) {
+				_castx = me.x;
+				_casty = me.y;
+			}
+
+			if (!NTC_CastSkill(42, NTC_HAND_RIGHT, _castx, _casty)) return 2;
+
+			return 3;
+		}
+	}
+
+
+	_primaryindex = (target.spectype&0x0A) ? 1 : 3;
+
+	if(NTConfig_AttackSkill[_primaryindex] > -1 && NTA_GetResistance(target, _NTA_SkillDamage[_primaryindex]) < 100)
+	{
+		if(!NTA_SorceressCastSkillInt(_primaryindex, target))
+			return 2;
+
+		return 3;
+	}
+	
+	if(NTC_GetMerc()) {
+		Delay(300);
+		return 2;
+	}
+
+	return 1;
+}
+
+function NTA_SorceressCastSkillInt(index, target)
+{
+	if(!target) {return false;}
+	
+	if(me.GetSkillStatus(NTConfig_AttackSkill[index]) == 0)
+	{
+		if(GetDistance(me, target) > _NTA_SkillRange[index] || !CheckCollision(me, target, 4))
+		{
+			var _pos = me.GetOptimalAttackPos(target.areaid, target.x, target.y, _NTA_SkillRange[index], 4);
+
+			if(_pos){
+				NTM_MoveTo(target.areaid, _pos[0], _pos[1], 0);
+			}
+			else{
+				return false;
+			}
+		}
+
+		return NTC_CastSkill(NTConfig_AttackSkill[index], _NTA_SkillHand[index], target);
+	}
+
+	if(NTConfig_AttackSkill[index+1] > -1)
+	{
+		if(GetDistance(me, target) > _NTA_SkillRange[index+1] || !CheckCollision(me, target, 4))
+		{
+			var _pos = me.GetOptimalAttackPos(target.areaid, target.x, target.y, _NTA_SkillRange[index+1], 4);
+
+			if(_pos){
+				NTM_MoveTo(target.areaid, _pos[0], _pos[1], 0);
+			}
+			else{
+				return false;
+			}
+		}
+
+		return NTC_CastSkill(NTConfig_AttackSkill[index+1], _NTA_SkillHand[index+1], target);
+	}
+
+	for(var i = 0 ; i < 25 ; i++)
+	{
+		NTC_Delay(NTC_DELAY_FRAME);
+
+		if(me.GetSkillStatus(NTConfig_AttackSkill[index]) == 0)
+			break;
+	}
+
+	return false;
+}

@@ -1,0 +1,149 @@
+function NT_LoadConfig()
+{
+	// Nip file check
+	//NTConfig_Script.push("TLNipCheck.ntj"); NTConfig_CheckCodes = true;
+	
+	//------------------------------------------------------------------------------
+	// TeamBoot configuration
+	//------------------------------------------------------------------------------	
+	NTConfig_PublicMode = true;
+	//NTConfig_Script.push("NTLeechCows.ntj");			// Leech fighter cow script.  Must run leader with NTCow.ntj
+		NTConfig_WaitForCowPortal = 240;				// time in seconds to wait for the leader to make cow portal before aborting the script
+
+	NTConfig_Script.push("NTUniversalBaalLeech.ntj");
+		NTConfig_LeechBaal = 3; 						// 1 = Leech Fighter (Tele), 2 = Leech Fighter (Walking), 3 = Passive Leecher (Corner dunce).
+		NTConfig_FollowtoWorldStone = true;				// Go down to Baal in WS Chamber after waves?
+		
+	//------------------------------------------------------------------------------
+	// Boss Configuration
+	//------------------------------------------------------------------------------
+
+	//------------------------------------------------------------------------------
+	// Speed Settings
+	//------------------------------------------------------------------------------
+	me.maxgametime = 20*60; 								// Maximum game length in seconds (0 is infinite).
+	NTConfig_StartDelay = 0;							// Delay time in milliseconds to wait at start.
+	NTConfig_AreaDelay = 500;							// Delay time in milliseconds to wait on each area change.
+	NTConfig_SnagDelay = 500;							// Delay time in milliseconds (added to ping delay) to wait before each pickit call.
+
+	//------------------------------------------------------------------------------
+	// Chicken settings
+	//------------------------------------------------------------------------------
+	NTConfig_SkipHealLife = 90;							// If you are over this percentage of life, you won't go to a healer.
+	NTConfig_SkipHealMana = 70;							// If you are over this percentage of mana, you won't go to a healer.
+	
+	NTConfig_UseMerc = true;	// Set to true if you use a mercenary, will revive merc at a reviver npc.
+	NTConfig_ResetWeapon = false;	// Set to true to reset weapon when reviving merc
+
+	NTConfig_LifeThresh = 85;							// Drink a health potion if under this percent of life.
+	NTConfig_LifeRejuvThresh = 45;						// Drink a rejuvenation potion if under this percent of life. (Will not use health potions under this %)
+	NTConfig_ManaThresh = 10;							// Drink a mana potion if under this percent of mana.
+	NTConfig_ManaRejuvThresh = 0;						// Drink a rejuvenation potion if under this percent of mana. (Will not use mana potions under this %)
+	NTConfig_LifeChicken = 30;							// This is your D2NT chicken life percent. If you go below this life total, exit game.
+	NTConfig_ManaChicken = 0;							// This is your D2NT chicken mana percent. If you go below this mana total, exit game.
+
+	NTConfig_MercLifeThresh = 80;						// Give merc a health potion if under this percent of life.
+	NTConfig_MercRejuvThresh = 30;						// Give merc a rejuvenation potion if under this percent of life. (Will not use health potions under this %)
+	NTConfig_MercChicken = 0;							// This is your mercs chicken life percent. If he goes below this, exit game. (Set 0 to disable.)
+
+	//------------------------------------------------------------------------------
+	// Inventory settings
+	//------------------------------------------------------------------------------
+	NTConfig_FreeSpace = 5;								// Number of free columns. If bot has less than this amount after id'ing, it will go to stash.
+
+	// These numbers correspond to your inventory. Set 0 to keep whatever is there, 1 to have the bot manage the slot.
+	NTConfig_Columns[0] = [1,1,1,1,1,0,0,0,0,0];
+	NTConfig_Columns[1] = [1,1,1,1,1,0,0,0,0,0];
+	NTConfig_Columns[2] = [1,1,1,1,1,0,0,0,0,0];
+	NTConfig_Columns[3] = [1,1,1,1,1,0,0,0,0,0];
+
+	NTConfig_MinGoldToStash = 200000;					// Maximum gold amount carried before going to stash
+
+	//----------------------------------------------------------------------------------------------
+	// Belt Settings
+	// 	 	Type of potion used in each belt column
+	// 		Available types : "hp" = health | "mp" = mana | "rv" = rejuv. Can use other potion types too.
+	// 		Keep equal types at adjacent columns. First HP then MP and then HP again is a bad choice.
+	// 		Keep HP and MP at the beginning of the belt (in case you want to use rejuv and other types).
+	// 		Rejuvenations MUST, I REPEAT MUST be at the end of the belt (last x columns).
+	// 		To use rejuvenations only, put "rv" in all columns.
+	//----------------------------------------------------------------------------------------------
+	NTConfig_BeltColType[0] = "hp";
+	NTConfig_BeltColType[1] = "hp";
+	NTConfig_BeltColType[2] = "mp";
+	NTConfig_BeltColType[3] = "rv";
+
+	//-----------------------------------------------------------------------------------
+	// Pickit (SnagIt) Configuration
+	//-----------------------------------------------------------------------------------
+
+	NTConfig_NIPFilePath.push("advance/normal.nip");
+	NTConfig_NIPFilePath.push("advance/poor.nip");
+	NTConfig_NIPFilePath.push("advance/set.nip");
+	NTConfig_NIPFilePath.push("advance/unique.nip");
+	NTConfig_NIPFilePath.push("advance/craft.nip");
+
+
+	NTConfig_SnagRange = 40;							// Radius to check for dropped items. 40 is a good number here
+
+	//------------------------------------------------------------------------------
+	// Cubing configuration
+	//------------------------------------------------------------------------------
+	NTConfig_Cubing = false;										// Enable Cubing?
+
+	//------------------------------------------------------------------------------
+	// Gamble Configuration
+	// 		* To specify what items to gamble, adjust the array with the desired item codes.
+	//------------------------------------------------------------------------------
+	NTConfig_Gamble = true;							// Enable gambling?
+	NTConfig_GambleStartGold = 2500000;					// Gold amount to start the gambling.
+	NTConfig_GambleStopGold = 500000;					// Gold amount to stop the gambling.
+
+
+	NTConfig_GambleItem.push(520);						// Amulets
+	NTConfig_GambleItem.push(522);						// Rings
+	NTConfig_GambleItem.push(418);						// Circlets
+	NTConfig_GambleItem.push(419);						// Coronets
+
+	//------------------------------------------------------------------------------
+	// General configuration
+	//------------------------------------------------------------------------------
+	NTConfig_CheckCloneDiablo = false;					// Set to true if you want to wait in game after "Diablo Walks the Earth" msg.
+	NTConfig_ClearPosition = false;						// Set true if you want to clear area after killing boss.
+	NTConfig_OpenChest = false;							// Open most super unique chests at the end of runs. (Chest ID settings below do not effect this.)
+	me.quitonhostile = false;
+
+	//------------------------------------------------------------------------------
+	// Attack Configuration
+	// 		* Change the -1's to the corresponding #'s found in /D2NT/sdk/skills.txt
+	// 		* As of Jan 17th: -1 = Disabled, 0 = Normal Attack.
+	//------------------------------------------------------------------------------
+	NTConfig_AttackSkill[0] = -1;	// First skill. Set to -1 if you won't
+	NTConfig_AttackSkill[1] = -1;	// Primary skill to boss.
+	NTConfig_AttackSkill[2] = -1;	// Primary untimed skill to boss. Set to -1 if you won't
+	NTConfig_AttackSkill[3] = -1;	// Primary skill to others.
+	NTConfig_AttackSkill[4] = -1;	// Primary untimed skill to others. Set to -1 if you won't
+	NTConfig_AttackSkill[5] = -1;	// Secondary skill in case monster is immune to primary skill. Set to -1 if you won't
+	NTConfig_AttackSkill[6] = -1;	// Secondary untimed skill. Set to -1 if you won't
+	NTConfig_AttackSkill[7] = -1; 	// Tertiary skill to everything else in case monster is immune to both primary and secondary.
+	NTConfig_AttackSkill[8] = -1; 	// Tertiary untimed skill.
+	NTConfig_AttackSkill[9] = -1; 	// Primary skill to boss (diablo/baal/meph/etc) Not immune to spells I guess.
+	
+	//------------------------------------------------------------------------------
+	// Check Safe Settings
+	//------------------------------------------------------------------------------
+	// Check self safe in field (NOT in town). Set to 0 if you won't
+	// 0x01 : Potion, 0x02 : Poison, 0x04 : Amplify Damage, 0x08 : Weaken, 0x10 : Iron Maiden, 0x20 : Decrepify, 0x40 : Lower Resist
+	NTConfig_CheckSelfSafe = 0;
+	// Check merc's safe in field (NOT in town). Set to 0 if you won't
+	// 0x01 : Death, 0x02 : Poison, 0x04 : Amplify Damage, 0x08 : Weaken, 0x10 : Iron Maiden, 0x20 : Decrepify, 0x40 : Lower Resist
+	NTConfig_CheckMercSafe = 0;
+
+	//------------------------------------------------------------------------------
+	// Class Specific Settings
+	//------------------------------------------------------------------------------
+	NTConfig_UseFindItem = false; 						// Loot corpses of slain Monsters when clearing positions or areas
+	NTConfig_FindItemRange = 40; 						// Default range to check for corpses to loot when clearing positions or areas.
+
+
+}

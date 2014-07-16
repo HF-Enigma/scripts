@@ -1,0 +1,17 @@
+//[Name] == BrambleMitts && [Quality] == set # [SorceressSkills] == 2 // Laying of Hands for gold
+//[Name] == WingedHelm && [Quality] == set # [SorceressSkills] == 2 // Guillaume's Face for gold
+
+//[Name] == SwirlingCrystal && [Quality] == set // Tal Rasha's Lidless Eye
+//[Name] == DeathMask && [Quality] == set // Tal Rasha's Horadric Crest
+//[Name] == LacqueredPlate && [Quality] == set // Tal Rasha's Guardianship
+//[Type] == amulet && [Quality] == set # [SorceressSkills] == 2 // Tal Rasha's Adjucation
+//[Name] == MeshBelt && [Quality] == set # [ItemMagicBonus] >= 14 // Tal Rasha's Fine-Spun Cloth
+
+//[Name] == HeavyBracers && [Quality] == set // Trang-Oul's Claws
+
+// New
+//[Name] == VampireboneGloves && [Quality] == set
+[Name] == SpiderwebSash && [Quality] == set
+
+[Type] == ring && [Quality] == set # [ItemAllSkills] == 1
+[Type] == amulet && [Quality] == set # [barbarianskills] == 3 || [necromancerskills] == 3 || [paladinskills] == 3

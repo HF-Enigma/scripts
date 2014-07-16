@@ -1,0 +1,166 @@
+var _NTP_HaveCTA = -1;
+
+function NTP_DoPrecastCTA(refresh)
+{
+	if(me.classid == NTC_CHAR_CLASS_BARBARIAN || NTC_InTown())
+		return false;
+
+	if(refresh || !me.GetState(32) || !me.GetState(51))
+	{
+		if(NTP_BOSwitch())
+		{
+			NTC_CastSkill(155, NTC_HAND_RIGHT); // Battle Command
+			NTC_CastSkill(149, NTC_HAND_RIGHT); // Battle Orders
+
+			NTC_SwapWeapons();
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+function NTP_DoEnchant()
+{
+	var _haveenchant = NTC_GetSkillLevel(52);
+	var _unit = NTC_FindUnit(NTC_UNIT_MERC);
+
+	if (_haveenchant && _unit ) 
+	{
+		do
+		{
+			//if(NTC_CheckOwner(_unit) && _unit.hp > 0)
+			if(_unit.hp > 0)
+			{
+				if (GetDistance(me, _unit) < 25)
+				{
+					NTC_CastSkill(52, NTC_HAND_RIGHT, _unit);
+				}
+			}
+		} while (_unit.GetNext());
+	}
+ 
+}
+
+function NTP_DoPrecast(refresh)
+{
+	var _unit = me.GetMerc();
+	
+	NTP_DoPrecastCTA(refresh);
+
+	switch(me.classid)
+	{
+	case NTC_CHAR_CLASS_AMAZON:
+		if(refresh)
+			NTC_CastSkill(32, NTC_HAND_RIGHT); // Valkyrie
+		break;
+
+	case NTC_CHAR_CLASS_SORCERESS:
+		if(refresh || !me.GetState(38))
+			NTC_CastSkill(57, NTC_HAND_RIGHT); // Thunder Storm
+
+		if(refresh || !me.GetState(30))
+			NTC_CastSkill(58, NTC_HAND_RIGHT); // Energy Shield
+
+		if(refresh || (!me.GetState(10) && !me.GetState(88) && !me.GetState(20)))
+		{
+			if(!NTC_CastSkill(50, NTC_HAND_RIGHT)) // Shiver Armor
+				if(!NTC_CastSkill(60, NTC_HAND_RIGHT)) // Chilling Armor
+					NTC_CastSkill(40, NTC_HAND_RIGHT); // Frozen Armor
+		}
+		
+		if((_unit != null && refresh) || (_unit != null && !_unit.GetState(16)))
+			NTP_DoEnchant();  // Enchant Merc
+		
+		break;
+
+	case NTC_CHAR_CLASS_NECROMANCER:
+		if(refresh || !me.GetState(14))
+			NTC_CastSkill(68, NTC_HAND_RIGHT); // Bone Armor
+		break;
+
+	case NTC_CHAR_CLASS_PALADIN:
+		if(refresh || !me.GetState(101))
+			NTC_CastSkill(117, NTC_HAND_RIGHT); // Holy Shield
+		break;
+
+	case NTC_CHAR_CLASS_BARBARIAN:
+		if(refresh || !me.GetState(51))
+			NTC_CastSkill(155, NTC_HAND_RIGHT); // Battle Command
+
+		if(refresh || !me.GetState(32))
+			NTC_CastSkill(149, NTC_HAND_RIGHT); // Battle Orders
+
+		if(refresh || !me.GetState(26))
+			NTC_CastSkill(138, NTC_HAND_RIGHT); // Shout
+		break;
+
+	case NTC_CHAR_CLASS_DRUID:
+		if(refresh || !me.GetState(151))
+			NTC_CastSkill(235, NTC_HAND_RIGHT); // Cyclone Armor
+
+		if(refresh || !me.GetState(149))
+			NTC_CastSkill(226, NTC_HAND_RIGHT); // Oak Sage
+
+		if(refresh)
+			NTC_CastSkill(247, NTC_HAND_RIGHT); // Summon Grizzly
+
+		if(refresh || !me.GetState(144))
+			NTC_CastSkill(250, NTC_HAND_RIGHT); // Hurricane
+		break;
+
+	case NTC_CHAR_CLASS_ASSASSIN:
+		// Can't use both Fade and BoS
+		//if(refresh || !me.GetState(157))
+		//	NTC_CastSkill(258, NTC_HAND_RIGHT); // Burst of Speed
+		if(refresh || !me.GetState(159))
+			NTC_CastSkill(267, NTC_HAND_RIGHT); // Fade
+
+		if(refresh || !me.GetState(158))
+			NTC_CastSkill(277, NTC_HAND_RIGHT); // Blade Shield
+
+		if(refresh || !me.GetState(153))
+			NTC_CastSkill(264, NTC_HAND_RIGHT); // Cloak of Shadows
+
+		if(refresh)
+		{
+			if(!NTC_CastSkill(279, NTC_HAND_RIGHT)) // Shadow Master
+				NTC_CastSkill(268, NTC_HAND_RIGHT); // Shadow Warrior
+		}
+		break;
+	}
+}
+
+function NTP_BOSwitch()
+{
+	if(_NTP_HaveCTA < 0)
+	{
+		var _weapon;
+
+		_NTP_HaveCTA = 0;
+
+		_weapon = me.GetItems();
+
+		if(_weapon)
+		{
+			for(var i = 0 ; i < _weapon.length ; i++)
+			{
+				if(_weapon[i].mode == 1 && (_weapon[i].itemflag&0x4000000) && _weapon[i].itemprefix == 0x5027)
+				{
+					if(_weapon[i].itemloc == 4 || _weapon[i].itemloc == 5)
+						_NTP_HaveCTA = 1;
+					else
+						_NTP_HaveCTA = 2;
+
+					break;
+				}
+			}
+		}
+	}
+
+	if(_NTP_HaveCTA > 0)
+		return NTC_SwapWeapons(_NTP_HaveCTA-1);
+
+	return false;
+}

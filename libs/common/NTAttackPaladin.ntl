@@ -1,0 +1,89 @@
+function NTA_DetectAttackPattern() {
+	return true;
+}
+
+function NTA_Attack(target, firstorder) {
+	return NTA_PaladinAttackInt(target, firstorder);
+}
+
+function NTA_PaladinAttackInt(target, firstorder) {
+	if(!target) {
+		Print("Target invalid.");
+		return 1;
+	}
+	
+	if((target.classid >= 742))
+	{		
+		NTC_PutSkill(NTConfig_AttackSkill[2], NTC_HAND_RIGHT);
+		
+		if (GetDistance(me, target) > 13) {
+			var _pos = me.GetOptimalAttackPos(target.areaid, target.x, target.y, 12, 1);
+
+			if (_pos) { NTM_MoveTo(target.areaid, _pos[0], _pos[1], 0, false, false); }
+		}
+		
+		if(GetDistance(me, target) < 6){
+			NTA_MoveAwayFromMonster(target, 8, 2);
+		}	
+		
+		Delay(500);
+		return 3;
+	}
+	
+	var _primaryindex;
+	
+	// 0x02 : Super Unique 0x08 : Boss
+	_primaryindex = (target.spectype&0x08) ? 1 : 3;
+
+	if(NTConfig_AttackSkill[_primaryindex] > -1 && NTA_GetResistance(target, _NTA_SkillDamage[_primaryindex]) < 100)
+	{
+		if(_NTA_SkillRange[_primaryindex] < 4 && !CheckCollision(target.areaid, target.x, target.y, 1))
+			return 1;
+
+		if(!NTA_PaladinCastSkillInt(_primaryindex, target))
+			return 2;
+
+		return 3;
+	}
+
+	if(NTConfig_AttackSkill[5] > -1 && NTA_GetResistance(target, _NTA_SkillDamage[5]) < 100)
+	{
+		if(_NTA_SkillRange[5] < 4 && !CheckCollision(target.areaid, target.x, target.y, 1))
+			return 1;
+
+		if(!NTA_PaladinCastSkillInt(5, target))
+			return 2;
+
+		return 3;
+	}
+	
+	return 1;
+}
+
+function NTA_PaladinCastSkillInt(index, target) {
+	if(!target) {return false;}
+
+	if (NTConfig_AttackSkill[index] == 112) {
+		if (me.x - target.x < 1 || me.x - target.x > 2 || me.y - target.y < 1 || me.y - target.y > 2) {
+			if (CheckCollision(target.areaid, target.x + 2, target.y + 2, 1)){
+				NTM_MoveTo(target.areaid, target.x + 2, target.y + 2, 0, false, false);
+			}
+			else if (me.x - target.x < -4 || me.x - target.x > 2 || me.y - target.y < 0 || me.y - target.y > 2) {
+				NTM_MoveTo(target.areaid, target.x - 4, target.y, 0, false, false);
+			}
+		}
+	} else {
+		if (GetDistance(me, target) > _NTA_SkillRange[index] || !CheckCollision(me, target, 4)) {
+			var _pos = me.GetOptimalAttackPos(target.areaid, target.x, target.y, _NTA_SkillRange[index], 4);
+
+			if (_pos) { NTM_MoveTo(target.areaid, _pos[0], _pos[1], 0, false, false); }
+			else{
+				return false;
+			}
+		}
+	}
+
+	if (NTConfig_AttackSkill[index + 1] > -1) NTC_PutSkill(NTConfig_AttackSkill[index + 1], NTC_HAND_RIGHT);
+
+	return NTC_CastSkill(NTConfig_AttackSkill[index], _NTA_SkillHand[index], target);
+}

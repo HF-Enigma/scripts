@@ -1,0 +1,353 @@
+function NTU_CheckCoord()	
+	{
+		_area = GetArea();
+	 	if(_area)
+			{
+				Print(COLOR_9 + " X=" + me.x + ", Y=" + me.y);
+				Print(COLOR_9 + "  In AreaID " + me.areaid + " , " + _area.name);
+			}
+	} 
+	
+	
+function NTU_HotKeyList()
+{
+	HotKeys = COLOR_1 + "Etal HotKeys" + ";";
+	HotKeys += COLOR_1 + "---------------------------------------------------" + "\n";
+	HotKeys += COLOR_4 + "All keys are located on your NumberPad!" + "\n";
+	HotKeys += COLOR_2 + "[" + WhichHotKey(Do_DropItems) + "]" + COLOR_4 + " Drop Inventory and Stash items" + "\n";
+	HotKeys += COLOR_2 + "[" + WhichHotKey(Do_DevTools) + "]" + COLOR_4 + " Use NTU_DevelopementTools" + "\n";
+	HotKeys += COLOR_2 + "[" + WhichHotKey(Do_HotKeyList) + "]" + COLOR_4 + " To see this list!" + "\n";
+	HotKeys += COLOR_2 + "[" + WhichHotKey(Do_NipCheck) + "]" + COLOR_4 + " Run the .nip error checker" + "\n";
+	HotKeys += COLOR_2 + "[" + WhichHotKey(Do_CheckBPs) + "]" + COLOR_4 + " Print current FCR/FHR Breakpoints in game" + "\n";
+	HotKeys += COLOR_2 + "[" + WhichHotKey(Do_PrintCoord) + "]" + COLOR_4 + " Print X/Y coordinates and area name/ID" + "\n";
+	HotKeys += COLOR_2 + "[" + WhichHotKey(Do_PrevScript) + "]" + COLOR_4 + " Scroll to previous scripts" + "\n";
+	HotKeys += COLOR_2 + "[" + WhichHotKey(Do_NextScript) + "]" + COLOR_4 + " Scroll to future scripts" + "\n";
+	HotKeys += COLOR_2 + "[" + WhichHotKey(Do_PauseBot) + "]" + COLOR_4 + " Pause/Resume current script" + "\n";
+	HotKeys += COLOR_2 + "[" + WhichHotKey(Do_ExitGame) + "]" + COLOR_4 + " Exit Game manually (Will Print Game Stats)" + "\n";
+	HotKeys += COLOR_1 + "---------------------------------------------------" + "\n";
+	NTC_SendLogToOOG(NTC_LOG_COMMON, HotKeys);
+	Print(COLOR_1 + "Etal Hotkeys sent to manager Common Log!");
+}
+
+function WhichHotKey(ThisKey)
+{
+	switch(ThisKey) {
+		case 8: ThisKey = "Backspace"; break;
+		case 9: ThisKey = "Tab"; break;
+		case 13: ThisKey = "Enter"; break;
+		case 16: ThisKey = "Shift"; break;
+		case 17: ThisKey = "Ctrl"; break;
+		case 18: ThisKey = "Alt"; break;
+		case 19: ThisKey = "Pause"; break;
+		case 20: ThisKey = "Caps Lock"; break;
+		case 27: ThisKey = "Esc"; break;
+		case 33: ThisKey = "Pg Up"; break;
+		case 34: ThisKey = "Pg Dn"; break;
+		case 35: ThisKey = "End"; break;
+		case 36: ThisKey = "Home"; break;
+		case 45: ThisKey = "Ins"; break;
+		case 46: ThisKey = "Del"; break;
+		case 48: ThisKey = "0"; break;
+		case 49: ThisKey = "1"; break;
+		case 50: ThisKey = "2"; break;
+		case 51: ThisKey = "3"; break;
+		case 52: ThisKey = "4"; break;
+		case 53: ThisKey = "5"; break;
+		case 54: ThisKey = "6"; break;
+		case 55: ThisKey = "7"; break;
+		case 56: ThisKey = "8"; break;
+		case 57: ThisKey = "9"; break;
+		case 65: ThisKey = "A"; break;
+		case 66: ThisKey = "B"; break;
+		case 67: ThisKey = "C"; break;
+		case 68: ThisKey = "D"; break;
+		case 69: ThisKey = "E"; break;
+		case 70: ThisKey = "F"; break;
+		case 71: ThisKey = "G"; break;
+		case 72: ThisKey = "H"; break;
+		case 73: ThisKey = "I"; break;
+		case 74: ThisKey = "J"; break;
+		case 75: ThisKey = "K"; break;
+		case 76: ThisKey = "L"; break;
+		case 77: ThisKey = "M"; break;
+		case 78: ThisKey = "N"; break;
+		case 79: ThisKey = "O"; break;
+		case 80: ThisKey = "P"; break;
+		case 81: ThisKey = "Q"; break;
+		case 82: ThisKey = "R"; break;
+		case 83: ThisKey = "S"; break;
+		case 84: ThisKey = "T"; break;
+		case 85: ThisKey = "U"; break;
+		case 86: ThisKey = "V"; break;
+		case 87: ThisKey = "W"; break;
+		case 88: ThisKey = "X"; break;
+		case 89: ThisKey = "Y"; break;
+		case 90: ThisKey = "Z"; break;
+		case 96: ThisKey = "Num 0"; break;
+		case 97: ThisKey = "Num 1"; break;
+		case 98: ThisKey = "Num 2"; break;
+		case 99: ThisKey = "Num 3"; break;
+		case 100: ThisKey = "Num 4"; break;
+		case 101: ThisKey = "Num 5"; break;
+		case 102: ThisKey = "Num 6"; break;
+		case 103: ThisKey = "Num 7"; break;
+		case 104: ThisKey = "Num 8"; break;
+		case 105: ThisKey = "Num 9"; break;
+		case 106: ThisKey = "Num *"; break;
+		case 107: ThisKey = "Num +"; break;
+		case 109: ThisKey = "Num -"; break;
+		case 110: ThisKey = "Num ."; break;
+		case 111: ThisKey = "Num /"; break;
+		case 112: ThisKey = "F1"; break;
+		case 113: ThisKey = "F2"; break;
+		case 114: ThisKey = "F3"; break;
+		case 115: ThisKey = "F4"; break;
+		case 116: ThisKey = "F5"; break;
+		case 117: ThisKey = "F6"; break;
+		case 118: ThisKey = "F7"; break;
+		case 119: ThisKey = "F8"; break;
+		case 120: ThisKey = "F9"; break;
+		case 121: ThisKey = "F10"; break;
+		case 122: ThisKey = "F11"; break;
+		case 123: ThisKey = "F12"; break;
+		case 144: ThisKey = "Num Lock"; break;
+		case 145: ThisKey = "Scroll Lock"; break;
+		case 186: ThisKey = "Semi-Colon"; break;
+		case 187: ThisKey = "="; break;
+		case 188: ThisKey = "Comma"; break;
+		case 189: ThisKey = "-"; break;
+		case 190: ThisKey = "Period"; break;
+		case 191: ThisKey = "/"; break;
+		case 192: ThisKey = "~"; break;
+		case 219: ThisKey = "["; break;
+		case 220: ThisKey = "BackSlash"; break;
+		case 221: ThisKey = "]"; break;
+		case 222: ThisKey = "'"; break;
+	} return ThisKey;
+}
+
+function NTU_TLNipCheck()
+{
+	Print(COLOR_3 + "TBD");
+	
+}
+
+function NTU_DropItems() {
+	var _script = NTC_FindScript(NTConfig_Script[CurScriptIndex]);
+	if (_script.running && NTC_InTown())
+		return;
+	
+	Print("Dropping Inventory and Stash");
+	NTU_MoveToStash();
+	NTU_ClearInventory();
+	NTU_DropStash();
+	Print("Done Dropping Inventory and Stash");
+}
+
+function NTU_CursorILvl() {
+	var item = null;
+	if(me.itemoncursor) {
+		item = me.GetCursorItem();
+		Print(COLOR_4 + item.name.split("\n")[0] + COLOR_8 + " - " + COLOR_4 + "Item Level " + COLOR_8 + item.itemlevel);
+		
+		var itemStats;
+		for(var i=-100;i<9999;i++){
+			itemStats = item.GetStat(i);
+			if(itemStats!=0)
+				Print(COLOR_4 + "nStat " + COLOR_8 + i
+				+ " - " + COLOR_4 + "nValue " + COLOR_8 + itemStats);
+		}
+	}
+	else
+		Print(COLOR_8 + "Nothing On Cursor To Check.");
+}
+
+function NTU_ClearInventory() {
+	var _items = me.GetItems();
+
+	if(!_items)
+		return false;	
+	
+	for(var i = 0 ; i < _items.length ; i++) {		
+		if(_items[i].itemloc == 0  && !NTSI_IsIgnoredItemInt(_items[i].classid) && NTConfig_Columns[_items[i].y][_items[i].x] > 0) {
+			NTT_DropItem(_items[i]);		
+		}
+	}
+}
+
+function NTU_MoveToStash() {
+	var _stash;
+
+	NTTM_TownMove("stash");
+
+	_stash = NTC_FindUnit(NTC_UNIT_OBJECT, NTC_UNIT_STASH, 5);
+
+	if(_stash) {
+		NTT_DoInteract(_stash);
+	}
+}
+
+function NTU_DropStash() {
+	var _items = me.GetItems();
+
+	if(!_items)
+		return false;
+
+	for(var i = 0 ; i < _items.length ; i++) {
+		if(_items[i].mode == 0 && _items[i].itemloc == 4 && _items[i].classid != 549) {
+			NTT_DropItem(_items[i]);		
+         	}
+	}
+	me.Cancel(1);
+} 
+
+
+function NTU_DevelopementTools()
+{
+	NTU_getlocalstringids = false;			// pretty much same as objects
+	NTU_objectids = false;
+	NTU_monsterids = true;					// prints the name and id number of monsters.  Probably should set a range for it but been using it for summons
+	
+	var MonsterIdRange = 	[600, 999];	// set the range of id's you want to look for ie [420, 432] looks for druid summons
+										// you can set the MonsterRange = [0, 575] and it will give all monsters near you, but to be effective need to add a range to it										
+	var ObjectIdRange = [0, 600];		// this is range of object id's similar to above ranges
+	var _objectlookrange = 5;			// this is the distance that you wish to look for objects from your toon
+	var StringIdRange = [2500, 4000];	// this is range getlocalstrings  id's similar to above ranges
+	var _stringlookrange = 5;			// this is the distance that you wish to look for getlocalstrings from your toon
+
+	Print(COLOR_2 + IdToName() + " - CharacterClass(" +me.classid+ ")");
+	Print("   ");
+	
+	if(NTU_monsterids){
+		for(var i = MonsterIdRange[0]; i < MonsterIdRange[1] ; i++){
+			var _monster = NTC_FindUnit(NTC_UNIT_MONSTER, i);
+			if(NTC_FindUnit(NTC_UNIT_MONSTER, i)){
+				if(_monster.GetParent() != null){
+					//Print(COLOR_8 + _monster.name + " - monsterid(" + i + ") - parent is (" +_monster.GetParent().name + ")" + " - monster mode is " + "[" + _monster.mode + "]");
+					Delay(1);
+				}
+				else{
+					Print(COLOR_8 + _monster.name + " - monsterid(" + i + ")" + " - mode " + "[" + _monster.mode + "]"
+					 + " - hp " + "[" + _monster.hp + "]");
+					Print(COLOR_9 + " Physical " + _monster.GetStat(36)
+					 + " Magic " + _monster.GetStat(37)
+					 + " Fire " + _monster.GetStat(39)
+					 + " Lightning " + _monster.GetStat(41)
+					 + " Cold " + _monster.GetStat(43)
+					 + " Poison " + _monster.GetStat(45));
+				}
+				Delay(50);
+			}
+		}
+	}
+	Print("   ");
+
+	if(NTU_objectids){
+		for(var i = ObjectIdRange[0]; i < ObjectIdRange[1] ; i++){
+			var _object = NTC_FindUnit(NTC_UNIT_OBJECT, i);
+			if(NTC_FindUnit(NTC_UNIT_OBJECT, i) && (GetDistance(me.x,me.y,_object.x,_object.y)<_objectlookrange))
+				Print(COLOR_14 + "object name is - " + _object.name + " - objectid - (" + i + ")" + " - objects mode is " + "[" + _object.mode + "]");
+			//Delay(500);
+		}
+	}
+	Print("   ");
+	if(NTU_getlocalstringids){
+		for(var i = StringIdRange[0]; i < StringIdRange[1]; i++){
+			var _stringobject = NTC_FindUnit(NTC_UNIT_OBJECT, GetLocaleString(i));
+			if(NTC_FindUnit(NTC_UNIT_OBJECT, GetLocaleString(i)) && (GetDistance(me.x,me.y,_stringobject.x,_stringobject.y)<_stringlookrange))
+				Print(COLOR_14 + "String name is - " + _stringobject.name + " - stringid - (" + i + ")" + " - objects mode is " + "[" + _stringobject.mode + "]");
+			//Delay(30);
+		}
+	}
+	Print("   ");
+
+}
+
+function IdToName(){
+	
+	switch(me.classid)
+	{
+		case 0:
+			return "Amazon";
+		case 1:
+			return "Sorceress";
+		case 2:
+			return "Necromancer";
+		case 3:
+			return "Paladin";			
+		case 4:
+			return "Barbarian";						
+		case 5:
+			return "Druid";						
+		case 6:
+			return "Assassin";			
+	}
+}
+
+// Code from kolton's Hostile Catch scripts, augmented for millisecond output
+// Added to a common file for global access
+function NTU_timeStamp() 
+{		
+   var now    = new Date();
+   var hour   = now.getHours();
+   var minute = now.getMinutes();
+   var second = now.getSeconds();
+   var millisecond = now.getMilliseconds();
+   var DoN = "AM";
+	
+	if (hour > 11) { DoN = "PM"; }
+	if (hour > 12) { hour = hour - 12; }
+	if (hour == 0) { hour = 12; }
+	if (hour < 10) { hour = "0" + hour; }
+	if (minute < 10) { minute = "0" + minute; }
+	if (second < 10) { second = "0" + second; }
+	
+	var timeString = hour +	':' +  minute + ':' + second + '.' + millisecond + " " + DoN;
+
+   return timeString;
+}	
+
+// loosely based on NTBaal.ntj function _announceTMobs
+function NTU_GetNearbyMonsters(_range) {
+	var _nearbyMonsters = [];
+
+	if(arguments.length < 1)
+		var _range = 50;
+	
+	var _monster = NTC_FindUnit(NTC_UNIT_MONSTER);
+
+	if(_monster){
+		do {
+			if ((!_inRange(me.x, me.y, _monster.x, _monster.y, _range)) || (!_monster.IsAttackable()))
+				continue;
+			_nearbyMonsters.push(_monster.name);
+		} while(_monster.GetNext())
+	}
+	
+	_nearbyMonsters = _simplifyArray(_nearbyMonsters);
+
+	function _inRange(meX, meY, monX, monY, range) {
+		// In an x-y Cartesian coordinate system, the circle with centre coordinates (a, b) 
+		// and radius r is the set of all points (x, y) such that
+		// (x - a)^2 + (y - b)^2 = r^2
+		if(Math.pow((monX - meX),2) + Math.pow((monY - meY),2) > Math.pow(range,2)) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	// removes duplicate entries
+	function _simplifyArray(ar) {
+		var f = {},
+		i = 0,
+		l = ar.length,
+		r = [];
+		while (i < l) {
+			!f[ar[i]] && r.push(ar[i]);
+			f[ar[i++]] = 1;
+		}
+		return r;
+	}
+	return _nearbyMonsters;
+}

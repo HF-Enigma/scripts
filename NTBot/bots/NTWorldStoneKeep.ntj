@@ -1,0 +1,297 @@
+var max_wave = 0;;
+
+function NTMain(){
+	Include("libs/common/NTCommon.ntl");
+	NTC_IncludeLibs();
+	NTC_IncludeConfig("NTBot/char_configs");
+
+	var i;
+	var _wave;
+	var _starttick;
+
+	NT_LoadConfig();
+	NTSI_LoadNIPFiles("NTBot/item_configs");
+
+	NTA_Initialize();
+	
+	if(TB_FastClear) {NT_File("logs/msg/"+me.charname+"-helpernextgame.txt", 1, me.gamename + "/" + me.gamepassword);}
+
+	if(!NTTM_CheckAct()){
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTTM_CheckAct()");
+		return;
+	}
+	NTTMGR_TownManager();
+	if(!NTTM_TownMove("waypoint")){
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTTM_TownMove()");
+		return;
+	}
+	if(!NTM_TakeWaypoint(129)){
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTM_TakeWaypoint()");
+		return;
+	}
+	
+	NTM_TeleportTo(me.x+2, me.y+2);
+	
+	NTP_DoPrecast(true);
+	Delay(1000);
+	
+	NTM_TeleportTo(me.x-2, me.y-2);
+	
+	if(!NTM_KoMoveToStair(me.areaid, 130)){
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTM_MoveToStair()");
+		return;
+	}
+	if(!NTM_TakeStair(130)){
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTM_TakeStair()");
+		return;
+	}
+	
+	if(!NTM_KoMoveToStair(me.areaid, 131)){
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTM_MoveToStair()");
+		return;
+	}
+
+	if(!NTM_TakeStair(131)){
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTM_TakeStair()");
+		return;
+	}
+	
+	if(!NTM_MoveTo(me.areaid, 15112, 5068)){
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTM_MoveTo()");
+		return;
+	}
+	
+	// Adding Doll Check
+	// if( NTC_FindUnit(NTC_UNIT_MONSTER, GetLocaleString(2904))) {
+		// NTC_SendLogToOOG(NTC_LOG_COMMON, COLOR_1 + "Undead Soul Killers found.");
+		// NTC_SendMsgToScript("NTBotGame.ntj", "SCRIPT_END");
+		// return;
+	// }
+	
+	var helper_comes = false;
+	
+	if(NTConfig_PublicMode){
+		if(NTConfig_MakeHotTP){
+			NTM_MoveTo(me.areaid, 15118, 5073);
+			
+			if(TB_FastClear) {
+				NT_File("logs/msg/"+me.charname+"-helpernextgame.txt", 1, me.gamename + "/" + me.gamepassword);
+				NTM_MakeTP();
+				NTA_ClearPosition(10, false, 1);
+				Delay(8000);
+				NT_ClearThroneInt();
+			}
+			else{
+				NTM_MakeTP(NTC_AREA_ID_ACT_5);
+				
+				NT_File("logs/msg/"+me.charname+"-helpernextgame.txt", 1, me.gamename + "/" + me.gamepassword);
+				
+				while(!checkHelperMsg(TB_helper[0])){
+					if(NTC_InMyParty(TB_helper[0])){
+						helper_comes = true;
+					}
+					else if(helper_comes){
+						NTC_SendMsgToScript("NTBotGame.ntj", "Helper chicken");
+						return;
+					}
+					
+					Delay(500);
+				}
+				
+				NT_File("logs/msg/"+me.charname+"-leechernextgame.txt", 1, me.gamename + "/" + me.gamepassword);
+				
+				NTM_UsePortal("BluePortal", 131, me.charname);
+			}
+		}
+	}
+	
+	while(1){
+		Delay(500);
+		
+		if(me.classid == NTC_CHAR_CLASS_PALADIN || me.classid == NTC_CHAR_CLASS_BARBARIAN)
+			NTM_MoveTo(me.areaid, 15094, 5028);
+		else
+			NTM_MoveTo(me.areaid, 15094, 5040);
+					
+		if(me.GetState(2))
+			NTC_PutSkill(109, NTC_HAND_RIGHT);
+			
+		for(i = 0 ; i < 6 ; i++){
+			_wave = NT_ThroneCheckInt();
+			if(_wave > 0)
+				break;
+			NTC_Delay(500);
+		}
+		_starttick = GetTickCount();
+		while(_wave == 0){
+			if(!NT_ThronePreAttackInt())
+				NTC_Delay(200);
+			if(GetTickCount()-_starttick > 20000){
+				NT_ClearThroneInt();
+				if(me.classid == NTC_CHAR_CLASS_PALADIN || me.classid == NTC_CHAR_CLASS_BARBARIAN)
+					NTM_MoveTo(me.areaid, 15094, 5028);
+				else
+					NTM_MoveTo(me.areaid, 15094, 5040);
+				_starttick = GetTickCount();
+			}
+			_wave = NT_ThroneCheckInt();
+			Delay(500);
+		}
+		switch(_wave){
+			case 1:
+				NTA_ClearPosition(40, true);
+				NTP_DoPrecast(true);
+				break;
+			case 2:
+				NTA_ClearPosition(40, true);
+				// if(NTConfig_Wave2PSNCheck && me.GetState(2) != -1){
+					// NTTMGR_VisitTown();
+				// }
+				break;
+			case 3:
+				NTA_ClearPosition(40, true);
+				break;
+			case 4:
+				NTA_ClearPosition(40, true);
+				break;
+			case 5:
+				NTA_ClearPosition(40, true);
+				break;
+			default:
+				NTA_ClearPosition(40, true);
+				break;
+		}
+		
+		if(!NTC_FindUnit(NTC_UNIT_MONSTER, 543)) {
+			break;
+		}
+	}
+	
+	// Clear game info messages
+	NT_File("logs/msg/"+me.charname+"-helpernextgame.txt", 1, " ");
+	Delay(50);
+	NT_File("logs/messagecomands/"+me.charname+"-leechernextgame.txt", 1, " ");
+	
+	Delay(50);
+	NTSI_PickItems();
+	Delay(50);
+	
+	if(NTConfig_KillBaal){
+		var _portal;
+
+		NTM_MoveTo(me.areaid, 15092, 5010);
+		NTP_DoPrecast(true);
+		
+		for(var i = 0; i < 60; i++) {
+			Delay(500);
+			if(!NTC_FindUnit(NTC_UNIT_MONSTER, 543)) {
+				break;
+			}
+			if(i >= 58) {
+				NTC_SendMsgToScript("NTBotGame.ntj", "Baal bugged");
+				return;
+			}
+		}
+		
+		_portal = NTC_FindUnit(NTC_UNIT_OBJECT, 563, 1);
+		if(!_portal){
+			NTC_SendMsgToScript("NTBotGame.ntj", "NTC_FindUnit()");
+			return;
+		}
+		if(!NTM_UsePortal("Portal", 132, null, _portal)){
+			NTC_SendMsgToScript("NTBotGame.ntj", "NTM_UsePortal()");
+			return;
+		}
+		NTM_MoveTo(me.areaid, 15135, 5928);
+		if(!NTA_KillMonster(544)){
+			NTC_SendMsgToScript("NTBotGame.ntj", "NTA_KillMonster()");
+			return;
+		}
+				
+		NTSI_PickItems();
+		
+		TB_KillTransformedMonster();		
+	}
+	
+	Delay(200);
+	NTC_SendMsgToScript("NTBotGame.ntj", "SCRIPT_END");
+}
+
+// Internal function
+function NT_ClearThroneInt(){
+	var _attackpos = [15097, 5054, 15085, 5053, 15085, 5040, 15098, 5040, 15099, 5022, 15086, 5024];
+	NTA_ClearPosition(25, true, 2);
+	for(var i = 0 ; i < _attackpos.length ; i += 2){
+		NTM_MoveTo(me.areaid, _attackpos[i], _attackpos[i+1]);
+		NTA_ClearPosition(25, true, 2);
+	}
+}
+
+function NT_ThroneCheckInt(){
+	var _monster;
+	if(!NTC_FindUnit(NTC_UNIT_MONSTER, 543))
+		return 5;
+	_monster = NTC_FindUnit(NTC_UNIT_MONSTER);
+	if(_monster){
+		do{
+			if(NTA_IsValidMonster(_monster)){
+				if(_monster.classid == 23 || _monster.classid == 62)
+					return 1;
+				if(_monster.classid == 105 || _monster.classid == 381)
+					return 2;
+				if(_monster.classid == 557)
+					return 3;
+				if(_monster.classid == 558)
+					return 4;
+				if(_monster.classid == 571)
+					return 5;
+			}
+		} while(_monster.GetNext());
+	}
+	return 0;
+}
+
+function NT_ThronePreAttackInt(){
+	if(me.classid == NTC_CHAR_CLASS_SORCERESS){
+		if(NTConfig_AttackSkill[3] == 56 || NTConfig_AttackSkill[3] == 59)
+			return NTC_CastSkill(NTConfig_AttackSkill[3], 0, 15092, 5028);
+	}
+	else if(me.classid == NTC_CHAR_CLASS_DRUID){
+		return false;
+	}
+	else if(me.classid == NTC_CHAR_CLASS_NECROMANCER){
+		return false;
+	}
+	else if(me.classid == NTC_CHAR_CLASS_PALADIN){
+		if(NTConfig_AttackSkill[3] == 112)
+		{
+			if(NTConfig_AttackSkill[4] > 0)
+				NTC_PutSkill(NTConfig_AttackSkill[4], NTC_HAND_RIGHT);
+
+			return NTC_CastSkill(NTConfig_AttackSkill[3], 2);
+		}
+	}
+	else if(me.classid == NTC_CHAR_CLASS_ASSASSIN){
+		var _attackPos = [15088,5023,15087,5032,15098,5022,15101,5034,15094,5029];
+		return false;
+	}
+	return false;
+}
+
+function checkHelperMsg(helperName){
+	var result = false;
+	var msgFile;
+	var path = "logs/msg/" + helperName + "-baal.txt";
+	
+	msgFile = FileOpen(path, 0); // open file in read only
+	
+	if(msgFile){
+		msg = msgFile.ReadLine();
+		if(msg == "safetp"){
+			result = true;
+		}
+		msgFile.Close();
+	}
+	
+	return result;
+}

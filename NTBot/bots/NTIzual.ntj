@@ -1,0 +1,57 @@
+function NTMain()
+{
+	Include("libs/common/NTCommon.ntl");
+	NTC_IncludeLibs();
+	NTC_IncludeConfig("NTBot/char_configs");
+
+	NT_LoadConfig();
+	NTSI_LoadNIPFiles("NTBot/item_configs");
+
+	NTA_Initialize();
+
+	if(!NTTM_CheckAct())
+	{
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTTM_CheckAct()");
+		return;
+	}
+
+	NTTMGR_TownManager();
+
+	if(!NTTM_TownMove("waypoint"))
+	{
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTTM_TownMove()");
+		return;
+	}
+
+	if(!NTM_TakeWaypoint(106))
+	{
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTM_TakeWaypoint()");
+		return;
+	}
+
+	NTP_DoPrecast(true);
+
+	if(!NTM_MoveToPresetUnit(105, NTC_UNIT_MONSTER, 256, 4, 4))
+	{
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTM_MoveToPresetUnit()");
+		return;
+	}
+
+	if(!NTTMGR_CheckSafe(NTConfig_CheckSelfSafe, NTConfig_CheckMercSafe))
+	{
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTTMGR_CheckSafe()");
+		return;
+	}
+
+	if(!NTA_KillMonster(256))
+	{
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTA_KillMonster()");
+		return;
+	}
+
+	NTC_PingDelay(500);
+
+	NTSI_PickItems();
+
+	NTC_SendMsgToScript("NTBotGame.ntj", "SCRIPT_END");
+}

@@ -1,0 +1,299 @@
+/**
+*	This file was written by Muddy_Waters@elitepvpers.com
+*	Check the programming section for updates and further scripts
+*	Last Update: 02/09/2011
+*/
+
+//------------------------------------------------------------------------------
+// Miscellaneous
+//------------------------------------------------------------------------------
+
+const MWS_ATTACK = 0;
+const MWS_KICK = 1;
+const MWS_THROW = 2;
+const MWS_LEFT_HAND_THROW = 4;
+const MWS_LEFT_HAND_SWING = 5;
+const MWS_SCROLL_OF_IDENTIFY = 217;
+const MWS_TOME_OF_IDENTIFY = 218;
+const MWS_SCROLL_OF_TOWN_PORTAL = 219;
+const MWS_TOME_OF_TOWN_PORTAL = 220;
+
+//------------------------------------------------------------------------------
+// Amazon
+//------------------------------------------------------------------------------
+
+// Javelin and Spear Skills
+const MWS_JAB = 10;
+const MWS_POWER_STRIKE = 14;
+const MWS_POISON_JAVELIN = 15;
+const MWS_IMPALE = 19;
+const MWS_LIGHTNING_BOLT = 20;
+const MWS_CHARGED_STRIKE = 24;
+const MWS_PLAGUE_JAVELIN = 25;
+const MWS_FEND = 30;
+const MWS_LIGHTNING_STRIKE = 34;
+const MWS_LIGHTNING_FURY = 35;
+
+// Passive and Magic Skills
+const MWS_INNER_SIGHT = 8;
+const MWS_CRITICAL_STRIKE = 9;
+const MWS_DODGE = 13;
+const MWS_SLOW_MISSILES = 17;
+const MWS_AVOID = 18;
+const MWS_PENETRATE = 23;
+const MWS_DECOY = 28;
+const MWS_EVADE = 29;
+const MWS_VALKYRIE = 32;
+const MWS_PIERCE = 33;
+
+// Bow and Crossbow Skills
+const MWS_MAGIC_ARROW = 6;
+const MWS_FIRE_ARROW = 7;
+const MWS_COLD_ARROW = 11;
+const MWS_MULTIPLE_SHOT = 12;
+const MWS_EXPLODING_ARROW = 16;
+const MWS_ICE_ARROW = 21;
+const MWS_GUIDED_ARROW = 22;
+const MWS_STRAFE = 26;
+const MWS_IMMOLATION_ARROW = 27;
+const MWS_FREEZING_ARROW = 31;
+
+//------------------------------------------------------------------------------
+// Sorceress
+//------------------------------------------------------------------------------
+
+// Cold Spells
+const MWS_ICE_BOLT = 39;
+const MWS_FROZEN_ARMOR = 40;
+const MWS_FROST_NOVA = 44;
+const MWS_ICE_BLAST = 45;
+const MWS_SHIVER_ARMOR = 50;
+const MWS_GLACIAL_SPIKE = 55;
+const MWS_BLIZZARD = 59;
+const MWS_CHILLING_ARMOR = 60;
+const MWS_FROZEN_ORB = 64;
+const MWS_COLD_MASTERY = 65;
+
+// Lightning Spells
+const MWS_CHARGED_BOLT = 38;
+const MWS_STATIC_FIELD = 42;
+const MWS_TELEKINESIS = 43;
+const MWS_NOVA = 48;
+const MWS_LIGHTNING = 49;
+const MWS_CHAIN_LIGHTNING = 53;
+const MWS_TELEPORT = 54;
+const MWS_THUNDER_STORM = 57;
+const MWS_ENERGY_SHIELD = 58;
+const MWS_LIGHTNING_MASTERY = 63;
+
+// Fire Spells
+const MWS_FIRE_BOLT = 36;
+const MWS_WARMTH = 37;
+const MWS_INFERNO = 41;
+const MWS_BLAZE = 46;
+const MWS_FIRE_BALL = 47;
+const MWS_FIRE_WALL = 51;
+const MWS_ENCHANT = 52;
+const MWS_METEOR = 56;
+const MWS_FIRE_MASTERY = 61;
+const MWS_HYDRA = 62;
+
+//------------------------------------------------------------------------------
+// Necromancer
+//------------------------------------------------------------------------------
+
+// Summoning Spells
+const MWS_SKELETON_MASTERY = 69;
+const MWS_RAISE_SKELETON = 70;
+const MWS_CLAY_GOLEM = 75;
+const MWS_GOLEM_MASTERY = 79;
+const MWS_RAISE_SKELETAL_MAGE = 80;
+const MWS_BLOOD_GOLEM = 85;
+const MWS_SUMMON_RESIST = 89;
+const MWS_IRON_GOLEM = 90;
+const MWS_FIRE_GOLEM = 94;
+const MWS_REVIVE = 95;
+
+// Poison and Bone Spells
+const MWS_TEETH = 67;
+const MWS_BONE_ARMOR = 68;
+const MWS_POISON_DAGGER = 73;
+const MWS_CORPSE_EXPLOSION = 74;
+const MWS_BONE_WALL = 78;
+const MWS_POISON_EXPLOSION = 83;
+const MWS_BONE_SPEAR = 84;
+const MWS_BONE_PRISON = 88;
+const MWS_POISON_NOVA = 92;
+const MWS_BONE_SPIRIT = 93;
+
+// Curses
+const MWS_AMPLIFY_DAMAGE = 66;
+const MWS_DIM_VISION = 71;
+const MWS_WEAKEN = 72;
+const MWS_IRON_MAIDEN = 76;
+const MWS_TERROR = 77;
+const MWS_CONFUSE = 81;
+const MWS_LIFE_TAP = 82;
+const MWS_ATTRACT = 86;
+const MWS_DECREPIFY = 87;
+const MWS_LOWER_RESIST = 91;
+
+//------------------------------------------------------------------------------
+// Paladin
+//------------------------------------------------------------------------------
+
+// Defensive Auras
+const MWS_PRAYER = 99;
+const MWS_RESIST_FIRE = 100;
+const MWS_DEFIANCE = 104;
+const MWS_RESIST_COLD = 105;
+const MWS_CLEANSING = 109;
+const MWS_RESIST_LIGHTNING = 110;
+const MWS_VIGOR = 115;
+const MWS_MEDITATION = 120;
+const MWS_REDEMPTION = 124;
+const MWS_SALVATION = 125;
+
+// Offensive Auras
+const MWS_MIGHT = 98;
+const MWS_HOLY_FIRE = 102;
+const MWS_THORNS = 103;
+const MWS_BLESSED_AIM = 108;
+const MWS_CONCENTRATION = 113;
+const MWS_HOLY_FREEZE = 114;
+const MWS_HOLY_SHOCK = 118;
+const MWS_SANCTUARY = 119;
+const MWS_FANATICISM = 122;
+const MWS_CONVICTION = 123;
+
+// Combat Skills
+const MWS_SACRIFICE = 96;
+const MWS_SMITE = 97;
+const MWS_HOLY_BOLT = 101;
+const MWS_ZEAL = 106;
+const MWS_CHARGE = 107;
+const MWS_VENGEANCE = 111;
+const MWS_BLESSED_HAMMER = 112;
+const MWS_CONVERSION = 116;
+const MWS_HOLY_SHIELD = 117;
+const MWS_FIST_OF_THE_HEAVENS = 121;
+
+//------------------------------------------------------------------------------
+// Barbarian
+//------------------------------------------------------------------------------
+
+// Warcries
+const MWS_HOWL = 130;
+const MWS_FIND_POTION = 131;
+const MWS_TAUNT = 137;
+const MWS_SHOUT = 138;
+const MWS_FIND_ITEM = 142;
+const MWS_BATTLE_CRY = 146;
+const MWS_BATTLE_ORDERS = 149;
+const MWS_GRIM_WARD = 150;
+const MWS_WAR_CRY = 154;
+const MWS_BATTLE_COMMAND = 155;
+
+// Combat Masteries
+const MWS_SWORD_MASTERY = 127;
+const MWS_AXE_MASTERY = 128;
+const MWS_MACE_MASTERY = 129;
+const MWS_POLE_ARM_MASTERY = 134;
+const MWS_THROWING_MASTERY = 135;
+const MWS_SPEAR_MASTERY = 136;
+const MWS_INCREASED_STAMINA = 141;
+const MWS_IRON_SKIN = 145;
+const MWS_INCREASED_SPEED = 148;
+const MWS_NATURAL_RESISTANCE = 153;
+
+// Combat Skills
+const MWS_BASH = 126;
+const MWS_LEAP = 132;
+const MWS_DOUBLE_SWING = 133;
+const MWS_STUN = 139;
+const MWS_DOUBLE_THROW = 140;
+const MWS_LEAP_ATTACK = 143;
+const MWS_CONCENTRATE = 144;
+const MWS_FRENZY = 147;
+const MWS_WHIRLWIND = 151;
+const MWS_BERSERK = 152;
+
+//------------------------------------------------------------------------------
+// Druid
+//------------------------------------------------------------------------------
+
+// Elemental
+const MWS_FIRESTORM = 225;
+const MWS_MOLTEN_BOULDER = 229;
+const MWS_ARCTIC_BLAST = 230;
+const MWS_FISSURE = 234;
+const MWS_CYCLONE_ARMOR = 235;
+const MWS_TWISTER = 240;
+const MWS_VOLCANO = 244;
+const MWS_TORNADO = 245;
+const MWS_ARMAGEDDON = 249;
+const MWS_HURRICANE = 250;
+
+// Shape Shifting
+const MWS_WEARWOLF = 223;
+const MWS_LYCANTHROPY = 224;
+const MWS_WEARBEAR = 228;
+const MWS_FERAL_RAGE = 232;
+const MWS_MAUL = 233;
+const MWS_RABIES = 238;
+const MWS_FIRE_CLAWS = 239;
+const MWS_HUNGER = 242;
+const MWS_SHOCK_WAVE = 243;
+const MWS_FURY = 248;
+
+// Summoning
+const MWS_RAVEN = 221;
+const MWS_POISON_CREEPER = 222;
+const MWS_OAK_SAGE = 226;
+const MWS_SUMMON_SPIRIT_WOLF = 227;
+const MWS_CARRION_VINE = 231;
+const MWS_HEART_OF_WOLVERINE = 236;
+const MWS_SUMMON_DIRE_WOLF = 237;
+const MWS_SOLAR_CREEPER = 241;
+const MWS_SPIRIT_OF_BARBS = 246;
+const MWS_SUMMON_GRIZZLY = 247;
+
+//------------------------------------------------------------------------------
+// Assassin
+//------------------------------------------------------------------------------
+
+// Martial Arts
+const MWS_TIGER_STRIKE = 254;
+const MWS_DRAGON_TALON = 255;
+const MWS_FISTS_OF_FIRE = 259;
+const MWS_DRAGON_CLAW = 260;
+const MWS_COBRA_STRIKE = 265;
+const MWS_CLAWS_OF_THUNDER = 269;
+const MWS_DRAGON_TAIL = 270;
+const MWS_BLADES_OF_ICE = 274;
+const MWS_DRAGON_FLIGHT = 275;
+const MWS_PHOENIX_STRIKE = 280;
+
+// Shadow Disciplines
+const MWS_CLAW_MASTERY = 252;
+const MWS_PSYCHIC_HAMMER = 253;
+const MWS_BURST_OF_SPEED = 258;
+const MWS_WEAPON_BLOCK = 263;
+const MWS_CLOAK_OF_SHADOWS = 264;
+const MWS_FADE = 267;
+const MWS_SHADOW_WARRIOR = 268;
+const MWS_MIND_BLAST = 273;
+const MWS_VENOM = 278;
+const MWS_SHADOW_MASTER = 279;
+
+// Traps
+const MWS_FIRE_BLAST = 251;
+const MWS_SHOCK_WEB = 256;
+const MWS_BLADE_SENTINEL = 257;
+const MWS_CHARGED_BOLT_SENTRY = 261;
+const MWS_WAKE_OF_FIRE = 262;
+const MWS_BLADE_FURY = 266;
+const MWS_LIGHTNING_SENTRY = 271;
+const MWS_WAKE_OF_INFERNO = 272;
+const MWS_DEATH_SENTRY = 276;
+const MWS_BLADE_SHIELD = 277;

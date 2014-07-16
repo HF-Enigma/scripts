@@ -1,0 +1,330 @@
+// D2NT Cow script
+// Version 1.4.3
+// version 0.0.1 modified by hefang
+
+function NTMain()
+{
+	Include("libs/common/NTCommon.ntl");
+	NTC_IncludeLibs();
+	NTC_IncludeConfig("NTBot/char_configs");
+
+	NT_LoadConfig();
+	NTSI_LoadNIPFiles("NTBot/item_configs");
+
+	NTA_Initialize();
+
+	if(!NTTM_CheckAct(me.act, true)){
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTTM_CheckAct()");
+		return;
+	}
+	
+	NTTMGR_TownManager();
+	
+	if(!NTCOW_CheckCowPortal()){	
+		if(!getleg()){
+			NTC_SendMsgToScript("NTBotGame.ntj", "getleg()");
+		}
+		
+		var leg = getLegUnit();
+		if(!leg){
+			NTC_SendMsgToScript("NTBotGame.ntj", "getLegUnit()");
+		}
+		
+		NTTM_CheckAct();
+		
+		var tome = getTome();
+		if(!leg){
+			NTC_SendMsgToScript("NTBotGame.ntj", "getTome()");
+		}
+		
+		openPortal(leg, tome);
+		if(!NT_CheckCowPortal()){	
+			NTC_SendMsgToScript("NTBotGame.ntj", "openPortal()");
+		}
+	}
+	
+	Print(COLOR_4 + "Cow portal is up, it's time to Moo Moo!");
+	Delay(2000);
+		
+	if(!NT_TakeCowPortal()){
+		NTC_SendMsgToScript("NTBotGame.ntj", "Failed to take Cow Portal.");
+		return;
+	}
+	
+	NTP_DoPrecast();
+	NTCOW_ClearRooms();
+	NTC_SendMsgToScript("NTBotGame.ntj", "SCRIPT_END");
+}
+
+// Internal functions
+function NTCOW_CheckCowPortal()
+{
+	var _portal = NTC_GetUnit(NTC_UNIT_OBJECT, GetLocaleString(3226));
+	if(_portal){
+		if(_portal.subareaid == 295 || _portal.subareaid == 39){
+			return true;
+		}
+	}
+	else
+		return false;
+}
+
+
+function NTCOW_GetTP(){
+	var _portals = me.GetItems("tbk");
+	if (_portals){
+		for (var i = 0; i < _portals.length; i++){
+			if (_portals[i].mode == 0 && (_portals[i].itemloc != 0 || NTConfig_Columns[_portals[i].y][_portals[i].x] > 0)){
+				return _portals[i];
+			}
+		}
+	}
+	return false;
+}
+
+function NTCOW_TakeCowPortal(range){
+	var _portal;
+
+	_portal = NTC_FindUnit(NTC_UNIT_OBJECT, 60, 5);
+
+	if(_portal)
+		return NTM_UsePortal("Portal", 39, "dummy", _portal);
+	
+	return false;
+}
+
+function NTCOW_SecondTomeTP(npc, type, amount){
+	var _items;
+	var _counter = 0;
+
+	if(arguments.length < 1)
+		return false;
+
+	if(arguments.length < 2)
+		type = 0;
+
+	if(arguments.length < 0)
+		amount = 1;
+
+	if(amount == 0)
+		return false;
+
+	if(type)
+		_items = npc.GetItems("tbk");
+
+	if(_items)
+	{
+		if(_items.length > 0)
+		{
+			for(var i = 0 ; i < amount ; i++)
+			{
+				if(NTT_ShopItem(_items[0], npc, 2))
+					_counter++;
+			}
+		}
+	}
+	return (_counter > 0);
+}
+
+function getLegUnit() {
+	var _items, _leg;
+	_items = me.GetItems(88);
+	if(_items){
+		_leg = _items[0];
+}
+
+function getLeg() {	
+	var _leg;
+	
+	if(!NTTM_TownMove("waypoint")){
+		// NTC_SendMsgToScript("NTBotGame.ntj", "NTTM_TownMove(waypoint)");
+		return false;
+	}
+	if(!NTM_TakeWaypoint(4)){
+		// NTC_SendMsgToScript("NTBotGame.ntj", "NTM_TakeWaypoint(4)");
+		return false;
+	}
+	
+	NTP_DoPrecast();
+	
+	if(!NTM_MoveToPresetUnit(me.areaid, NTC_UNIT_MONSTER, 737, 10, 10)){
+		// NTC_SendMsgToScript("NTBotGame.ntj", "NTM_MoveToPresetUnit()");
+		return false;
+	}
+	
+	if(!NTM_UsePortal("Portal", 38)){
+		// NTC_SendMsgToScript("NTBotGame.ntj", "NTM_UsePortal()");
+		return false;
+	}
+	
+	var _wirtbody = NTC_FindUnit(NTC_UNIT_OBJECT, 268);
+	
+	if(!_wirtbody){
+		// NTC_SendMsgToScript("NTBotGame.ntj", "Wirt's body not found.");
+		return false;
+	}
+	
+	if(!NTM_MoveTo(_wirtbody.areaid, _wirtbody.x+3, _wirtbody.y)){
+		// NTC_SendMsgToScript("NTBotGame.ntj", "Failed to move to Wirt's body.");
+		return false;
+	}
+	
+	if(!NTC_OpenChest(_wirtbody)){
+		// NTC_SendMsgToScript("NTBotGame.ntj", "Failed to open Wirt's body for leg.");
+		return false;
+	}
+	
+	NTC_PingDelay(1000);
+	for (i = 0; i < 10; i++){
+		NTC_Delay(NTC_DELAY_FRAME);
+		_leg = NTC_FindUnit(NTC_UNIT_ITEM, 88);
+		if (_leg)
+			break;
+	}
+	
+	if(!NTT_CheckSpace(_leg.xsize, _leg.ysize)){
+		NTTMGR_VisitTown();
+	}
+	
+	for (i = 0; i < 20; i++){
+		if ((i % 5) == 0){
+			if (_leg.mode == 3 || _leg.mode == 5){
+				if (NTC_ClearCursor())
+				NTC_DoClick(NTC_CLICK_LDOWN, NTC_SHIFT_NONE, _leg);
+			}
+		}
+		NTC_PingDelay(100);
+		if (_leg.mode != 3 && _leg.mode != 5){
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+function getTome(){
+	var _npc, _portal;
+	NTTM_TownMove("akara");
+	
+	for(var i = 0; i < 10; i++)
+	{
+		_npc = NTC_FindUnit(NTC_UNIT_NPC, NTC_NPC_ID_AKARA);
+		
+		if(_npc)
+			break;
+	}
+
+	if(_npc)
+	{
+		if(NTT_DoInteract(_npc))
+		{
+			if(NTT_DoTrade(_npc))
+			{
+				NTT_FillTome(_npc, 1);
+				NTT_FillTome(_npc, 0);
+				NTT_SecondTomeTP(_npc, "tbk", 1);
+				
+				_portal = NTR_GetTP();
+				
+				if(!_portal)
+				{
+					NTC_SendMsgToScript("NTBotGame.ntj", "NTR_GetTP()");
+					return;
+				}
+			}		
+		}
+		
+		me.Cancel(1);
+	}
+	return _portal;
+}
+
+function openPortal(leg, tome){
+	var _items = me.GetItems(NTC_UNIT_CUBE);
+	var _cube = _items[0];
+	
+	if(!_cube){
+		NTC_SendMsgToScript("NTBotGame.ntj", "No cube found.");
+		return;
+	}
+	
+	if(NTCU_CheckCubeInventoryInt() > 0){
+		NTCU_OpenCubeInt(_cube)
+		if(NTCU_ClearCubeInt() < 1){
+			NTC_SendMsgToScript("NTBotGame.ntj", "Cube cannot be emptied.");
+			return;
+		}
+		NTCU_CloseCubeInt();
+	}
+	
+	NTCU_MoveItemToCubeInt(_cube, leg);
+	NTCU_MoveItemToCubeInt(_cube, tome);
+	NTCU_OpenCubeInt(_cube);
+	
+	if(Transmute()){
+		NTC_PingDelay(1000);
+		NTCU_CloseCubeInt();
+		NTC_PingDelay(1000);
+		NTC_CancelMenus();// added this for testing
+		NTC_PingDelay(parseInt((1000 / 2), 10));
+	}
+	else{
+		NTC_PingDelay(1000);
+		NTCU_CloseCubeInt();
+		NTC_PingDelay(1000);
+		NTC_CancelMenus();// added this for testing
+		NTC_PingDelay(parseInt((1000 / 2), 10));
+	}
+}
+
+function buildCowRooms() {
+	var i, j, room, finalRooms = [],
+
+	room = GetRoom();
+
+	do {
+		finalRooms.push([room.x * 5 + room.xsize / 2, room.y * 5 + room.ysize / 2]);		
+	} while (room.GetNext());
+
+	return finalRooms;
+}
+
+function clearCowLevel() {
+
+	var room, result, myRoom,
+		rooms = buildCowRooms();
+
+	function RoomSort(a, b) {
+		return getDistance(myRoom[0], myRoom[1], a[0], a[1]) - getDistance(myRoom[0], myRoom[1], b[0], b[1]);
+	}
+
+	while (rooms.length > 0) {
+		// get the first room + initialize myRoom var
+		if (!myRoom) {
+			room = GetRoom(me.x, me.y);
+		}
+
+		if (room) {
+			if (room instanceof Array) { // use previous room to calculate distance
+				myRoom = [room[0], room[1]];
+			} else { // create a new room to calculate distance (first room, done only once)
+				myRoom = [room.x * 5 + room.xsize / 2, room.y * 5 + room.ysize / 2];
+			}
+		}
+
+		rooms.sort(RoomSort);
+		room = rooms.shift();
+
+		result = Pather.getNearestWalkable(room[0], room[1], 10, 2);
+
+		if (result) {
+			Pather.moveTo(result[0], result[1], 3);
+
+			if (!Attack.clear(30)) {
+				return false;
+			}
+		}
+	}
+
+	return true;
+}

@@ -1,0 +1,159 @@
+var CurScriptIndex = 0;
+var LastScript = false;
+
+var CloneDiabloString;
+var CloneDiabloNotify = false;
+
+function NTMain()
+{
+	Delay(1000);
+
+	//Print("ÿc4[+] NTBot 4.2 [+]");
+
+	Include("libs/common/NTCommon.ntl");
+	NTC_IncludeLibs();
+	NTC_IncludeConfig("NTBot/char_configs");
+
+	NT_LoadConfig();
+	NTSI_LoadNIPFiles("NTBot/item_configs");
+
+	if(NTConfig_StartDelay > 0);
+		NTC_Delay(NTConfig_StartDelay);
+
+	SetUIState(0x0A, true);
+
+	NTT_GetCorpses();
+
+	if(NTConfig_Script.length > 0)
+	{
+		NTCU_InitCubing();
+
+		NTT_ClearInventory();
+		NTT_ClearBelt();
+
+		Load("NTBot/tools/NTToolsThread.ntj");
+		
+		if(me.name != TB_leader){
+			Load("NTBot/tools/NTLeaderWatch.ntj");
+		}
+
+		if(NTConfig_CheckCloneDiablo)
+		{
+		 	CloneDiabloString = GetLocaleString(11005);
+			RegisterEvent(EVENT_GAMEMSG, NT_GameMsgEvents);
+		}
+
+		RegisterEvent(EVENT_KEYDOWN, NT_KeyEvents);
+		RegisterEvent(EVENT_SCRIPTMSG, NT_ScriptMsgEvents);
+
+		Load("NTBot/bots/" + NTConfig_Script[CurScriptIndex]);
+		SetStatusText("Running " + NTConfig_Script[CurScriptIndex]);
+
+		while(!LastScript || CloneDiabloNotify)
+		{
+			NTC_Delay(500);
+		}
+	}
+
+	ExitGame();
+}
+
+function NT_GameMsgEvents(msg, type)
+{
+	if(type == 4 && msg.indexOf(CloneDiabloString) != -1)
+	{
+		CloneDiabloNotify = true;
+
+		NTC_SendLogToOOG(NTC_LOG_COMMON, "ÿc4" + CloneDiabloString);
+		SetStatusText(CloneDiabloString);
+
+		me.maxgametime = 0;
+
+		NTC_StopScript(NTConfig_Script[CurScriptIndex]);
+		NTC_Delay(500);
+
+		NTTM_CheckAct();
+	}
+}
+
+function NT_KeyEvents(keycode)
+{
+	var _script;
+
+	switch(keycode)
+	{
+	case 36: // Home
+		_script = NTC_FindScript(NTConfig_Script[CurScriptIndex]);
+		if(_script)
+		{
+			if(_script.running)
+			{
+				_script.Stop();
+
+				NTC_Delay(300);
+				ClickMap(NTC_CLICK_LUP, NTC_SHIFT_NONE, null);
+
+				SetStatusText("Stopped " + NTConfig_Script[CurScriptIndex]);
+			}
+			else
+			{
+				Load("NTBot/bots/" + NTConfig_Script[CurScriptIndex]);
+				SetStatusText("Running " + NTConfig_Script[CurScriptIndex]);
+			}
+		}
+		break;
+	case 53: // 5
+		NTU_CheckCoord();
+		break;
+	case 45: // Insert
+		//NTU_DropItems();
+		break;
+	case 35: // End
+		NTU_DevelopementTools();
+		break;
+	case 54: // 6
+		NTU_CursorILvl();
+		break;		
+	case 55: // 7
+		NTU_HotKeyList();
+		break;
+	}
+}
+
+function NT_ScriptMsgEvents(msg)
+{
+	var _area;
+
+	switch(msg)
+	{
+	case "SCRIPT_END":
+		if(++CurScriptIndex < NTConfig_Script.length)
+		{
+			NTTM_CheckAct();
+			Load("NTBot/bots/" + NTConfig_Script[CurScriptIndex]);
+			SetStatusText("Running " + NTConfig_Script[CurScriptIndex]);
+		}
+		else
+			LastScript = true;
+		break;
+	default:
+		Print("ÿc1" + NTConfig_Script[CurScriptIndex] + " : " + msg + " failed");
+
+		_area = GetArea();
+
+		if(_area)
+			NTC_SendLogToOOG(NTC_LOG_COMMON, "ÿE00000" + NTConfig_Script[CurScriptIndex] + " : " + msg + " failed (" + _area.name + ")");
+		else
+			NTC_SendLogToOOG(NTC_LOG_COMMON, "ÿE00000" + NTConfig_Script[CurScriptIndex] + " : " + msg + " failed (unknown area)");
+
+		if(++CurScriptIndex < NTConfig_Script.length)
+		{
+			NTTM_CheckAct();
+			Load("NTBot/bots/" + NTConfig_Script[CurScriptIndex]);
+			SetStatusText("Running " + NTConfig_Script[CurScriptIndex]);
+		}
+		else
+			LastScript = true;
+		break;
+	}
+}

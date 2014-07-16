@@ -1,0 +1,46 @@
+// modes 0 = read only, 1 = overwrite the file, 2 = add to file
+function NT_File(path, mode, msg, delay) { //big thanks to all the koreans out there
+    var _msg  = "";
+    var _line = "";
+    var _fileHandle;
+    var _isFileCheck = false;
+
+    if (arguments.length < 3) { msg   = ""; }
+    if (arguments.length < 4) { delay = (mode > 0) ? 5 : 2; }
+
+    while (delay--) {
+        if (mode == 2 && !_isFileCheck) {
+            _fileHandle = FileOpen(path, 0);
+            if (!_fileHandle)
+                _fileHandle = FileOpen(path, 1);
+
+            if (_fileHandle)
+                _fileHandle.Close();
+
+            _isFileCheck = true;
+        }
+
+        _fileHandle = FileOpen(path, mode);
+        if (_fileHandle)
+            break;
+
+        if (delay)
+            Delay(200);
+    }
+
+    if (_fileHandle) {
+        if (mode == 0) {
+            while (!_fileHandle.eof) {
+                _line = _fileHandle.ReadLine();
+                if (_line || !_fileHandle.eof)
+                    _msg += _line + msg;
+            }
+        }
+        else if (msg)
+            _fileHandle.WriteLine(msg);
+
+        _fileHandle.Close();
+    }
+
+    return _msg;
+}

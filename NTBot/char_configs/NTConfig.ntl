@@ -1,0 +1,118 @@
+var NTConfig_LeechBaal;
+var NTConfig_FollowtoWorldStone;
+
+var NTConfig_CheckSoulKillers; 				// End script if Stygian Dolls are found in Throne
+var NTConfig_MakeHotTP; 						// Make a hot TP before clearing Throne
+var NTConfig_PreWaveTele; 					// Teleport before wave to keep merc close
+var NTConfig_Wave2PSNCheck; 				// Heal after wave 2 if poisoned		
+var NTConfig_KillBaal;
+
+
+// Class Specific Var's
+	var DebugAttacksInGame;
+	// Amazon
+		var NTConfig_FarCastAma;
+		var NTConfig_FCRange;
+	// Assassin
+		var NTConfig_UseTraps;
+		var NTConfig_UseFade;
+		var NTConfig_UseBOS;
+		var NTConfig_UseCloakOfShadows;
+		var NTConfig_UseBladeShield;
+		var NTConfig_MinTrapRange;
+		var NTConfig_MinBossTrapRange;
+		var NTConfig_NumTraps;
+		var NTConfig_NumBossTrap;
+		var NTConfig_UseShadow;
+	// Barbarian
+		var NTConfig_UseFindItem;
+		var NTConfig_FindItemRange;
+	// Druid
+		var NTConfig_CastRaven;
+		var DruidPreAtt = new Array();
+		var NTConfig_CastPast;
+		var NTConfig_NadoDist;
+	// Necromancer
+		var NTConfig_SkeletonArmy;
+		var NTConfig_MageArmy;
+		var NTConfig_ReviveArmy;
+		var NTConfig_Curse = new Array();
+		var NTConfig_PoisonNovaDelay;
+		var NTConfig_SaferSummons;
+	// Paladin
+		var NTConfig_UseRedemptionHP;
+		var NTConfig_UseRedemptionMP;
+	// Sorceress
+		var NTConfig_StaticBossesOnly;
+		var NTConfig_StaticBossesSelect = new Array();
+
+
+var NTConfig_Script = new Array();
+
+var NTConfig_NihlathakExtension;
+var NTConfig_PindleskinExtension;
+var NTConfig_ShenkExtension;
+var NTConfig_ClearFrozenRiver;
+var NTConfig_ClearGlacialTrail;
+var NTConfig_ClearIcyCellar;
+var NTConfig_KillBaal;
+var NTConfig_ClearA3SewersLevel1;
+var NTConfig_KillFireEye;
+var NTConfig_ClearPitLevel1;
+var NTConfig_KillBloodRaven;
+var NTConfig_ClearHoleLevel1;
+var NTConfig_KillRakanishu;
+
+var NTConfig_StartDelay;
+var NTConfig_AreaDelay;
+var NTConfig_SnagDelay;
+
+var NTConfig_SkipHealLife;
+var NTConfig_SkipHealMana;
+var NTConfig_UseMerc;
+var NTConfig_ResetWeapon;
+
+var NTConfig_LifeThresh;
+var NTConfig_LifeRejuvThresh;
+var NTConfig_ManaThresh;
+var NTConfig_ManaRejuvThresh;
+var NTConfig_LifeChicken;
+var NTConfig_ManaChicken;
+
+var NTConfig_MercLifeThresh;
+var NTConfig_MercRejuvThresh;
+var NTConfig_MercChicken;
+
+var NTConfig_FreeSpace;
+
+var NTConfig_Columns = new Array(4);
+NTConfig_Columns[0] = new Array(10);
+NTConfig_Columns[1] = new Array(10);
+NTConfig_Columns[2] = new Array(10);
+NTConfig_Columns[3] = new Array(10);
+
+var NTConfig_MinGoldToStash;
+
+var NTConfig_BeltColType = new Array(4);
+
+var NTConfig_NIPFilePath = new Array();
+var NTConfig_SnagRange;
+
+var NTConfig_Cubing;
+var NTConfig_CubingItem = new Array();
+
+var NTConfig_Gamble;
+var NTConfig_GambleStartGold;
+var NTConfig_GambleStopGold;
+var NTConfig_GambleItem = new Array();
+
+var NTConfig_PublicMode;
+var NTConfig_CheckCloneDiablo;
+var NTConfig_OpenChest;
+
+var NTConfig_AttackSkill = new Array(10);
+
+var NTConfig_ClearPosition;
+var NTConfig_CheckSelfSafe;
+var NTConfig_CheckMercSafe;
+

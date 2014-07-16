@@ -1,0 +1,160 @@
+var NTConfig_UseRedemptionHP;
+var NTConfig_UseRedemptionMP;
+
+function NT_LoadConfig()
+{
+	// Nip file check
+	//NTConfig_Script.push("TLNipCheck.ntj"); NTConfig_CheckCodes = true;	
+	
+	NTConfig_PublicMode = true;
+	
+	//------------------------------------------------------------------------------
+	// TeamBoot configuration
+	//------------------------------------------------------------------------------
+	NTConfig_Script.push("NTUniversalBaalLeech.ntj");
+		NTConfig_LeechBaal = 2;					// 1 = Leech Fighter (Tele), 2 = Leech Helper (Walking), 3 = Passive Leecher (Corner dunce).
+		NTConfig_FollowtoWorldStone = true;
+		
+	//------------------------------------------------------------------------------
+	// Boss configuration
+	//------------------------------------------------------------------------------
+	//NTConfig_Script.push("NTPindleskin.ntj"); NTConfig_NihlathakExtension = false;
+	//NTConfig_Script.push("NTNihlathak.ntj"); NTConfig_PindleskinExtension = false;
+	//NTConfig_Script.push("NTEldritch.ntj"); NTConfig_ShenkExtension = false;
+	//NTConfig_Script.push("NTThreshSocket.ntj");
+	//NTConfig_Script.push("NTFrozenRiver.ntj"); NTConfig_ClearFrozenRiver = false;
+	//NTConfig_Script.push("NTGlacialTrail.ntj"); NTConfig_ClearGlacialTrail = false;
+	//NTConfig_Script.push("NTIcyCellar.ntj"); NTConfig_ClearIcyCellar = false;
+	//NTConfig_Script.push("NTBaal.ntj"); NTConfig_KillBaal = true;
+	//NTConfig_Script.push("NTDiablo.ntj");
+	//NTConfig_Script.push("NTHephasto.ntj");
+	//NTConfig_Script.push("NTIzual.ntj");
+	//NTConfig_Script.push("NTMephisto.ntj");
+	//NTConfig_Script.push("NTTravincal.ntj");
+	//NTConfig_Script.push("NTKurastTravel.ntj");
+	//NTConfig_Script.push("NTAct3Sewers.ntj"); NTConfig_ClearA3SewersLevel1 = 1; // 0 : don't clear, 1 : clear path only, 2 : clear all
+	//NTConfig_Script.push("NTSummoner.ntj"); NTConfig_KillFireEye = true;
+	//NTConfig_Script.push("NTDuriel.ntj");
+	//NTConfig_Script.push("NTAncientTunnels.ntj");
+	//NTConfig_Script.push("NTColdworm.ntj");
+	//NTConfig_Script.push("NTRadament.ntj");
+	//NTConfig_Script.push("NTAndariel.ntj");
+	//NTConfig_Script.push("NTCountess.ntj");
+	//NTConfig_Script.push("NTTreehead.ntj");
+	//NTConfig_Script.push("NTPit.ntj"); NTConfig_ClearPitLevel1 = 1; // 0 : don't clear, 1 : clear path only, 2 : clear all
+	//NTConfig_Script.push("NTMausoleum.ntj"); NTConfig_KillBloodRaven = true;
+	//NTConfig_Script.push("NTHole.ntj"); NTConfig_ClearHoleLevel1 = 1; // 0 : don't clear, 1 : clear path only, 2 : clear all
+	//NTConfig_Script.push("NTTristram.ntj"); NTConfig_KillRakanishu = true;
+
+	//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
+	me.maxgametime = 20*60; // time in seconds, maximum game length (0 is infinite)
+	NTConfig_StartDelay = 0;	// Delay time in milliseconds to start;
+	NTConfig_AreaDelay = 500;	// Delay time in milliseconds to change area;
+	NTConfig_SnagDelay = 500;	// Delay time in milliseconds to wait before starting picking items
+
+	//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
+	NTConfig_SkipHealLife = 90;	// If you have more than this percent of life, you won't go to a healer
+	NTConfig_SkipHealMana = 70;	// If you have more than this percent of mana, you won't go to a healer
+	NTConfig_UseMerc = true;	// Set to true if you use a mercenary, will revive merc at a reviver npc.
+	NTConfig_ResetWeapon = false;	// Set to true to reset weapon when reviving merc
+
+	NTConfig_LifeThresh = 80;	// Drink a normal potion if under this percent of life.
+	NTConfig_LifeRejuvThresh = 40;	// Drink a rejuvenation potion if under this percent of life.
+	NTConfig_ManaThresh = 30;	// Drink a normal potion if under this percent of mana.
+	NTConfig_ManaRejuvThresh = 10;	// Drink a rejuvenation potion if under this percent of mana.
+	NTConfig_LifeChicken = 25;	// This is your chicken life percent. If you go below this life total, exit game.
+	NTConfig_ManaChicken = 0;	// This is your chicken mana percent. If you go below this mana total, exit game.
+
+	NTConfig_MercLifeThresh = 80;	// This is the threshold to use a life potion on your merc in percent.
+	NTConfig_MercRejuvThresh = 30;	// This is the threshold to use a rejuv potion on your merc in percent.
+	NTConfig_MercChicken = 0;	// This is your mercs chicken life percent. If he goes below this, exit game.
+
+	//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
+	NTConfig_FreeSpace = 6;		// Number of free columns. If less full columns are free stashing is set.
+
+	// The numbers correspond to your inventory. Set 0 to keep whatever is there, 1 to stash it.
+	NTConfig_Columns[0] = [1,1,1,1,1,1,0,0,0,0];
+	NTConfig_Columns[1] = [1,1,1,1,1,1,0,0,0,0];
+	NTConfig_Columns[2] = [1,1,1,1,1,1,0,0,0,0];
+	NTConfig_Columns[3] = [1,1,1,1,1,1,0,0,0,0];
+
+	NTConfig_MinGoldToStash = 50000;	// Maximum gold amount carried before going to stash
+
+	//----------------------------------------------------------------------------------------------
+	// Type of potion used in each belt column
+	// Available types : "hp" = health | "mp" = mana | "rv" = rejuv. Can use other potion types too.
+	// Keep equal types at adjacent columns. First HP then MP and then HP again is a bad choice.
+	// Keep HP and MP at the beginning of the belt (in case you want to use rejuv and other types).
+	// Rejuvenations MUST, I REPEAT MUST be at the end of the belt (last x columns).
+	// To use rejuvenations only, put "rv" in all columns.
+	//----------------------------------------------------------------------------------------------
+	NTConfig_BeltColType[0] = "hp";
+	NTConfig_BeltColType[1] = "hp";
+	NTConfig_BeltColType[2] = "mp";
+	NTConfig_BeltColType[3] = "rv";
+
+	//-----------------------------------------------------------------------------------
+	// SnagIt configuration
+	//-----------------------------------------------------------------------------------
+
+	NTConfig_NIPFilePath.push("advance/normal.nip");
+	NTConfig_NIPFilePath.push("advance/poor.nip");
+	NTConfig_NIPFilePath.push("advance/set.nip");
+	NTConfig_NIPFilePath.push("advance/unique.nip");
+	NTConfig_NIPFilePath.push("advance/craft.nip");
+
+	NTConfig_SnagRange = 40;	// Radius to check for dropped items. 40 is a good number here
+
+	//------------------------------------------------------------------------------
+	// Cubing configuration
+	//------------------------------------------------------------------------------
+	NTConfig_Cubing = false;		// Enable cubing
+
+
+	//------------------------------------------------------------------------------
+	// Gamble configuration
+	// To specify what items to gamble, adjust the array with the desired item codes
+	//------------------------------------------------------------------------------
+	NTConfig_Gamble = true;		// Enable gambling
+	NTConfig_GambleStartGold = 2500000;	// Gold amount to start the gambling
+	NTConfig_GambleStopGold = 500000;	// Gold amount to stop the gambling
+
+	NTConfig_GambleItem.push(520);	// Amulets
+	NTConfig_GambleItem.push(522);	// Rings
+	NTConfig_GambleItem.push(418);	// Circlets
+	NTConfig_GambleItem.push(419);	// Coronets
+
+	//------------------------------------------------------------------------------
+	// General configuration
+	//------------------------------------------------------------------------------
+	NTConfig_CheckCloneDiablo = false;	// Set to true if you want to wait in game after notifying "Diablo Walks the Earth" msg.
+	NTConfig_OpenChest = false;			// Set to true to open chest
+	NTConfig_ClearPosition = false;	// Set to true if you want to clear area after killing boss.
+	me.quitonhostile = false;
+
+	//------------------------------------------------------------------------------
+	// Attack configuration
+	//------------------------------------------------------------------------------
+	NTConfig_AttackSkill[0] = -1;	// First skill. Set to 0 if you won't
+	NTConfig_AttackSkill[1] = 97;	// Primary skill to boss.
+	NTConfig_AttackSkill[2] = 123;	// Primary aura to boss. Set to 0 if you won't
+	NTConfig_AttackSkill[3] = 97;	// Primary skill to others.
+	NTConfig_AttackSkill[4] = 122;	// Primary aura to others. Set to 0 if you won't
+	NTConfig_AttackSkill[5] = -1;	// Secondary skill in case monster is immune to primary skill. Set to 0 if you won't
+	NTConfig_AttackSkill[6] = -1;	// Secondary aura. Set to 0 if you won't
+	
+	// 97 smite 122 fanaticism conviction
+
+	// Check self safe in field (NOT in town). Set to 0 if you won't
+	// 0x01 : Potion, 0x02 : Poison, 0x04 : Amplify Damage, 0x08 : Weaken, 0x10 : Iron Maiden, 0x20 : Decrepify, 0x40 : Lower Resist
+	NTConfig_CheckSelfSafe = 0x01;
+	// Check merc's safe in field (NOT in town). Set to 0 if you won't
+	// 0x01 : Death, 0x02 : Poison, 0x04 : Amplify Damage, 0x08 : Weaken, 0x10 : Iron Maiden, 0x20 : Decrepify, 0x40 : Lower Resist
+	NTConfig_CheckMercSafe = 0x01;
+
+	NTConfig_UseRedemptionHP = 0;	// Use Redemption if under this percent of life. Set to 0 if you won't
+	NTConfig_UseRedemptionMP = 0;	// Use Redemption if under this percent of mana. Set to 0 if you won't
+}

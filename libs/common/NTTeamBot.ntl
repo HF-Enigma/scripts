@@ -1,0 +1,299 @@
+// =============================================================================
+// Game settings
+// =============================================================================
+const TB_difficulty = 3;		// Normal 1, Nightmare 2, Hell 3
+
+const TB_script = "TeamBaal";
+
+const TB_retryLeaderGame = 5;
+const TB_retryLeaderGameDelay = 1000;
+const TB_reEnterSameGame = false;		// must be set to false if you don't want bot to re enter same game for txt joining
+const gameDoesNotExistDelay = 5;		// time to idle before trying if leader's game does not exist.  In seconds.
+
+// =============================================================================
+// Leader, Helper and Leecher name settings, Only one leader allowed, Max number of Players <= 8
+// =============================================================================
+const TB_leader = "h-sor";
+const TB_helper = ["superman"];
+const TB_leecher = ["h-bo","h-nec"];
+
+// =============================================================================
+// Baal Leech settings
+// =============================================================================
+const TB_FastClear = true;
+
+const TB_BaalTransformClassid = [742, 743, 744, 745, 746];
+const TB_BaalTransformTimeout = [22000, 5000, 5000, 5000, 10000];
+
+const TB_Baal_prewavespot_fighter_x = 15092;
+const TB_Baal_prewavespot_fighter_y = 5043;
+
+const TB_Baal_prewavespot_helper_x = 15092;
+const TB_Baal_prewavespot_helper_y = 5035;
+
+const TB_Baal_prewavespot_leecher_x = 15092;
+const TB_Baal_prewavespot_leecher_y = 5048;
+
+var TBGame = {
+	gameName:"",
+	gamePassword:"",
+	
+	gameStatus:"",
+	
+	playerStatus:[],
+	
+	playerCommand :[],
+	
+	readyForNextGame:false
+
+};
+
+function TB_msgHandler(set){
+	var msgFile;
+	var msg;
+	var path = "logs/msg/" + TB_script + ".txt";
+	
+	msgFile = FileOpen(path, 0); // open file in read only
+	
+	if(msgFile){
+		if(set){
+			msg = msgFile.ReadLine();
+		}
+		else{
+			Delay(1000);
+			// msgFile.WriteLine(jsonTxt);			
+		}
+		
+		msgFile.Close();
+	}
+	
+	return;
+
+}
+
+function TB_GenerateRandomGamename(_length)
+{
+	_retString = "";
+	_charSet = "abcdefghijklmnopqrstuvwxyz";
+	
+	while(_length--) {
+		_retString += _charSet.charAt(Math.round(Math.random()*(_charSet.length-1)));
+	}
+
+	return _retString;
+}
+
+function TB_CheckTransformedMonster(monsterid, timeout){
+	if(timeout < 1000) {timeout = 1000;}
+	
+	var _unit, _starttick = GetTickCount();
+	while(GetTickCount()-_starttick < timeout){
+		_unit = NTC_FindUnit(NTC_UNIT_MONSTER, monsterid);
+		if(_unit && NTA_IsValidMonster(_unit)) {
+			Print("monster id " + monsterid + " mode " + _unit.mode + " hp "+ _unit.hp);
+			return true;
+		}
+		Delay(200);
+	}
+	
+	NTC_SendMsgToScript("NTBotGame.ntj", "Baal transform bugged");
+	return false;
+}
+
+function TB_FindTransformedMonster(timeout){
+	if(timeout < 1000) {timeout = 1000;}
+	
+	var _unit = null, _starttick = GetTickCount();
+	while(GetTickCount()-_starttick < timeout){
+		for(var i=0;i<TB_BaalTransformClassid.length;i++){
+			_unit = NTC_FindUnit(NTC_UNIT_MONSTER, TB_BaalTransformClassid[i]);
+			if(_unit && NTA_IsValidMonster(_unit)) {
+				Print("monster id " + monsterid + " mode " + _unit.mode + " hp "+ _unit.hp);
+				return _unit;
+			}
+		}
+		Delay(200);
+	}
+	
+	NTC_SendMsgToScript("NTBotGame.ntj", "Baal transform bugged");
+	return _unit;
+}
+
+function TB_KillTransformedMonster(){
+	var monsterUnit;
+	for(var i=0;i<TB_BaalTransformClassid.length;i++){
+		if (TB_CheckTransformedMonster(TB_BaalTransformClassid[i], TB_BaalTransformTimeout[i])){
+			if(!TB_KillMonster(TB_BaalTransformClassid[i])){
+				// 5th transformed unit
+				if(i===4){
+					Delay(Math.round(Math.random()*2000));
+					NTM_MakeTP(NTC_AREA_ID_ACT_5);
+					Delay(5000);
+					NTM_UsePortal("BluePortal", 132, me.charname);
+					
+					if(!TB_KillMonster(TB_BaalTransformClassid[4])){
+						Print("Can not kill monster " + TB_BaalTransformClassid[i]);
+					}
+					NTSI_PickItems();
+				}
+				
+				NTSI_PickItems();
+				Print("Can not kill monster " + TB_BaalTransformClassid[i]);
+				break;
+			}
+			
+			NTSI_PickItems();
+			
+			if(i == TB_BaalTransformClassid.length-1){
+				Print("Finished!");
+				Delay(2000);
+			}
+		}
+		else{			
+			NTSI_PickItems();
+			NTC_SendMsgToScript("NTBotGame.ntj", "Transformed unit not found");
+			return false;
+		}
+	}
+	
+	return true;
+}
+
+function TB_KillMonster(classid)
+{
+	var _target = null;
+	var _maxattackcount = (me.classid == NTC_CHAR_CLASS_NECROMANCER) ? 1E4 : 1E3;
+
+	if(NTConfig_AttackSkill[1] < 0 &&  me.classid != NTC_CHAR_CLASS_NECROMANCER)
+		return false;
+
+	_target = NTC_FindUnit(NTC_UNIT_MONSTER, classid, 5);
+
+	for(var i=0;i<3;i++){
+		_target = NTC_FindUnit(NTC_UNIT_MONSTER, classid, 5);
+		if(_target) {break;}
+		
+		Delay(500);
+	}
+	
+	if(!_target){
+		Print("Target not found.");
+		return false;
+	}
+
+	var _attackcount = 0;
+
+	while(_attackcount < _maxattackcount && NTA_IsValidMonster(_target))
+	{
+		if(NTA_Attack(_target, (_attackcount%30) == 0) < 2)
+			break;
+
+		_attackcount++;
+	}
+
+	return (_target.hp <= 0 || _target.mode == 0 || _target.mode == 12);
+}
+
+function TB_MoveTo(areaid, x, y, retry, clearpath)
+{
+	if(x == me.x && y == me.y)
+		return true;
+
+	if(arguments.length < 4)
+		retry = 3;
+
+	if(arguments.length < 5)
+		clearpath = false;
+		
+	if(me.areaid != 132) {
+		return NTM_MoveTo(areaid, x, y, retry, clearpath);
+	}
+	
+	// middle point	15134, 5940
+	// left point	15103, 5940
+	// right point	15172, 5940
+	// egde x 15125 15150, y 5934
+	
+	// left edge right edge
+	var left_edge_x = 0, right_edge_x = 0, edge_y = 0;
+	
+	// me in middle
+	if(me.x >= left_edge_x && me.x <= right_edge_x && me.y < edge_y){
+		// go top left
+		if(x < left_edge_x && y < edge_y){
+			NTM_MoveTo(areaid, 15134, 5940, retry, clearpath);
+			NTM_MoveTo(areaid, 15103, 5940, retry, clearpath);
+		}
+		
+		// go top right
+		if(x > right_edge_x && y < edge_y){
+			NTM_MoveTo(areaid, 15134, 5940, retry, clearpath);
+			NTM_MoveTo(areaid, 15172, 5940, retry, clearpath);
+		}
+		
+		// go bottom
+		if(y >= edge_y){
+			NTM_MoveTo(areaid, 15134, 5940, retry, clearpath);
+		}
+	}
+	
+	// me in left
+	if(me.x < left_edge_x && me.y < edge_y){
+		// go middle
+		if(x > left_edge_x && x < right_edge_x && y < edge_y){
+			NTM_MoveTo(areaid, 15103, 5940, retry, clearpath);
+			NTM_MoveTo(areaid, 15134, 5938, retry, clearpath);
+		}
+		
+		// go top right
+		if(x > right_edge_x && y < edge_y){
+			NTM_MoveTo(areaid, 15103, 5940, retry, clearpath);
+			NTM_MoveTo(areaid, 15172, 5940, retry, clearpath);
+		}
+		
+		// go bottom
+		if(y >= edge_y){
+			NTM_MoveTo(areaid, 15103, 5940, retry, clearpath);
+		}		
+	}
+	
+	// me in right
+	if(me.x > right_edge_x && me.y < edge_y){
+		// go top left
+		if(x < left_edge_x && y < edge_y){
+			NTM_MoveTo(areaid, 15172, 5940, retry, clearpath);
+			NTM_MoveTo(areaid, 15103, 5940, retry, clearpath);
+		}
+		
+		// go middle
+		if(x >= left_edge_x && x <= right_edge_x && y < edge_y){
+			NTM_MoveTo(areaid, 15172, 5940, retry, clearpath);
+			NTM_MoveTo(areaid, 15134, 5940, retry, clearpath);
+		}
+		
+		// go bottom
+		if(y >= edge_y){
+			NTM_MoveTo(areaid, 15172, 5940, retry, clearpath);
+		}		
+	}
+	
+	// me in bottom
+	if(me.y >= edge_y){
+		// go top left
+		if(x < left_edge_x && y < edge_y){
+			NTM_MoveTo(areaid, 15103, 5940, retry, clearpath);
+		}
+		
+		// go middle
+		if(x >= left_edge_x && x <= right_edge_x && y < edge_y){
+			NTM_MoveTo(areaid, 15134, 5940, retry, clearpath);
+		}
+		
+		// go top right
+		if(x > right_edge_x && y < edge_y){
+			NTM_MoveTo(areaid, 15172, 5940, retry, clearpath);
+		}
+	}
+	
+	return NTM_MoveTo(areaid, x, y, retry, clearpath);
+}

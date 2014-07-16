@@ -1,0 +1,127 @@
+function NTMain()
+{
+	Include("libs/common/NTCommon.ntl");
+	NTC_IncludeLibs();
+	NTC_IncludeConfig("NTBot/char_configs");
+
+	var _tombs;
+	var _unit;
+	var _prearea;
+
+	NT_LoadConfig();
+	NTSI_LoadNIPFiles("NTBot/item_configs");
+
+	NTA_Initialize();
+
+	if(!NTTM_CheckAct())
+	{
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTTM_CheckAct()");
+		return;
+	}
+
+	NTTMGR_TownManager();
+
+	if(!NTTM_TownMove("waypoint"))
+	{
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTTM_TownMove()");
+		return;
+	}
+
+	if(!NTM_TakeWaypoint(46))
+	{
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTM_TakeWaypoint()");
+		return;
+	}
+
+	NTP_DoPrecast(true);
+
+	_tombs = GetRoom();
+
+	if(!_tombs)
+	{
+		NTC_SendMsgToScript("NTBotGame.ntj", "GetRoom()");
+		return;
+	}
+
+	if(!NTM_MoveToPresetUnit(me.areaid, NTC_UNIT_TILE, _tombs.correcttomb-28))
+	{
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTM_MoveToPresetUnit()");
+		return;
+	}
+
+	_unit = NTC_FindUnit(NTC_UNIT_TILE, _tombs.correcttomb-28, 5);
+
+	if(!_unit)
+	{
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTC_FindUnit()");
+		return;
+	}
+
+	if(!NTM_TakeStair(_unit.subareaid))
+	{
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTM_TakeStair()");
+		return;
+	}
+
+	if(!NTM_MoveToPresetUnit(me.areaid, NTC_UNIT_OBJECT, 152, -2, 2))
+	{
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTM_MoveToPresetUnit()");
+		return;
+	}
+
+	//if(NTConfig_ClearPosition)
+		//NTA_ClearPosition(20, true);
+
+	if(!NTTMGR_CheckSafe(NTConfig_CheckSelfSafe, NTConfig_CheckMercSafe))
+	{
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTTMGR_CheckSafe()");
+		return;
+	}
+
+	_unit = NTC_FindUnit(NTC_UNIT_OBJECT, 100, 10);
+	
+	// Telekinesis for SORCERESS 
+	if(me.classid == NTC_CHAR_CLASS_SORCERESS && NTC_GetSkillLevel(43))
+	{
+		NTC_CastSkill(43, NTC_HAND_RIGHT, _unit);
+		NTC_PingDelay(NTConfig_AreaDelay);
+		
+		for(var i = 0 ; i < 5 ; i++)
+		{
+			NTC_CastSkill(43, NTC_HAND_RIGHT, _unit);
+
+			NTC_Delay(500);
+
+			if(me.areaid != _prearea)
+				break;
+		}
+		
+		while(me.areaid == 0)
+			NTC_Delay(200);
+		
+		if(me.areaid == _prearea){
+			NTC_SendMsgToScript("NTBotGame.ntj", "NTM_TakeUnit()");
+			return;
+		}
+		
+		NTC_PingDelay(NTConfig_AreaDelay);
+	}
+	else
+	{
+		if(!NTM_TakeUnit(NTC_UNIT_OBJECT, 100))
+		{
+			NTC_SendMsgToScript("NTBotGame.ntj", "NTM_TakeUnit()");
+			return;
+		}
+	}
+
+	if(!NTA_KillMonster(211))
+	{
+		NTC_SendMsgToScript("NTBotGame.ntj", "NTA_KillMonster()");
+		return;
+	}
+
+	NTSI_PickItems();
+
+	NTC_SendMsgToScript("NTBotGame.ntj", "SCRIPT_END");
+}
