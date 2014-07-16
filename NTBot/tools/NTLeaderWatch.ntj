@@ -26,9 +26,9 @@ function CheckLeaderInGame()
 		_area = GetArea();
 
 		if(_area)
-			SendCopyData("D2NT Manager", null, 7<<16, COLOR_8 + "Leader not in game, quit (" + _area.name + ")");
+			SendCopyData("D2NT Manager", null, 7<<16, COLOR_8+"Leader not in game, quit (" + _area.name + ")");
 		else
-			SendCopyData("D2NT Manager", null, 7<<16, COLOR_8 + "Leader not in game, quit (unknown area)");
+			SendCopyData("D2NT Manager", null, 7<<16, COLOR_8+"Leader not in game, quit (unknown area)");
 			
 		Delay(1000 + Math.round(Math.random()*2000));
 		ExitGame();
