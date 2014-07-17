@@ -205,10 +205,10 @@ function NTU_DropStash() {
 function NTU_DevelopementTools()
 {
 	NTU_getlocalstringids = false;			// pretty much same as objects
-	NTU_objectids = false;
+	NTU_objectids = true;
 	NTU_monsterids = true;					// prints the name and id number of monsters.  Probably should set a range for it but been using it for summons
 	
-	var MonsterIdRange = 	[600, 999];	// set the range of id's you want to look for ie [420, 432] looks for druid summons
+	var MonsterIdRange = [0, 999];	// set the range of id's you want to look for ie [420, 432] looks for druid summons
 										// you can set the MonsterRange = [0, 575] and it will give all monsters near you, but to be effective need to add a range to it										
 	var ObjectIdRange = [0, 600];		// this is range of object id's similar to above ranges
 	var _objectlookrange = 5;			// this is the distance that you wish to look for objects from your toon
@@ -221,12 +221,12 @@ function NTU_DevelopementTools()
 	if(NTU_monsterids){
 		for(var i = MonsterIdRange[0]; i < MonsterIdRange[1] ; i++){
 			var _monster = NTC_FindUnit(NTC_UNIT_MONSTER, i);
-			if(NTC_FindUnit(NTC_UNIT_MONSTER, i)){
+			if(_monster){
 				if(_monster.GetParent() != null){
 					//Print(COLOR_8 + _monster.name + " - monsterid(" + i + ") - parent is (" +_monster.GetParent().name + ")" + " - monster mode is " + "[" + _monster.mode + "]");
 					Delay(1);
 				}
-				else{
+				if(_monster.spectype & 0x02){
 					Print(COLOR_8 + _monster.name + " - monsterid(" + i + ")" + " - mode " + "[" + _monster.mode + "]"
 					 + " - hp " + "[" + _monster.hp + "]");
 					Print(COLOR_9 + " Physical " + _monster.GetStat(36)
@@ -238,28 +238,29 @@ function NTU_DevelopementTools()
 				}
 				Delay(50);
 			}
-		}
+		}		
+		Print("   ");
 	}
-	Print("   ");
 
 	if(NTU_objectids){
 		for(var i = ObjectIdRange[0]; i < ObjectIdRange[1] ; i++){
 			var _object = NTC_FindUnit(NTC_UNIT_OBJECT, i);
-			if(NTC_FindUnit(NTC_UNIT_OBJECT, i) && (GetDistance(me.x,me.y,_object.x,_object.y)<_objectlookrange))
+			if(_object && (GetDistance(me.x,me.y,_object.x,_object.y)<_objectlookrange))
 				Print(COLOR_14 + "object name is - " + _object.name + " - objectid - (" + i + ")" + " - objects mode is " + "[" + _object.mode + "]");
 			//Delay(500);
-		}
+		}		
+		Print("   ");
 	}
-	Print("   ");
+	
 	if(NTU_getlocalstringids){
 		for(var i = StringIdRange[0]; i < StringIdRange[1]; i++){
 			var _stringobject = NTC_FindUnit(NTC_UNIT_OBJECT, GetLocaleString(i));
 			if(NTC_FindUnit(NTC_UNIT_OBJECT, GetLocaleString(i)) && (GetDistance(me.x,me.y,_stringobject.x,_stringobject.y)<_stringlookrange))
 				Print(COLOR_14 + "String name is - " + _stringobject.name + " - stringid - (" + i + ")" + " - objects mode is " + "[" + _stringobject.mode + "]");
 			//Delay(30);
-		}
+		}		
+		Print("   ");
 	}
-	Print("   ");
 
 }
 

@@ -4,6 +4,7 @@
 
 var NTCOW_ShowOverheadStatus = true;
 var NTCOW_PickItemsInstantly = true;
+var NTCOW_TransmuteButton = [6,224,338,31,31];
 
 function NTMain() {
 	Include("libs/common/NTCommon.ntl");
@@ -21,6 +22,16 @@ function NTMain() {
 	}
 	
 	NTTMGR_TownManager();
+	
+	var _items = me.GetItems(NTC_UNIT_CUBE);
+	
+	if(!_items || _items.length < 1)
+		return false;
+		
+	var _cube = _items[0];
+	
+	SetUIState(0x01, true);
+	NTCOW_Transmute(_cube);
 	
 	if(!NTCOW_CheckCowPortal()){	
 		if(!NTCOW_GetLeg()){
@@ -156,10 +167,12 @@ function NTCOW_GetLeg(){
 	
 	NTP_DoPrecast();
 	
-	if(!NTM_MoveToPresetUnit(me.areaid, NTC_UNIT_MONSTER, 737, 10, 10)){
+	if(!NTM_MoveToPresetUnit(me.areaid, NTC_UNIT_OBJECT, 22, 10, 10)){
 		NTC_SendMsgToScript("NTBotGame.ntj", "NTM_MoveToPresetUnit()");
 		return false;
 	}
+	
+	NTC_PingDelay(2000);
 	
 	if(!NTM_UsePortal("Portal", 38)){
 		NTC_SendMsgToScript("NTBotGame.ntj", "NTM_UsePortal()");
@@ -284,10 +297,17 @@ function NTCOW_OpenCowPortal(leg, tome){
 	NTCU_MoveItemToCubeInt(_cube, leg);
 	NTCU_MoveItemToCubeInt(_cube, tome);
 	
-	if(!Transmute()){
-		NTC_SendMsgToScript("NTBotGame.ntj", "Transmute()");
+	if(!GetUIState(0x1A) && !NTCU_OpenCubeInt(cube))
 		return false;
-	}
+	
+	// if(!Transmute()){
+		// NTC_SendMsgToScript("NTBotGame.ntj", "Transmute()");
+		// return false;
+	// }
+	
+	// Transmute();
+	NTCOW_Transmute(_cube);
+	Delay(100000);
 	
 	NTC_PingDelay(1000);
 	
@@ -298,6 +318,55 @@ function NTCOW_OpenCowPortal(leg, tome){
 	me.Cancel(1);
 	
 	return true;
+}
+
+function NTCOW_Transmute(cube)
+{	
+	if(!GetUIState(0x1A) && !NTCU_OpenCubeInt(cube))
+		return false;
+	var TransmuteButtonArray = [6,224,338,31,31];
+	for(var i=0;i<10;i++){
+		TransmuteButtonArray[0] = i;
+		var transmuteButton = NTCOW_GetControl(TransmuteButtonArray);
+		if(!transmuteButton){
+			Print("Transmute button not found.");
+			// return false;
+		}
+		else{
+			break;
+		}
+	}
+	
+	Delay(50000);
+	NTCOW_ClickControl(NTCOW_TransmuteButton);
+	return true;
+}
+
+function NTCOW_GetControl(controlArray) {
+	var retControl = 0;
+	if( controlArray && controlArray.length==5 ) {
+		retControl = GetControl( controlArray[0], controlArray[1], controlArray[2], controlArray[3], controlArray[4] );
+	}
+	return retControl;
+}
+
+function NTCOW_ClickControl(controlArray, _x, _y, _skipdelay) {
+	var control;
+	if( control = NTCOW_GetControl( controlArray ) ) {
+		if( _x || _y ) {
+			control.Click( _x, _y );
+		} else {
+			control.Click( );
+		}
+
+		if(!_skipdelay){
+			Delay( 500 + Random(0, 500) );
+		}
+		
+		return true;
+	}
+	
+	return false;
 }
 
 function NTCOW_BuildCowRooms() {
