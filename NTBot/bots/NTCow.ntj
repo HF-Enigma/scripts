@@ -23,15 +23,15 @@ function NTMain() {
 	
 	NTTMGR_TownManager();
 	
-	var _items = me.GetItems(NTC_UNIT_CUBE);
+	// var _items = me.GetItems(NTC_UNIT_CUBE);
 	
-	if(!_items || _items.length < 1)
-		return false;
+	// if(!_items || _items.length < 1)
+		// return false;
 		
-	var _cube = _items[0];
+	// var _cube = _items[0];
 	
-	SetUIState(0x01, true);
-	NTCOW_Transmute(_cube);
+	// SetUIState(0x01, true);
+	// NTCOW_Transmute(_cube);
 	
 	if(!NTCOW_CheckCowPortal()){	
 		if(!NTCOW_GetLeg()){
@@ -296,16 +296,12 @@ function NTCOW_OpenCowPortal(leg, tome){
 	
 	NTCU_MoveItemToCubeInt(_cube, leg);
 	NTCU_MoveItemToCubeInt(_cube, tome);
-	
-	if(!GetUIState(0x1A) && !NTCU_OpenCubeInt(cube))
-		return false;
-	
-	// if(!Transmute()){
+		
+	// if(!NTCOW_Transmute(_cube)){
 		// NTC_SendMsgToScript("NTBotGame.ntj", "Transmute()");
 		// return false;
 	// }
 	
-	// Transmute();
 	NTCOW_Transmute(_cube);
 	Delay(100000);
 	
@@ -324,7 +320,13 @@ function NTCOW_Transmute(cube)
 {	
 	if(!GetUIState(0x1A) && !NTCU_OpenCubeInt(cube))
 		return false;
-	var TransmuteButtonArray = [6,224,338,31,31];
+		
+	var msgFile;
+	var msg;
+	var path = "logs/transmute/" + me.charname + ".txt";
+	
+	NT_File(path, 1, "ready");
+	
 	for(var i=0;i<10;i++){
 		TransmuteButtonArray[0] = i;
 		var transmuteButton = NTCOW_GetControl(TransmuteButtonArray);

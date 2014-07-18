@@ -34,8 +34,8 @@
 // ##### Gloves ########################
 //[Name] == ChainGloves && [Quality] == unique && [Flag] != ethereal # [EnhancedDefense] >= 25 && [ItemMagicBonus] >= 40 // Chance Guards
 //[Name] == LightGauntlets && [Quality] == unique && [Flag] != ethereal # [EnhancedDefense] >= 30 // Magefist
-[Name] == BattleGauntlets && [Quality] == unique && [Flag] != ethereal // Magefist
-[Name] == CrusaderGauntlets && [Quality] == unique && [Flag] != ethereal// Magefist
+//[Name] == BattleGauntlets && [Quality] == unique && [Flag] != ethereal
+//[Name] == CrusaderGauntlets && [Quality] == unique && [Flag] != ethereal
 //[Name] == VampireboneGloves && [Quality] == unique && [Flag] != ethereal  // Dracul's Grasp
 //[Name] == OgreGauntlets && [Quality] == unique  // Steelrend
 
@@ -64,11 +64,11 @@
 [Name] == TotemicMask && [Quality] == unique && [Flag] != ethereal # [FCR] >= 10 // Jalal's Mane
 
 // ##### Paladin Shields ###############
-[Name] == GildedShield && [Quality] == unique // Herald Of Zakarum
-[Name] == ZakarumShield && [Quality] == unique // Dragonscale
+[Name] == GildedShield && [Quality] == unique # [ItemMagicBonus] >= 1 // Herald Of Zakarum
+//[Name] == ZakarumShield && [Quality] == unique // Dragonscale
 
 // ##### Necromancer Shrunken Heads ####
-[Name] == HierophantTrophy && [Quality] == unique && [Flag] != ethereal // Homunculus
+//[Name] == HierophantTrophy && [Quality] == unique && [Flag] != ethereal // Homunculus
 //[Name] == BloodlordSkull && [Quality] == unique && [Flag] != ethereal // Darkforce Spawn
 
 // ##### Axes ##########################
@@ -84,7 +84,7 @@
 //[Name] == Ballista && [Quality] == unique # [EnhancedDamage] >= 190 // Buriza-Do Kyanon
 
 // ##### Daggers #######################
-[Name] == BoneKnife && [Quality] == unique # [ItemAllSkills] == 2// Wizardspike
+[Name] == BoneKnife && [Quality] == unique # [ItemAllSkills] == 2 && [FireResist] >= 45// Wizardspike
 
 // ##### Polearms ######################
 [Name] == OgreAxe && [Quality] == unique && [Flag] == ethereal // Bonehew
