@@ -1,3 +1,6 @@
+var NTCOW_ShowOverheadStatus = true;
+var NTCOW_PickItemsInstantly = false;
+
 function NTMain(){
 	Include("libs/common/NTCommon.ntl");
 	NTC_IncludeLibs();
@@ -8,9 +11,12 @@ function NTMain(){
 
 	NTA_Initialize();
 	
-	Print(me.charname + " " + me.gamename);
-	
-	if(me.charname == TB_leader) {NT_File("logs/msg/"+me.charname+"-helpernextgame.txt", 1, me.gamename + "/" + me.gamepassword);}
+	if(me.charname == TB_leader) {
+		NT_File("logs/msg/"+me.charname+"-helpernextgame.txt", 1, me.gamename + "/" + me.gamepassword);
+		me.revealautomap = true;
+		me.showenemyonautomap = true;
+		me.showmissileonautomap = true;
+	}
 
 	if(!NTTM_CheckAct(1)){
 		NTC_SendMsgToScript("NTBotGame.ntj", "NTTM_CheckAct()");
@@ -44,15 +50,21 @@ function NTMain(){
 function NT_LeechFighter(){	
 	NTTM_TownMove("portalspot");
 	
-	var _starttick, _prev_areaid;
+	var _starttick, _prev_areaid, helper_joined_game = false;
 	
 	_prev_areaid = me.areaid;
 	
 	NTP_DoPrecast(true);	
-	while(_prev_areaid ==  me.areaid){
-		if(!NTC_InMyParty(TB_helper[0])){ return false; }
-		NTM_UsePortal("BluePortal", 131, TB_helper[0]);
+	while(_prev_areaid ==  me.areaid){	
 		Delay(200);
+		
+		if(!helper_joined_game){
+			helper_joined_game = NTC_InMyGame(TB_helper[0]);
+			continue;
+		}
+		
+		if(!NTC_InMyGame(TB_helper[0])){ return false; }
+		NTM_UsePortal("BluePortal", 131, TB_helper[0]);
 	}
 	
 	NTP_DoPrecast(true);
@@ -90,7 +102,7 @@ function NT_LeechHelper(){
 		var leg = NTCOW_GetLegUnit();
 		if(!leg){
 			NTC_SendMsgToScript("NTBotGame.ntj", "NTCOW_GetLegUnit()");
-			returnf false;
+			return false;
 		}
 		
 		NTM_MakeTP();
@@ -123,15 +135,21 @@ function NT_LeechHelper(){
 function NT_LeechPassively(){	
 	NTTM_TownMove("portalspot");
 	
-	var _starttick, _portal, _prev_areaid;
+	var _starttick, _prev_areaid, helper_joined_game = false;
 	
 	_prev_areaid = me.areaid;
 	
 	NTP_DoPrecast(true);	
-	while(_prev_areaid ==  me.areaid){
-		if(!NTC_InMyParty(TB_helper[0])){ return false; }
-		NTM_UsePortal("BluePortal", 131, TB_helper[0]);
+	while(_prev_areaid ==  me.areaid){	
 		Delay(200);
+		
+		if(!helper_joined_game){
+			helper_joined_game = NTC_InMyGame(TB_helper[0]);
+			continue;
+		}
+		
+		if(!NTC_InMyGame(TB_helper[0])){ return false; }
+		NTM_UsePortal("BluePortal", 131, TB_helper[0]);
 	}
 	
 	NTP_DoPrecast(true);
@@ -528,7 +546,7 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 							break;
 						case 2:
 						case 3:
-							if(0 && (_target.hp <= 0 || _target.mode == 0 || _target.mode == 12))
+							if(NTCOW_PickItemsInstantly && (_target.hp <= 0 || _target.mode == 0 || _target.mode == 12))
 								NTSI_PickItems();
 							_attackcount++;
 							break;

@@ -71,37 +71,35 @@ function NTMain(){
 	var helper_comes = false;
 	
 	if(NTConfig_PublicMode){
-		if(NTConfig_MakeHotTP){
-			NTM_MoveTo(me.areaid, 15118, 5073);
+		NTM_MoveTo(me.areaid, 15118, 5073);
+		
+		if(TB_FastClear) {
+			NT_File("logs/msg/"+me.charname+"-helpernextgame.txt", 1, me.gamename + "/" + me.gamepassword);
+			NTM_MakeTP();
+			NTA_ClearPosition(10, false, 1);
+			Delay(8000);
+			NT_ClearThroneInt();
+		}
+		else{
+			NTM_MakeTP(NTC_AREA_ID_ACT_5);
 			
-			if(TB_FastClear) {
-				NT_File("logs/msg/"+me.charname+"-helpernextgame.txt", 1, me.gamename + "/" + me.gamepassword);
-				NTM_MakeTP();
-				NTA_ClearPosition(10, false, 1);
-				Delay(8000);
-				NT_ClearThroneInt();
-			}
-			else{
-				NTM_MakeTP(NTC_AREA_ID_ACT_5);
-				
-				NT_File("logs/msg/"+me.charname+"-helpernextgame.txt", 1, me.gamename + "/" + me.gamepassword);
-				
-				while(!checkHelperMsg(TB_helper[0])){
-					if(NTC_InMyParty(TB_helper[0])){
-						helper_comes = true;
-					}
-					else if(helper_comes){
-						NTC_SendMsgToScript("NTBotGame.ntj", "Helper chicken");
-						return;
-					}
-					
-					Delay(500);
+			NT_File("logs/msg/"+me.charname+"-helpernextgame.txt", 1, me.gamename + "/" + me.gamepassword);
+			
+			while(!checkHelperMsg(TB_helper[0])){
+				if(NTC_InMyParty(TB_helper[0])){
+					helper_comes = true;
+				}
+				else if(helper_comes){
+					NTC_SendMsgToScript("NTBotGame.ntj", "Helper chicken");
+					return;
 				}
 				
-				NT_File("logs/msg/"+me.charname+"-leechernextgame.txt", 1, me.gamename + "/" + me.gamepassword);
-				
-				NTM_UsePortal("BluePortal", 131, me.charname);
+				Delay(500);
 			}
+			
+			NT_File("logs/msg/"+me.charname+"-leechernextgame.txt", 1, me.gamename + "/" + me.gamepassword);
+			
+			NTM_UsePortal("BluePortal", 131, me.charname);
 		}
 	}
 	

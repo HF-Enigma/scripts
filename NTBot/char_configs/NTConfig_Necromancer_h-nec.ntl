@@ -20,10 +20,10 @@ function NT_LoadConfig()
 	//------------------------------------------------------------------------------	
 	NTConfig_PublicMode = false;
 
-	NTConfig_Script.push("NTLeechCows.ntj");			// There are currently NO options for this script, still working on it
+	//NTConfig_Script.push("NTLeechCows.ntj");			// There are currently NO options for this script, still working on it
 		NTConfig_LeechCowType = 1;  					// 1 = Leech Fighter, 2 = Leech Helper, 3 = Passive Leecher
 
-	//NTConfig_Script.push("NTUniversalBaalLeech.ntj");
+	NTConfig_Script.push("NTUniversalBaalLeech.ntj");
 		NTConfig_LeechBaal = 1; 						// 1 = Leech Fighter(Walking), 2 = Leech Helper (Walking), 3 = Passive Leecher (Corner dunce).
 		NTConfig_FollowtoWorldStone = true;				// Go down to Baal in WS Chamber after waves?
 		
@@ -117,14 +117,15 @@ function NT_LoadConfig()
 	// Pickit (SnagIt) Configuration
 	//-----------------------------------------------------------------------------------
 
-	NTConfig_NIPFilePath.push("advance/normal.nip");
-	NTConfig_NIPFilePath.push("advance/poor.nip");
-	NTConfig_NIPFilePath.push("advance/set.nip");
-	NTConfig_NIPFilePath.push("advance/unique.nip");
-	NTConfig_NIPFilePath.push("advance/craft.nip");
+	// NTConfig_NIPFilePath.push("advance/normal.nip");
+	// NTConfig_NIPFilePath.push("advance/poor.nip");
+	// NTConfig_NIPFilePath.push("advance/set.nip");
+	// NTConfig_NIPFilePath.push("advance/unique.nip");
+	// NTConfig_NIPFilePath.push("advance/craft.nip");
+	NTConfig_NIPFilePath.push("advance/cow.nip");
 
 
-	NTConfig_SnagRange = 20;							// Radius to check for dropped items. 40 is a good number here
+	NTConfig_SnagRange = 40;							// Radius to check for dropped items. 40 is a good number here
 
 	//------------------------------------------------------------------------------
 	// Cubing configuration

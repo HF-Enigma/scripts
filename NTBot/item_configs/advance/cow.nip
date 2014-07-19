@@ -1,0 +1,72 @@
+// ##### Armor #########################
+[Name] == MagePlate && [Quality] == superior && [Flag] != ethereal # ([Sockets] == 0 || [Sockets] == 3) && [EnhancedDefense] == 15 // Enigma
+[Name] == ArchonPlate && [Quality] == superior && [Flag] == ethereal # [Sockets] == 0 && [EnhancedDefense] >= 14 // Enigma
+[Type] == armor && [Quality] <= superior && [Flag] == ethereal # [Defense] >= 900 && [Sockets] == 0 // Cubing
+
+// ##### Shields #######################
+[Name] == Monarch && [Quality] <= superior && [Flag] == ethereal # [Sockets] == 0 && [EnhancedDefense] >= 10 // New rune word
+
+// ##### Barbarian Helms ###############
+//[Type] == primalhelm && [Class] == elite && [Quality] <= superior && [Flag] != ethereal # [Sockets] == 3 && [SkillBattleOrders] == 3
+
+// ##### Paladin Shields ###############
+[Type] == auricshields && [Class] == elite && [Quality] <= superior && [Flag] == ethereal # [Sockets] == 0 && [FireResist] >= 40 
+
+// ##### Axes ##########################
+[Name] == BerserkerAxe && [Quality] == superior && [Flag] == ethereal # [Sockets] == 5 && [EnhancedDamage] >= 10 // Grief
+
+// ##### Bows ##########################
+[Name] == ShadowBow && [Quality] == superior # [Sockets] == 4 && [EnhancedDamage] == 15 // Faith
+
+// ##### Polearms ######################
+[Type] == polearm && [Class] == elite && [Quality] <= superior && [Flag] == ethereal # [Sockets] >= 4 && [Sockets] <= 5// Variable
+
+// ##### Runes #########################
+//[Name] == TalRune
+//[Name] == RalRune
+//[Name] == OrtRune
+//[Name] == ThulRune
+//[Name] == AmnRune
+//[Name] == SolRune
+//[Name] == ShaelRune
+//[Name] == DolRune
+//[Name] == HelRune
+//[Name] == IoRune
+//[Name] == LumRune
+//[Name] == KoRune
+//[Name] == FalRune
+//[Name] == LemRune
+[Name] == PulRune
+[Name] == UmRune
+[Name] == MalRune
+[Name] >= IstRune && [Name] <= ZodRune
+
+// ##### Gems ##########################
+//[Name] == FlawlessAmethyst
+//[Name] == FlawlessDiamond
+//[Name] == FlawlessEmerald
+//[Name] == FlawlessRuby
+//[Name] == FlawlessSapphire
+//[Name] == FlawlessSkull
+//[Name] == FlawlessTopaz
+//[Name] == PerfectAmethyst
+//[Name] == PerfectDiamond
+//[Name] == PerfectEmerald
+//[Name] == PerfectRuby
+//[Name] == PerfectSapphire
+//[Name] == PerfectSkull
+//[Name] == PerfectTopaz
+
+// ##### Potions #######################
+[Name] == GreaterHealingPotion
+[Name] == GreaterManaPotion
+
+[Name] == SuperHealingPotion
+[Name] == SuperManaPotion
+
+[Name] == RejuvenationPotion
+[Name] == FullRejuvenationPotion
+
+
+// ##### Gold ##########################
+[Type] == gold # [Gold] >= 5000

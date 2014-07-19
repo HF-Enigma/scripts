@@ -4,7 +4,6 @@
 
 var NTCOW_ShowOverheadStatus = true;
 var NTCOW_PickItemsInstantly = true;
-var NTCOW_TransmuteButton = [6,224,338,31,31];
 
 function NTMain() {
 	Include("libs/common/NTCommon.ntl");
