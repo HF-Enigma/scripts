@@ -73,13 +73,13 @@ function NT_LoadConfig()
 
 	//------------------------------------------------------------------------------
 	//------------------------------------------------------------------------------
-	NTConfig_FreeSpace = 6;		// Number of free columns. If less full columns are free stashing is set.
+	NTConfig_FreeSpace = 7;		// Number of free columns. If less full columns are free stashing is set.
 
 	// The numbers correspond to your inventory. Set 0 to keep whatever is there, 1 to stash it.
-	NTConfig_Columns[0] = [1,1,1,1,1,1,0,0,0,0];
-	NTConfig_Columns[1] = [1,1,1,1,1,1,0,0,0,0];
-	NTConfig_Columns[2] = [1,1,1,1,1,1,0,0,0,0];
-	NTConfig_Columns[3] = [1,1,1,1,1,1,0,0,0,0];
+	NTConfig_Columns[0] = [1,1,1,1,1,1,1,0,0,0];
+	NTConfig_Columns[1] = [1,1,1,1,1,1,1,0,0,0];
+	NTConfig_Columns[2] = [1,1,1,1,1,1,1,0,0,0];
+	NTConfig_Columns[3] = [1,1,1,1,1,1,1,0,0,0];
 
 	NTConfig_MinGoldToStash = 50000;	// Maximum gold amount carried before going to stash
 

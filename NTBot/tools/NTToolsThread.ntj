@@ -100,7 +100,7 @@ function NTMain()
 
 		if(_count++ > 10)
 		{
-			if(NTConfig_PublicMode)
+			if(1)//NTConfig_PublicMode
 			{
 				_player = GetPlayerUnit();
 

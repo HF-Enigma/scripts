@@ -3,8 +3,6 @@
 // =============================================================================
 const TB_difficulty = 3;		// Normal 1, Nightmare 2, Hell 3
 
-const TB_script = "TeamBaal";
-
 const TB_retryLeaderGame = 5;
 const TB_retryLeaderGameDelay = 1000;
 const TB_reEnterSameGame = false;		// must be set to false if you don't want bot to re enter same game for txt joining
@@ -13,13 +11,20 @@ const gameDoesNotExistDelay = 5;		// time to idle before trying if leader's game
 // =============================================================================
 // Leader, Helper and Leecher name settings, Only one leader allowed, Max number of Players <= 8
 // =============================================================================
-const TB_leader = "h-sor";
-const TB_helper = ["superman"];
-const TB_leecher = ["h-bo","h-nec"];
+// const TB_leader = "h-sor";
+// const TB_helper = ["superman"];
+// const TB_leecher = ["h-bo","h-nec"];
+
+const TB_leader = "h-nec";
+const TB_helper = ["h-sor"];
+const TB_leecher = ["h-bo"];
 
 // =============================================================================
 // Baal Leech settings
 // =============================================================================
+
+const TB_script = "TeamBaal";
+
 const TB_FastClear = true;
 
 const TB_BaalTransformClassid = [742, 743, 744, 745, 746];
@@ -33,43 +38,6 @@ const TB_Baal_prewavespot_helper_y = 5035;
 
 const TB_Baal_prewavespot_leecher_x = 15092;
 const TB_Baal_prewavespot_leecher_y = 5048;
-
-var TBGame = {
-	gameName:"",
-	gamePassword:"",
-	
-	gameStatus:"",
-	
-	playerStatus:[],
-	
-	playerCommand :[],
-	
-	readyForNextGame:false
-
-};
-
-function TB_msgHandler(set){
-	var msgFile;
-	var msg;
-	var path = "logs/msg/" + TB_script + ".txt";
-	
-	msgFile = FileOpen(path, 0); // open file in read only
-	
-	if(msgFile){
-		if(set){
-			msg = msgFile.ReadLine();
-		}
-		else{
-			Delay(1000);
-			// msgFile.WriteLine(jsonTxt);			
-		}
-		
-		msgFile.Close();
-	}
-	
-	return;
-
-}
 
 function TB_GenerateRandomGamename(_length)
 {
@@ -96,7 +64,6 @@ function TB_CheckTransformedMonster(monsterid, timeout){
 		Delay(200);
 	}
 	
-	//NTC_SendMsgToScript("NTBotGame.ntj", "Baal transform bugged");
 	return false;
 }
 

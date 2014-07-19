@@ -1187,3 +1187,22 @@ function NTCU_ClearCubeInt()
 
 	return _itemcounts;
 }
+
+function NTCU_GetItemsInCube()
+{
+	var _items, _cubeItems;
+	
+	_cubeItems = new Array();
+	_items = me.GetItems();
+
+	if(!_items)
+		return _cubeItems;
+
+	for(var i = 0; i < _items.length; i++)
+	{
+		if(_items[i].mode == 0 && _items[i].itemloc == 3)
+			_cubeItems.push(_items[i]);
+	}
+	
+	return _cubeItems;
+}

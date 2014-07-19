@@ -1,6 +1,3 @@
-var NTConfig_CastStatic;
-var NTConfig_SwitchCastSorc;
-
 function NT_LoadConfig()
 {
 	// Nip file check
@@ -9,20 +6,22 @@ function NT_LoadConfig()
 	//------------------------------------------------------------------------------
 	// TeamBoot configuration
 	//------------------------------------------------------------------------------
-	NTConfig_PublicMode = true;
-	NTConfig_Script.push("NTWorldstoneKeep.ntj");
+	//NTConfig_PublicMode = true;	
+	NTConfig_PublicMode = false;
+
+	NTConfig_Script.push("NTLeechCows.ntj");			// There are currently NO options for this script, still working on it
+		NTConfig_LeechCow = 2;  					// 1 = Leech Fighter, 2 = Leech Helper, 3 = Passive Leecher
+		
+	//NTConfig_Script.push("NTWorldstoneKeep.ntj");
 		NTConfig_CheckSoulKillers = false; 				// End script if Stygian Dolls are found in Throne
-		NTConfig_MakeHotTP = true; 						// Make a hot TP before clearing Throne
-		NTConfig_PreWaveTele = false; 					// Teleport before wave to keep merc close
 		NTConfig_Wave2PSNCheck = false; 				// Heal after wave 2 if poisoned		
 		NTConfig_KillBaal = true;
-		
-	// Cow
-	//NTConfig_Script.push("NTCow.ntj");
 	
 	//------------------------------------------------------------------------------
 	// Boss configuration
-	//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------		
+	// Cow
+	//NTConfig_Script.push("NTCow.ntj");
 	
 	//NTConfig_Script.push("NTPindleskin.ntj"); NTConfig_NihlathakExtension = false;
 	//NTConfig_Script.push("NTNihlathak.ntj"); NTConfig_PindleskinExtension = false;
@@ -159,7 +158,7 @@ function NT_LoadConfig()
 	//------------------------------------------------------------------------------
 	// Check self safe in field (NOT in town). Set to 0 if you won't
 	// 0x01 : Potion, 0x02 : Poison, 0x04 : Amplify Damage, 0x08 : Weaken, 0x10 : Iron Maiden, 0x20 : Decrepify, 0x40 : Lower Resist
-	NTConfig_CheckSelfSafe = 0x01|0x04|0x40;
+	NTConfig_CheckSelfSafe = 0x01;
 	// Check merc's safe in field (NOT in town). Set to 0 if you won't
 	// 0x01 : Death, 0x02 : Poison, 0x04 : Amplify Damage, 0x08 : Weaken, 0x10 : Iron Maiden, 0x20 : Decrepify, 0x40 : Lower Resist
 	NTConfig_CheckMercSafe = 0x01;
@@ -167,9 +166,9 @@ function NT_LoadConfig()
 	//------------------------------------------------------------------------------
 	// Class Specific Settings
 	//------------------------------------------------------------------------------
-	NTConfig_CastStatic = 55;							// Cast Static Field until monster's HP is less than (or equal to) this percent. (Set to 100 to disable.) (This will only static act bosses.)
+	NTConfig_CastStatic = 55;	// Cast Static Field until monster's HP is less than (or equal to) this percent. (Set to 100 to disable.)
 
-	NTConfig_StaticBossesOnly = true; 									// Only static bosses? (Add bosses below.) (Any missing GetLocaleString values can be found in D2NT\sdk\getlocalestring.txt)
+	NTConfig_StaticBossesOnly = true; 									// Only static bosses
 		NTConfig_StaticBossesSelect.push(GetLocaleString(3021)); 		// Andariel
 		NTConfig_StaticBossesSelect.push(GetLocaleString(3062)); 		// Mephisto
 		NTConfig_StaticBossesSelect.push(GetLocaleString(3060)); 		// Diablo

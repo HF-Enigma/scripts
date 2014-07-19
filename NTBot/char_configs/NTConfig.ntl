@@ -2,11 +2,10 @@ var NTConfig_LeechBaal;
 var NTConfig_FollowtoWorldStone;
 
 var NTConfig_CheckSoulKillers; 				// End script if Stygian Dolls are found in Throne
-var NTConfig_MakeHotTP; 						// Make a hot TP before clearing Throne
-var NTConfig_PreWaveTele; 					// Teleport before wave to keep merc close
 var NTConfig_Wave2PSNCheck; 				// Heal after wave 2 if poisoned		
 var NTConfig_KillBaal;
 
+var NTConfig_LeechCowType;
 
 // Class Specific Var's
 	var DebugAttacksInGame;

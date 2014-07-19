@@ -91,6 +91,9 @@
 [Name] == Thresher && [Quality] == unique && [Flag] == ethereal // The Reaper's Toll
 [Name] == CrypticAxe && [Quality] == unique && [Flag] == ethereal // Tomb Reaver
 
+// ##### Maces #########################
+[Name] == Scourge && [Quality] == unique # [ItemAllSkills] >= 2 // new dru weapon
+
 // ##### Scepters ######################
 //[Name] == MightyScepter && [Quality] == unique // Heaven's Light
 //[Name] == Caduceus && [Quality] == unique // Astreon's Iron Ward

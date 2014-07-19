@@ -22,17 +22,7 @@ function NTMain() {
 	}
 	
 	NTTMGR_TownManager();
-	
-	// var _items = me.GetItems(NTC_UNIT_CUBE);
-	
-	// if(!_items || _items.length < 1)
-		// return false;
 		
-	// var _cube = _items[0];
-	
-	// SetUIState(0x01, true);
-	// NTCOW_Transmute(_cube);
-	
 	if(!NTCOW_CheckCowPortal()){	
 		if(!NTCOW_GetLeg()){
 			NTC_SendMsgToScript("NTBotGame.ntj", "NTCOW_GetLeg()");
@@ -297,78 +287,39 @@ function NTCOW_OpenCowPortal(leg, tome){
 	NTCU_MoveItemToCubeInt(_cube, leg);
 	NTCU_MoveItemToCubeInt(_cube, tome);
 		
-	// if(!NTCOW_Transmute(_cube)){
-		// NTC_SendMsgToScript("NTBotGame.ntj", "Transmute()");
-		// return false;
-	// }
-	
-	NTCOW_Transmute(_cube);
-	Delay(100000);
-	
-	NTC_PingDelay(1000);
+	if(!NTCOW_Transmute(_cube)){
+		NTC_SendMsgToScript("NTBotGame.ntj", "Transmute()");
+		return false;
+	}
 	
 	NTCU_CloseCubeInt();
 	
-	Delay(500);
+	me.Cancel(1);	
 	
-	me.Cancel(1);
+	Delay(250);
 	
 	return true;
 }
 
 function NTCOW_Transmute(cube)
-{	
-	if(!GetUIState(0x1A) && !NTCU_OpenCubeInt(cube))
-		return false;
-		
+{		
 	var msgFile;
 	var msg;
 	var path = "logs/transmute/" + me.charname + ".txt";
 	
-	NT_File(path, 1, "ready");
+	msgFile = NT_File(path, 1, "ready");
+	if(msgFile){		
+		msgFile.Close();
+	}	
 	
-	for(var i=0;i<10;i++){
-		TransmuteButtonArray[0] = i;
-		var transmuteButton = NTCOW_GetControl(TransmuteButtonArray);
-		if(!transmuteButton){
-			Print("Transmute button not found.");
-			// return false;
-		}
-		else{
-			break;
-		}
+	Delay(3000);
+	
+	var cubeitems = NTCU_GetItemsInCube();
+	if(cubeitems.length > 0){
+		NTCU_ClearCubeInt();
+		return false;
 	}
-	
-	Delay(50000);
-	NTCOW_ClickControl(NTCOW_TransmuteButton);
 	return true;
-}
-
-function NTCOW_GetControl(controlArray) {
-	var retControl = 0;
-	if( controlArray && controlArray.length==5 ) {
-		retControl = GetControl( controlArray[0], controlArray[1], controlArray[2], controlArray[3], controlArray[4] );
-	}
-	return retControl;
-}
-
-function NTCOW_ClickControl(controlArray, _x, _y, _skipdelay) {
-	var control;
-	if( control = NTCOW_GetControl( controlArray ) ) {
-		if( _x || _y ) {
-			control.Click( _x, _y );
-		} else {
-			control.Click( );
-		}
-
-		if(!_skipdelay){
-			Delay( 500 + Random(0, 500) );
-		}
-		
-		return true;
-	}
-	
-	return false;
 }
 
 function NTCOW_BuildCowRooms() {
@@ -387,41 +338,30 @@ function NTCOW_ClearCowLevel() {
 
 	var room, result, myRoom,
 		rooms = NTCOW_BuildCowRooms();
+		
+	Print("Built cow rooms.");
+	Delay(5000);
 
 	function RoomSort(a, b) {
 		return GetDistance(myRoom[0], myRoom[1], a[0], a[1]) - GetDistance(myRoom[0], myRoom[1], b[0], b[1]);
 	}
 
+	myRoom = [me.x, me.y];
+	
 	while (rooms.length > 0) {
-		// get the first room + initialize myRoom var
-		if (!myRoom) {
-			room = GetRoom(me.x, me.y);
-		}
-
-		if (room) {
-			if (room instanceof Array) { // use previous room to calculate distance
-				myRoom = [room[0], room[1]];
-			} else { // create a new room to calculate distance (first room, done only once)
-				myRoom = [room.x * 5 + room.xsize / 2, room.y * 5 + room.ysize / 2];
-			}
-		}
-
 		rooms.sort(RoomSort);
+		
+		Print("Rooms sorted.");
+		
+		Delay(500);
+		
 		room = rooms.shift();
-
-		// result = Pather.getNearestWalkable(room[0], room[1], 10, 2);
-
-		// if (result) {
-			// Pather.moveTo(result[0], result[1], 3);
-
-			// if (!Attack.clear(30)) {
-				// return false;
-			// }
-		// }
 		
 		if(!NTCOW_MoveTo(me.areaid, room[0], room[1], 3, true)){
+			NTC_SendMsgToScript("NTBotGame.ntj", "Can not clear the room " + room[0] + " " + room[1]);
 			return false;
 		}
+		myRoom = room;
 	}
 
 	return true;
@@ -506,7 +446,7 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 							break;
 						case 2:
 						case 3:
-							if(NTCOW_PickItemsInstantly && (_target.hp <= 0 || _target.mode == 0 || _target.mode == 12))
+							if(0 && (_target.hp <= 0 || _target.mode == 0 || _target.mode == 12))
 								NTSI_PickItems();
 							_attackcount++;
 							break;
@@ -520,7 +460,7 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 		}
 	}
 
-	if(_attackcount > 2)
+	if(_attackcount > 2 && me.classid == NTC_CHAR_CLASS_NECROMANCER)
 	{
 		NTA_NecRaiseArmy();
 	}
