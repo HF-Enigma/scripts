@@ -196,11 +196,325 @@ function NTU_DropStash() {
 	for(var i = 0 ; i < _items.length ; i++) {
 		if(_items[i].mode == 0 && _items[i].itemloc == 4 && _items[i].classid != 549) {
 			NTT_DropItem(_items[i]);		
-         	}
+        }
 	}
 	me.Cancel(1);
-} 
+}
 
+function NTU_TranformIthItems() {
+	var _items = me.GetItems();
+
+	if(!_items)
+		return false;
+
+	NTTM_TownMove("malah");
+	
+	var _npc;
+	
+	for(var i = 0; i < 10; i++)
+	{
+		_npc = NTC_FindUnit(NTC_UNIT_NPC, NTC_NPC_ID_MALAH);
+		
+		if(_npc)
+			break;
+	}
+	
+	if(!_npc) {return false;}
+
+	for(var i = 0 ; i < _items.length ; i++) {
+		if(_items[i].mode == 0 && _items[i].itemloc == 0 && NTConfig_Columns[_items[i].y][_items[i].x] > 0 && _items[i].GetStat(363)) {
+			NTU_TranformIthItem(_items[i], _npc);
+			Delay(100);
+			NTU_ClearInventory(_npc);
+			Print("Cleared Inventory.");
+			Delay(100);
+        }
+	}
+	
+	me.Cancel(1);
+	
+	return true;
+}
+
+function NTU_TranformIthItem(_item, _npc) {
+	if(!_item || !_npc)
+		return false;		
+		
+	Print("Transfrom item " + _item.classid);
+	
+	var idScroll = NTU_GetIdScroll();
+	if(!idScroll)
+		idScroll = NTU_BuyIdScroll(_npc);
+	
+	var _items = me.GetItems(NTC_UNIT_CUBE);
+	
+	if(!_items || _items.length < 1)
+		return false;
+		
+	var _cube = _items[0];
+	
+	if(!_cube){
+		NTC_SendMsgToScript("NTBotGame.ntj", "No cube found.");
+		return false;
+	}
+	
+	// open inventory
+	SetUIState(0x01, true);
+	
+	// clear cube
+	var cubeItems = NTCU_GetItemsInCube();
+	if(cubeItems && cubeItems.length > 0)
+	{
+		if(!NTCU_OpenCubeInt(_items[0]))
+			return false;
+
+		if(NTU_ClearCube() < 1){
+			NTC_SendMsgToScript("NTBotGame.ntj", "NTU_ClearCube()");
+			return false;
+		}
+
+		NTCU_CloseCubeInt();
+	}
+	
+	NTCU_OpenCubeInt(_cube);
+	
+	NTCU_MoveItemToCubeInt(_cube, _item);
+	NTCU_MoveItemToCubeInt(_cube, idScroll);
+		
+	if(!NTU_Transmute(_cube)){
+		NTC_SendMsgToScript("NTBotGame.ntj", "Transmute()");
+		return false;
+	}
+	
+	NTU_ClearCube();
+	
+	NTCU_CloseCubeInt();
+	
+	me.Cancel(1);	
+	
+	Delay(250);
+	
+	return true;
+}
+
+function NTU_ClearCube()
+{
+	var i;
+	var _itemcounts = 0;
+	var _items = me.GetItems();
+
+	if(!_items)
+		return 0;
+
+	for(i = 0 ; i < _items.length ; i++)
+	{
+		if(_items[i].mode == 0 && _items[i].itemloc == 3)
+		{
+			if(!NTU_MoveItemToInventory(_items[i]))
+				return _itemcounts;
+
+			_itemcounts++;
+		}
+	}
+
+	return _itemcounts;
+}
+
+function NTU_Transmute(cube)
+{
+	var originalItems = NTCU_GetItemsInCube();
+	var originalItemsCount;
+	if(originalItems && originalItems.length > 0){
+		originalItemsCount = originalItems.length;
+	}
+	else{
+		return false;
+	}
+	
+	var msgFile;
+	var msg;
+	var path = "logs/transmute/" + me.charname + ".txt";
+	
+	msgFile = NT_File(path, 1, "ready");
+	if(msgFile){		
+		msgFile.Close();
+	}
+	
+	Delay(1500);
+	
+	var cubeitems = NTCU_GetItemsInCube();
+	if(cubeitems && cubeitems.length == originalItemsCount){
+		NTU_ClearCube();
+		return false;
+	}
+	return true;
+}
+
+function NTU_ClearInventory(_npc)
+{
+	var _retval = true;
+	var _ignorestring = " ";
+	var _items;
+
+	_items = me.GetItems();
+
+	if(!_items)
+		return false;
+
+	if(_npc)
+	{
+		if(NTT_DoInteract(_npc))
+		{
+			if(!NTT_DoTrade(_npc))
+			{
+				return false;
+			}		
+		}
+	}
+	
+	for(var i = 0 ; i < _items.length ; i++)
+	{
+		var itemClassid = _items[i].classid;
+		if(_items[i].mode == 0 && _items[i].itemloc == 0)
+		{
+			if(NTConfig_Columns[_items[i].y][_items[i].x] > 0)
+			{
+				if(_ignorestring.indexOf(_items[i].code) != -1 || NTSI_CheckItem(_items[i]) > 0)
+					continue;
+
+				if(NTT_ShopItem(_items[i], _npc, 1)){
+					Print("Sold item " + itemClassid);
+					Delay(100);
+				}
+				else{
+					_retval = false;
+				}
+			}
+		}
+	}
+
+	me.Cancel(1);
+
+	return _retval;
+}
+
+
+function NTU_MoveItemToInventory(item)
+{
+	var i, j, x, y, m;
+	var _items;
+	var itemX = item.xsize, itemY = item.ysize;
+	var InventoryHeight = 4; var InventoryWidth = 10;
+
+	_invspace = new Array(InventoryHeight);
+	_invspace[0] = new Array(InventoryWidth);
+	_invspace[1] = new Array(InventoryWidth);
+	_invspace[2] = new Array(InventoryWidth);
+	_invspace[3] = new Array(InventoryWidth);
+
+	for(y = 0 ; y < InventoryHeight ; y++)
+	{
+		for(x = 0 ; x < InventoryWidth ; x++)
+			_invspace[y][x] = 0;
+	}
+
+	_items = me.GetItems();
+
+	if(!_items)
+		return false;
+
+	for(i = 0 ; i < _items.length ; i++)
+	{
+		if(_items[i].mode == 0 && _items[i].itemloc == 0)
+		{
+			for(y = 0 ; y < _items[i].ysize ; y++)
+			{
+				for(x = 0 ; x < _items[i].xsize ; x++)
+					_invspace[y+_items[i].y][x+_items[i].x] = 1;
+			}
+		}
+	}
+
+	for(i = 0 ; i < InventoryHeight+1-itemY ; i++)
+	{
+		invloop2:
+
+		for(j = 0 ; j < InventoryWidth+1-itemX ; j++)
+		{
+			for(y = 0 ; y < itemY ; y++)
+			{
+				for(x = 0 ; x < itemX ; x++)
+				{
+					if(_invspace[i+y][j+x])
+						continue invloop2;
+				}
+			}
+
+			if(!NTC_ItemToCursor(item))
+					return false;
+
+			for(m = 0 ; m < 80 ; m++)
+			{
+				if((m % 40) == 0)
+					me.ClickItem(0, j, i, 0);
+
+				NTC_Delay(100);
+
+				if(!me.itemoncursor)
+					break;
+			}
+
+			if(m >= 80)
+				return false;
+
+			NTC_PingDelay(200);
+
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+function NTU_BuyIdScroll(_npc){
+	var _idScroll;
+	
+	if(_npc)
+	{
+		if(NTT_DoInteract(_npc))
+		{
+			if(NTT_DoTrade(_npc))
+			{
+				NTT_FillTome(_npc, 1);
+				NTT_FillTome(_npc, 0);
+				NTT_BuyScrolls(_npc, 0, 1);
+				
+				_idScroll = NTU_GetIdScroll();
+				
+				if(!_idScroll)
+				{
+					NTC_SendMsgToScript("NTBotGame.ntj", "NTU_BuyIdScroll()");
+					return _portal;
+				}
+			}		
+		}
+		
+		me.Cancel(1);
+	}
+	
+	return _idScroll;
+}
+
+function NTU_GetIdScroll() {
+	var _idScrolls = me.GetItems(530);
+
+	if (_idScrolls && _idScrolls.length > 0)
+	{
+		return _idScrolls[0];
+	}
+	
+	return false;
+}
 
 function NTU_DevelopementTools()
 {

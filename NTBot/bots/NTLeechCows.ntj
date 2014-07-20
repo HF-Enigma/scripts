@@ -94,12 +94,14 @@ function NT_LeechFighter(){
 
 function NT_LeechHelper(){
 	if(!NTCOW_CheckCowPortal()){	
+		NTU_ClearCube();
+		NTT_ClearInventory();
+		
 		if(!NTCOW_GetLeg()){
 			NTC_SendMsgToScript("NTBotGame.ntj", "NTCOW_GetLeg()");
 			return false;
 		}
 		
-		var leg = NTCOW_GetLegUnit();
 		if(!leg){
 			NTC_SendMsgToScript("NTBotGame.ntj", "NTCOW_GetLegUnit()");
 			return false;
@@ -375,8 +377,8 @@ function NTCOW_OpenCowPortal(leg, tome){
 		if(!NTCU_OpenCubeInt(_items[0]))
 			return false;
 
-		if(NTCU_ClearCubeInt() < 1){
-			NTC_SendMsgToScript("NTBotGame.ntj", "NTCU_ClearCubeInt()");
+		if(NTU_ClearCube() < 1){
+			NTC_SendMsgToScript("NTBotGame.ntj", "NTU_ClearCube()");
 			return false;
 		}
 
@@ -413,11 +415,11 @@ function NTCOW_Transmute(cube)
 		msgFile.Close();
 	}	
 	
-	Delay(3000);
+	Delay(1500);
 	
 	var cubeitems = NTCU_GetItemsInCube();
 	if(cubeitems.length > 0){
-		NTCU_ClearCubeInt();
+		NTU_ClearCube();
 		return false;
 	}
 	return true;
@@ -459,7 +461,8 @@ function NTCOW_ClearCowLevel() {
 		room = rooms.shift();
 		
 		if(!NTCOW_MoveTo(me.areaid, room[0], room[1], 3, true)){
-			return false;
+			// return false;
+			continue;
 		}
 		myRoom = room;
 	}

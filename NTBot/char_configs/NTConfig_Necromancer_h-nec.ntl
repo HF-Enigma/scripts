@@ -117,12 +117,12 @@ function NT_LoadConfig()
 	// Pickit (SnagIt) Configuration
 	//-----------------------------------------------------------------------------------
 
-	// NTConfig_NIPFilePath.push("advance/normal.nip");
-	// NTConfig_NIPFilePath.push("advance/poor.nip");
-	// NTConfig_NIPFilePath.push("advance/set.nip");
-	// NTConfig_NIPFilePath.push("advance/unique.nip");
-	// NTConfig_NIPFilePath.push("advance/craft.nip");
-	NTConfig_NIPFilePath.push("advance/cow.nip");
+	NTConfig_NIPFilePath.push("advance/normal.nip");
+	NTConfig_NIPFilePath.push("advance/poor.nip");
+	NTConfig_NIPFilePath.push("advance/set.nip");
+	NTConfig_NIPFilePath.push("advance/unique.nip");
+	NTConfig_NIPFilePath.push("advance/craft.nip");
+	// NTConfig_NIPFilePath.push("advance/cow.nip");
 
 
 	NTConfig_SnagRange = 40;							// Radius to check for dropped items. 40 is a good number here

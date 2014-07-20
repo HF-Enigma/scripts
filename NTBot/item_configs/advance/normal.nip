@@ -4,7 +4,7 @@
 [Type] == armor && [Quality] <= superior && [Flag] == ethereal # [Defense] >= 900 && [Sockets] == 0 // Cubing
 
 // ##### Shields #######################
-[Name] == Monarch && [Quality] <= superior && [Flag] != ethereal # [Sockets] == 4 // Phoenix or Spirit
+//[Name] == Monarch && [Quality] <= superior && [Flag] != ethereal # [Sockets] == 4 // Phoenix or Spirit
 [Name] == Monarch && [Quality] <= superior && [Flag] == ethereal # [Sockets] == 0 && [EnhancedDefense] >= 10 // New rune word
 
 // ##### Barbarian Helms ###############

@@ -99,7 +99,7 @@
 //[Name] == Caduceus && [Quality] == unique // Astreon's Iron Ward
 
 // ##### Spears ########################
-[Name] == Fuscina && [Quality] == unique && [Flag] == ethereal // Kelpie Snare
+//[Name] == Fuscina && [Quality] == unique && [Flag] == ethereal // Kelpie Snare
 [Name] == Yari && [Quality] == unique && [Flag] == ethereal // Hone Sundan
 
 // ##### Staves ########################

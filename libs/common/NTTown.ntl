@@ -1173,8 +1173,9 @@ function NTT_ShopItem(item, npc, mode)
 		{
 			for(var i = 0 ; i < 40 ; i++)
 			{
-				if((i % 20) == 0)
+				if((i % 20) == 0){
 					me.ClickItem(0, 8, 6, 1);
+				}
 
 				NTC_Delay(100);
 
@@ -1185,7 +1186,7 @@ function NTT_ShopItem(item, npc, mode)
 				}
 			}
 		}
-        }
+    }
 
 	return false;
 }
