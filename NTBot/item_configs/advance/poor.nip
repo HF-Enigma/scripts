@@ -17,8 +17,8 @@
 [Type] == circlet && [Quality] == rare && [Flag] != ethereal # [ItemAddClassSkills] >= 2 && ([Strength] >= 5 || [Dexterity] >= 5 || [FireResist] >= 10) && ([FRW] >= 30 || [FCR] >= 20)
 
 // ##### Rings #########################
-[Type] == ring && [Quality] == rare # [FCR] >= 10 && ([FireResist]+[LightResist]+[ColdResist]+[PoisonResist] >= 30 || [Strength]+[Dexterity] >= 15)
-[Type] == ring && [Quality] == rare # ([FCR] >= 10 || [Strength]+[Dexterity] >= 15 || [FireResist]+[LightResist]+[ColdResist]+[PoisonResist] >= 20) && ([ItemAllSkills] >= 1 || [ItemAddClassSkills] >= 1)
+[Type] == ring && [Quality] == rare # [FCR] >= 10 && ([FireResist]+[LightResist]+[ColdResist]+[PoisonResist] >= 25 || [Strength]+[Dexterity] >= 15)
+[Type] == ring && [Quality] == rare # ([FCR] >= 10 || [Strength]+[Dexterity] >= 10 || [FireResist]+[LightResist]+[ColdResist]+[PoisonResist] >= 15) && ([ItemAllSkills] >= 1 || [ItemAddClassSkills] >= 1)
 
 // ##### Amulets #######################
 [Type] == amulet && [Quality] == rare # [ItemAddClassSkills] >= 1 && [ItemAllSkills] >= 1 && ([FCR] >= 7 || [Strength]+[Dexterity] >= 10 || [FireResist]+[LightResist]+[ColdResist]+[PoisonResist] >= 20)

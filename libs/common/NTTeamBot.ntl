@@ -28,7 +28,7 @@ const TB_script = "TeamBaal";
 const TB_FastClear = true;
 
 const TB_BaalTransformClassid = [742, 743, 744, 745, 746];
-const TB_BaalTransformTimeout = [22000, 5000, 5000, 5000, 10000];
+const TB_BaalTransformTimeout = [22000, 5000, 5000, 5000, 5000];
 
 const TB_Baal_prewavespot_fighter_x = 15092;
 const TB_Baal_prewavespot_fighter_y = 5043;

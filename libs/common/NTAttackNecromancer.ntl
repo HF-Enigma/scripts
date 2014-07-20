@@ -136,7 +136,7 @@ function NTA_IsValidCorpse(unit, revive) {
 	}
 	
 	// CheckCollision(me, unit, 4) &&
-	if (unit.hp <= 0 && (unit.mode === 0 || unit.mode === 12) && GetDistance(me, unit) < 25 &&
+	if (unit.hp <= 0 && (unit.mode === 0 || unit.mode === 12) && GetDistance(me, unit) < 25 && CheckCollision(me, unit, 4) &&
 		!unit.GetState(1) && // freeze
 		!unit.GetState(96) && // revive
 		!unit.GetState(99) && // redeemed
@@ -159,14 +159,14 @@ function NTA_ExplodeCorpses(target) {
 		return false;
 	}
 	
-	var corpseList = [],
+	var corpseList = new Array(),
 		exploded = 0,
 		range = Math.floor((NTC_GetSkillLevel(NTConfig_ExplodeCorpses) + 7) / 3),
 		corpse = NTC_FindUnit(NTC_UNIT_MONSTER);
 		
 	if (corpse) {
 		do {
-			if (GetDistance(corpse, target) <= range && GetDistance(corpse, me) <= 25 && NTA_IsValidCorpse(corpse))	{
+			if (GetDistance(corpse, target) <= range && NTA_IsValidCorpse(corpse))	{
 				corpseList.push(corpse);
 				
 				if (corpseList.length >= 2) { // Explode 2 corpses per cycle
@@ -270,11 +270,11 @@ function NTA_NecRaiseArmy(range) {
 	
 	for (i = 0; i < 1; i += 1) {
 		corpse = NTC_FindUnit(NTC_UNIT_MONSTER);		
-		corpseList = [];
+		corpseList = new Array();
 		
 		if (corpse) {
 			do {
-				if (GetDistance(me, corpse) <= range && NTA_IsValidCorpse(corpse))	{
+				if (NTA_IsValidCorpse(corpse))	{
 					corpseList.push(corpse);
 				}
 			} while (corpse.GetNext());

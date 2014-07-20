@@ -26,7 +26,6 @@
 //[Name] == BalrogSkin && [Quality] == unique # [ItemAllSkills] >= 2 // Arkaine's Valor
 //[Name] == WireFleece && [Quality] == unique && [Flag] == ethereal // The Gladiator's Bane
 //[Name] == KrakenShell && [Quality] == unique  // Leviathan
-//[Name] == SacredArmor && [Quality] == unique # [Strength] >= 1 // Tyrael's Might
 
 // ##### Shields #######################
 //[Name] == Monarch && [Quality] == unique // Stormshield
@@ -179,6 +178,8 @@
 [Name] == hellforgeplate && [Quality] == unique
 [Name] == lacqueredplate && [Quality] == unique
 
+[Name] == SacredArmor && [Quality] == unique # [ItemAllSkills] >= 1 // Tyrael's Might
+
 // belt
 [Name] == colossusgirdle && [Quality] == unique
 [Name] == trollbelt && [Quality] == unique
@@ -196,6 +197,8 @@
 [Name] == mythicalsword && [Quality] == unique
 
 [Name] == greatpoleaxe && [Quality] == unique
+
+[Name] == wardbow && [Quality] == unique # [ItemAllSkills] == 2
 
 // shield
 [Name] == sacredtarge && [Quality] == unique
