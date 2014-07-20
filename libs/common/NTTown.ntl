@@ -661,6 +661,7 @@ function NTT_ManageStash(invitem)
 										NTC_PingDelay(200);
 									}
 
+									NTC_SendLogToOOG(NTC_LOG_ITEM, "Kept " + NTC_ItemQualityToMGRColor[_items[i].quality] + _items[i].name.split("\n")[0] + ";" + _items[i].itemdesc);
 									_itemdone = true;
 								}
 							}
@@ -1247,7 +1248,7 @@ function NTT_CheckUnids()
 
 	for(var i = 0 ; i < _items.length ; i++)
 	{
-		if(_items[i].mode == 0 && _items[i].itemloc == 0 && !(_items[i].itemflag&0x10))
+		if(_items[i].mode == 0 && (_items[i].itemloc == 0 || _items[i].itemloc == 3 )&& !(_items[i].itemflag&0x10))
 			_unidcount++;
 	}
 
