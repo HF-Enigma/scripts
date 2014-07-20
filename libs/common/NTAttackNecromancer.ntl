@@ -54,7 +54,6 @@ function NTA_NecromancerAttackInt(target, firstorder) {
 		Delay(100);
 		
 		NTA_NecRaiseArmy();
-		Delay(100);
 		return 3;
 	}
 	
@@ -79,7 +78,6 @@ function NTA_NecromancerAttackInt(target, firstorder) {
 		Delay(100);	
 		
 		NTA_NecRaiseArmy();
-		Delay(100);
 		return 3;
 	}
 	
@@ -118,7 +116,7 @@ function NTA_IsCursable(target) {
 }
 
 function NTA_IsValidCorpse(unit, revive) {
-	if (unit == null) {
+	if (!unit) {
 		return false;
 	}
 	
@@ -153,37 +151,50 @@ function NTA_IsValidCorpse(unit, revive) {
 }
 
 function NTA_ExplodeCorpses(target) {
-	if ((NTConfig_ExplodeCorpses === 0) || target.mode === 0 || target.mode === 12) {
+	if(!target){
+		return false;
+	}
+	
+	if ((NTConfig_ExplodeCorpses === 0) || target.hp <= 0 || target.mode === 0 || target.mode === 12) {
 		return false;
 	}
 	
 	var corpseList = [],
 		exploded = 0,
-		range = Math.floor((NTC_GetSkillLevel(NTConfig_ExplodeCorpses) + 7) / 3.0),
+		range = Math.floor((NTC_GetSkillLevel(NTConfig_ExplodeCorpses) + 7) / 3),
 		corpse = NTC_FindUnit(NTC_UNIT_MONSTER);
 		
 	if (corpse) {
 		do {
-			if (GetDistance(corpse, target) <= 12 && NTA_IsValidCorpse(corpse))	{
-				//Print("ÿc1Exploding " + corpse.classid + " " + corpse.name);
+			if (GetDistance(corpse, target) <= range && GetDistance(corpse, me) <= 25 && NTA_IsValidCorpse(corpse))	{
+				corpseList.push(corpse);
 				
-				if (NTC_CastSkill(NTConfig_ExplodeCorpses, NTC_HAND_RIGHT, corpse)) {
-					exploded++;
-					Delay(120);
-				}
-				
-				if (exploded >= 2) {
+				if (corpseList.length >= 2) { // Explode 2 corpses per cycle
 					break;
 				}
 			}
 		} while (corpse.GetNext());
 	}
 	
-	if(exploded>0){
-		Print("ÿc1NTA_ExplodeCorpses [exploded] " + exploded + ", [target.mode] " + target.mode);
+	while (corpseList.length > 0) {
+		corpse = corpseList.shift();
+		
+		if (corpse && NTC_CastSkill(NTConfig_ExplodeCorpses, NTC_HAND_RIGHT, corpse)) {		
+			//Print("ÿc1Exploded " + corpse.classid + " " + corpse.name);
+			exploded++;
+			Delay(150);
+		}
+		
+		if (exploded >= 2) {
+			break;
+		}
 	}
 	
-	return target.mode == 12 || target.mode == 0;
+	if(exploded>0){
+		Print("ÿc1NTA_ExplodeCorpses [exploded] " + exploded + ", [target.hp] " + target.hp);
+	}
+	
+	return target.hp <= 0 || target.mode == 12 || target.mode == 0;
 }
 
 
@@ -220,7 +231,7 @@ function NTA_GetMinionCount(type) { // 0 - skeleton, 1 - mage, 2 - revive
 }
 
 function NTA_NecRaiseArmy(range) {
-	var i, tick, count, countOriginal, corpse, corpseList, skill, maxSkeletons, maxMages, maxRevives;
+	var i, count, countOriginal, corpse, corpseList, skill, maxSkeletons, maxMages, maxRevives;
 	count = [0, 0, 0];
 	
 	if (arguments.length < 2) {
@@ -258,34 +269,40 @@ function NTA_NecRaiseArmy(range) {
 		return true;
 	
 	for (i = 0; i < 1; i += 1) {
-		corpse = NTC_FindUnit(NTC_UNIT_MONSTER);
+		corpse = NTC_FindUnit(NTC_UNIT_MONSTER);		
+		corpseList = [];
+		
 		if (corpse) {
 			do {
-				if ( corpse != null && GetDistance(me, corpse) < range ) {
-					if(NTA_IsValidCorpse(corpse)){
-						if (count[0] < maxSkeletons) {						
-							if (NTC_CastSkill(MWS_RAISE_SKELETON, NTC_HAND_RIGHT, corpse)) {
-								count[0]++;
-							}
-						}
-						else if (count[1] < maxMages) {						
-							if (NTC_CastSkill(MWS_RAISE_SKELETAL_MAGE, NTC_HAND_RIGHT, corpse)) {
-								count[1]++;
-							}
-						}
+				if (GetDistance(me, corpse) <= range && NTA_IsValidCorpse(corpse))	{
+					corpseList.push(corpse);
+				}
+			} while (corpse.GetNext());
+		}	
+		
+		while (corpseList.length > 0) {
+			corpse = corpseList.shift();
+			
+			if (corpse) {
+				if (count[0] < maxSkeletons) {						
+					if (NTC_CastSkill(MWS_RAISE_SKELETON, NTC_HAND_RIGHT, corpse)) {
+						count[0]++;
 					}
-					
-					if(NTA_IsValidCorpse(corpse,true)){
-						if (count[2] < maxRevives) {						
-							if (!NTC_CastSkill(MWS_REVIVE, NTC_HAND_RIGHT, corpse)) {
-								count[2]++;
-							}
+				}
+				else if (count[1] < maxMages) {						
+					if (NTC_CastSkill(MWS_RAISE_SKELETAL_MAGE, NTC_HAND_RIGHT, corpse)) {
+						count[1]++;
+					}
+				}				
+				else if(count[2] < maxRevives){
+					if (NTA_IsValidCorpse(corpse, true)) {						
+						if (NTC_CastSkill(MWS_REVIVE, NTC_HAND_RIGHT, corpse)) {
+							count[2]++;
 						}
 					}
 				}
-			} while (corpse.GetNext());
+			}
 		}
-		
 		Delay(100);
 	}
 	
