@@ -553,7 +553,7 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 				if(_target)
 				{
 					if(_firstAttack){
-						NTC_CastSkill(78, NTC_HAND_RIGHT, target); // Bone wall
+						NTC_CastSkill(78, NTC_HAND_RIGHT, _target); // Bone wall
 						Delay(40);
 						_firstAttack = false;
 					}
