@@ -235,10 +235,20 @@ function NTSI_PickUpItemInt(snagitem)
 
 	_classid = snagitem.classid;
 
-	for(i = 0 ; i < 40 ; i++)
+	for(i = 0 ; i <= 40 ; i++)
 	{
 		if((i % 10) == 0 && (snagitem.mode == 3 || snagitem.mode == 5))
 		{
+			if(i==20){
+				NTM_MoveTo(snagitem.areaid, snagitem.x+2, snagitem.y);
+			}
+			else if(i==30){
+				NTM_MoveTo(snagitem.areaid, snagitem.x, snagitem.y-2);
+			}
+			else if(i==40){
+				NTM_MoveTo(snagitem.areaid, snagitem.x-2, snagitem.y);
+			}
+			
 			var distance = GetDistance(me, snagitem);
 			if(distance>3 && NTC_GetSkillLevel(43)>=1 && (snagitem.itemtype == 4 || (snagitem.itemtype >= 76 && snagitem.itemtype <= 78)) && GetDistance(me, snagitem) <= 16.6)
 			{

@@ -495,6 +495,7 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 	var _target;
 	var _distance, _mingid, _mindistance;
 	var _result;
+	var _firstAttack = true;
 	
 	switch(arguments.length)
 	{
@@ -536,7 +537,7 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 							{
 								_mingid = _target.gid;
 								_mindistance = _distance;
-								if(_mindistance <= 20){
+								if(_mindistance <= 10){
 									break;
 								}
 							}
@@ -551,6 +552,12 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 
 				if(_target)
 				{
+					if(_firstAttack){
+						NTC_CastSkill(78, NTC_HAND_RIGHT, target); // Bone wall
+						Delay(40);
+						_firstAttack = false;
+					}
+					
 					_result = NTA_Attack(_target, (_attackcount % 30) == 0);
 
 					switch(_result)

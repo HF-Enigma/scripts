@@ -27,7 +27,7 @@ function NTA_NecromancerAttackInt(target, firstorder) {
 				return 2;
 			}			
 			
-			Delay(100);
+			Delay(40);
 			return 3;	
 		}
 		
@@ -201,7 +201,7 @@ function NTA_ExplodeCorpses(target) {
 			if (GetDistance(corpse, target) <= NTConfig_ExplodeCorpsesRange && NTA_IsValidCorpse(corpse))	{
 				corpseList.push(corpse);
 				
-				if (corpseList.length >= 4) { // Explode 2 corpses per cycle
+				if (corpseList.length >= 5) { // Explode 2 corpses per cycle
 					break;
 				}
 			}
@@ -214,7 +214,6 @@ function NTA_ExplodeCorpses(target) {
 		if (corpse && NTC_CastSkill(NTConfig_ExplodeCorpses, NTC_HAND_RIGHT, corpse)) {		
 			//Print("ÿc1Exploded " + corpse.classid + " " + corpse.name);
 			exploded++;
-			Delay(40);
 		}
 		
 		if (exploded >= 2) {
