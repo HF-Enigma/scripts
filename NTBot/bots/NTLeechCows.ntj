@@ -472,9 +472,7 @@ function NTCOW_ClearCowLevel() {
 		
 		Print("Rooms sorted.");
 		
-		RunGC();
-		
-		Delay(100);
+		Delay(40);
 		
 		room = rooms.shift();
 		
