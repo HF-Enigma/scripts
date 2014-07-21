@@ -13,7 +13,32 @@ function NTA_NecromancerAttackPatternInt() {
 function NTA_NecromancerAttackInt(target, firstorder) {
 	if(!target) {return 1;}
 	
-	if((target.classid >= 742))
+	if(me.areaid == 39){
+		if(!target.GetState(9)){		
+			if (GetDistance(me, target) > 25 || !CheckCollision(me, target, 4)) {
+				var _pos = me.GetOptimalAttackPos(target.areaid, target.x, target.y, 25, 4);
+
+				if (_pos) {
+					NTM_MoveTo(target.areaid, _pos[0], _pos[1], 0);
+				}
+			}
+
+			if (!NTC_CastSkill(66, NTC_HAND_RIGHT, target)) {
+				return 2;
+			}			
+			
+			Delay(100);
+			return 3;	
+		}
+		
+		if(!NTA_ExplodeCorpses(target)) {
+			return 2;
+		}
+		
+		return 3;	
+	}
+	
+	if((target.classid >= 742 && target.classid <= 746))
 	{
 		if (GetDistance(me, target) > 13) {
 			var _pos = me.GetOptimalAttackPos(target.areaid, target.x, target.y, 12, 1);
@@ -51,9 +76,8 @@ function NTA_NecromancerAttackInt(target, firstorder) {
 			return 2;
 		}
 		
-		Delay(100);
+		Delay(40);
 		
-		NTA_NecRaiseArmy();
 		return 3;
 	}
 	
@@ -75,17 +99,14 @@ function NTA_NecromancerAttackInt(target, firstorder) {
 			return 2;
 		}
 		
-		Delay(100);	
+		Delay(40);	
 		
-		NTA_NecRaiseArmy();
 		return 3;
 	}
 	
-	NTA_ExplodeCorpses(target);	
-	Delay(200);
-	
-	NTA_NecRaiseArmy();
-	Delay(200);
+	if(NTA_ExplodeCorpses(target)) {
+			return 3;
+	}
 	
 	return 2;
 }
@@ -120,18 +141,30 @@ function NTA_IsValidCorpse(unit, revive) {
 		return false;
 	}
 	
+	if(unit.classid == 391 || unit.classid == 773){	
+		if (unit.hp <= 0 && (unit.mode === 0 || unit.mode === 12) && GetDistance(me, unit) < 25 && CheckCollision(me, unit, 4) &&
+			!unit.GetState(1) && // freeze
+			!unit.GetState(104) && // nodraw
+			!unit.GetState(107) && // shatter
+			!unit.GetState(118) // noselect
+			){ 
+			return true;
+		}
+		
+		return false;
+	}
+		
 	if (arguments.length < 2) {
 		revive = false;
 	}
-	
 	var badList = [462, 571];
 	
-	if (revive && unit.spectype & 0x0A || badList.indexOf(unit.classid) != -1) {
+	if (revive && (unit.spectype & 0x0A) || badList.indexOf(unit.classid) != -1) {
 		return false;
 	}
 	
 	// non selectable and non revivable monsters
-	if (!GetBaseStat("monstats2.txt", unit.classid, revive ? 97 : 95)) {
+	if(!GetBaseStat("monstats2.txt", unit.classid, revive ? 97 : 95)){
 		return false;
 	}
 	
@@ -161,15 +194,14 @@ function NTA_ExplodeCorpses(target) {
 	
 	var corpseList = new Array(),
 		exploded = 0,
-		range = Math.floor((NTC_GetSkillLevel(NTConfig_ExplodeCorpses) + 7) / 3),
 		corpse = NTC_FindUnit(NTC_UNIT_MONSTER);
 		
 	if (corpse) {
 		do {
-			if (GetDistance(corpse, target) <= range && NTA_IsValidCorpse(corpse))	{
+			if (GetDistance(corpse, target) <= NTConfig_ExplodeCorpsesRange && NTA_IsValidCorpse(corpse))	{
 				corpseList.push(corpse);
 				
-				if (corpseList.length >= 2) { // Explode 2 corpses per cycle
+				if (corpseList.length >= 4) { // Explode 2 corpses per cycle
 					break;
 				}
 			}
@@ -182,7 +214,7 @@ function NTA_ExplodeCorpses(target) {
 		if (corpse && NTC_CastSkill(NTConfig_ExplodeCorpses, NTC_HAND_RIGHT, corpse)) {		
 			//Print("ÿc1Exploded " + corpse.classid + " " + corpse.name);
 			exploded++;
-			Delay(150);
+			Delay(40);
 		}
 		
 		if (exploded >= 2) {
@@ -268,7 +300,7 @@ function NTA_NecRaiseArmy(range) {
 	if(count[0] >= maxSkeletons && count[1] >= maxMages && count[2] >= maxRevives)
 		return true;
 	
-	for (i = 0; i < 1; i += 1) {
+	for (i = 0; i < 1; i++) {
 		corpse = NTC_FindUnit(NTC_UNIT_MONSTER);		
 		corpseList = new Array();
 		
@@ -303,7 +335,7 @@ function NTA_NecRaiseArmy(range) {
 				}
 			}
 		}
-		Delay(100);
+		Delay(50);
 	}
 	
 	var statusString = "ÿc1Summoning: ";

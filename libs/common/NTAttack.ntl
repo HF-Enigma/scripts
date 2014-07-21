@@ -126,6 +126,7 @@ function NTA_Initialize()
 				}
 			}
 		}
+		NTConfig_ExplodeCorpsesRange = Math.floor((NTC_GetSkillLevel(NTConfig_ExplodeCorpses) + 7) / 3);
 	}
 }
 
@@ -493,9 +494,13 @@ function NTA_IsValidMonster(monster)
 	}
 	
 	if(monster.hp <= 0 || monster.mode == 0 || monster.mode == 12)
-		return false;	
-	
+		return false;
+		
 	_classid = monster.classid;
+	
+	if(_classid == 391 || _classid == 773){
+		return true;
+	}
 
 	if(((_classid >= 110 && _classid <= 113) || _classid == 608) && monster.mode == 8) // ignore flying scavengers
 		return false;

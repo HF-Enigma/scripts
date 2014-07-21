@@ -1,4 +1,3 @@
-var NTCOW_ShowOverheadStatus = true;
 var NTCOW_PickItemsInstantly = false;
 
 function NTMain(){
@@ -7,15 +6,30 @@ function NTMain(){
 	NTC_IncludeConfig("NTBot/char_configs");
 	
 	NT_LoadConfig();
+	
+	if(me.classid == NTC_CHAR_CLASS_NECROMANCER){
+		NTConfig_SkeletonArmy = 0;
+		NTConfig_MageArmy = 0;
+		NTConfig_ReviveArmy = 0;
+		NTConfig_NIPFilePath = new Array();
+		NTConfig_NIPFilePath.push("advance/cow.nip");
+	}
+	
 	NTSI_LoadNIPFiles("NTBot/item_configs");
 
 	NTA_Initialize();
 	
+	if(me.charname == TB_leader && me.areaid == 39){
+		NTCOW_ClearCowLevel();
+		NTC_SendMsgToScript("NTBotGame.ntj", "SCRIPT_END");
+		return;
+	}
+	
 	if(me.charname == TB_leader) {
 		NT_File("logs/msg/"+me.charname+"-helpernextgame.txt", 1, me.gamename + "/" + me.gamepassword);
 		me.revealautomap = true;
-		me.showenemyonautomap = true;
-		me.showmissileonautomap = true;
+		// me.showenemyonautomap = true;
+		// me.showmissileonautomap = true;
 	}
 
 	if(!NTTM_CheckAct(1)){
@@ -68,7 +82,7 @@ function NT_LeechFighter(){
 	}
 	
 	NTP_DoPrecast(true);
-	Delay(4000);
+	Delay(6000);
 	
 	NTTM_CheckAct(1);
 	
@@ -79,7 +93,7 @@ function NT_LeechFighter(){
 		Delay(200);
 	}
 	
-	Delay(3000); // wait for Helper leave game
+	Delay(4000); // wait for Helper leave game
 	
 	if(!NTCOW_TakeCowPortal()){
 		NTC_SendMsgToScript("NTBotGame.ntj", "Failed to take Cow Portal.");
@@ -93,7 +107,8 @@ function NT_LeechFighter(){
 }
 
 function NT_LeechHelper(){
-	if(!NTCOW_CheckCowPortal()){	
+	if(!NTCOW_CheckCowPortal()){		
+		var leg;
 		NTU_ClearCube();
 		NTT_ClearInventory();
 		
@@ -102,6 +117,7 @@ function NT_LeechHelper(){
 			return false;
 		}
 		
+		leg = NTCOW_GetLegUnit();
 		if(!leg){
 			NTC_SendMsgToScript("NTBotGame.ntj", "NTCOW_GetLegUnit()");
 			return false;
@@ -443,7 +459,7 @@ function NTCOW_ClearCowLevel() {
 		rooms = NTCOW_BuildCowRooms();
 		
 	Print("Built cow rooms.");
-	Delay(5000);
+	Delay(1000);
 
 	function RoomSort(a, b) {
 		return GetDistance(myRoom[0], myRoom[1], a[0], a[1]) - GetDistance(myRoom[0], myRoom[1], b[0], b[1]);
@@ -456,7 +472,9 @@ function NTCOW_ClearCowLevel() {
 		
 		Print("Rooms sorted.");
 		
-		Delay(500);
+		RunGC();
+		
+		Delay(100);
 		
 		room = rooms.shift();
 		
@@ -493,12 +511,13 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 	_orgx = me.x;
 	_orgy = me.y;
 
+	Print("NTCOW_ClearPosition()");
+	
 	for(var i = 0; i < 3; i++)
 	{
-		_skiplist = new Array();
-
-		while(_attackcount < (i+1)*100)
+		while(_attackcount < (i+1)*5000)
 		{
+			Delay(40);
 			_mindistance = 1E6;
 
 			_target = NTC_FindUnit(NTC_UNIT_MONSTER);
@@ -507,24 +526,22 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 			{
 				do
 				{
-					if(_skiplist.indexOf(_target.gid) < 0)
+					if(_target.IsAttackable())
 					{
-						if(_target.IsAttackable())
+						if(GetDistance(_orgx, _orgy, _target.x, _target.y) <= range && NTCOW_IsValidMonster(_target))
 						{
-							if(GetDistance(_orgx, _orgy, _target.x, _target.y) <= range && NTA_IsValidMonster(_target))
-							{
-								_distance = GetDistance(me, _target);
+							_distance = GetDistance(me, _target);
 
-								if(_distance < _mindistance)
-								{
-									_mingid = _target.gid;
-									_mindistance = _distance;
+							if(_distance < _mindistance)
+							{
+								_mingid = _target.gid;
+								_mindistance = _distance;
+								if(_mindistance <= 20){
+									break;
 								}
 							}
 						}
-						else
-							_skiplist.push(_target.gid);
-					}
+					}					
 				} while(_target.GetNext());
 			}
 
@@ -534,18 +551,11 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 
 				if(_target)
 				{
-					if(NTCOW_ShowOverheadStatus)
-						Say("!Attacking " + _target.name + " (" + (_target.hp * 100 / _target.hpmax).toFixed(0) + "%)");
-
 					_result = NTA_Attack(_target, (_attackcount % 30) == 0);
-					
-					if(NTCOW_ShowOverheadStatus)
-						Say("!Attacking " + _target.name + " (" + (_target.hp * 100 / _target.hpmax).toFixed(0) + "%)");
 
 					switch(_result)
 					{
 						case 1:
-							_skiplist.push(_mingid);
 							break;
 						case 2:
 						case 3:
@@ -563,10 +573,10 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 		}
 	}
 
-	if(_attackcount > 2 && me.classid == NTC_CHAR_CLASS_NECROMANCER)
-	{
-		NTA_NecRaiseArmy();
-	}
+	// if(_attackcount > 2 && me.classid == NTC_CHAR_CLASS_NECROMANCER)
+	// {
+		// NTA_NecRaiseArmy();
+	// }
 	
 	if(pickitem && _attackcount > 0)
 		NTSI_PickItems();
@@ -580,6 +590,18 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 	}
 
 	return true;
+}
+
+function NTCOW_IsValidMonster(monster)
+{
+	if(!monster) {
+		return false;
+	}
+	
+	if(monster.hp <= 0 || monster.mode == 0 || monster.mode == 12)
+		return false;
+		
+	return true;	
 }
 
 function NTCOW_MoveTo(areaId, x, y, retry, isClearPath){
@@ -615,7 +637,7 @@ function NTCOW_MoveTo(areaId, x, y, retry, isClearPath){
 			_preX = me.x;
 			_preY = me.y;
 
-			if(!NTCOW_ClearPosition(30, true))
+			if(!NTCOW_ClearPosition(25, true))
 				return false;
 
 			NTP_DoPrecast();

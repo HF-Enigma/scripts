@@ -519,7 +519,7 @@ function NTU_GetIdScroll() {
 function NTU_DevelopementTools()
 {
 	NTU_getlocalstringids = false;			// pretty much same as objects
-	NTU_objectids = true;
+	NTU_objectids = false;
 	NTU_monsterids = true;					// prints the name and id number of monsters.  Probably should set a range for it but been using it for summons
 	
 	var MonsterIdRange = [0, 999];	// set the range of id's you want to look for ie [420, 432] looks for druid summons
@@ -540,7 +540,7 @@ function NTU_DevelopementTools()
 					//Print(COLOR_8 + _monster.name + " - monsterid(" + i + ") - parent is (" +_monster.GetParent().name + ")" + " - monster mode is " + "[" + _monster.mode + "]");
 					Delay(1);
 				}
-				if(_monster.spectype & 0x02){
+				else if(_monster.spectype){
 					Print(COLOR_8 + _monster.name + " - monsterid(" + i + ")" + " - mode " + "[" + _monster.mode + "]"
 					 + " - hp " + "[" + _monster.hp + "]");
 					Print(COLOR_9 + " Physical " + _monster.GetStat(36)
@@ -549,6 +549,7 @@ function NTU_DevelopementTools()
 					 + " Lightning " + _monster.GetStat(41)
 					 + " Cold " + _monster.GetStat(43)
 					 + " Poison " + _monster.GetStat(45));
+					 break;
 				}
 				Delay(50);
 			}

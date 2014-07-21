@@ -171,7 +171,7 @@
 // armor
 [Name] == greathauberk && [Quality] == unique
 [Name] == shadowplate && [Quality] == unique # [FHR] == 30
-[Name] == diamondmail && [Quality] == unique
+//[Name] == diamondmail && [Quality] == unique
 [Name] == archonplate && [Quality] == unique
 [Name] == scarabhusk && [Quality] == unique
 [Name] == boneweave && [Quality] == unique

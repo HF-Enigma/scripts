@@ -174,7 +174,7 @@ function NTTMGR_VisitTown()
 	if(!NTM_UsePortal("BluePortal", _prearea))
 		return false;
 
-	if(NTConfig_PublicMode && me.name == TB_leader)
+	if(NTConfig_PublicMode && me.name == TB_leader && me.areaid != 39 && me.areaid != 132)
 		NTM_MakeTP();
 
 	return true;

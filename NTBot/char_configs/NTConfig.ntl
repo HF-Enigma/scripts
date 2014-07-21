@@ -33,6 +33,7 @@ var NTConfig_LeechCowType;
 		var NTConfig_NadoDist;
 	// Necromancer
 		var NTConfig_ExplodeCorpses;
+		var NTConfig_ExplodeCorpsesRange;
 		var NTConfig_SkeletonArmy;
 		var NTConfig_MageArmy;
 		var NTConfig_ReviveArmy;

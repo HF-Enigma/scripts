@@ -20,10 +20,10 @@ function NT_LoadConfig()
 	//------------------------------------------------------------------------------	
 	NTConfig_PublicMode = false;
 
-	//NTConfig_Script.push("NTLeechCows.ntj");			// There are currently NO options for this script, still working on it
+	NTConfig_Script.push("NTLeechCows.ntj");			// There are currently NO options for this script, still working on it
 		NTConfig_LeechCowType = 1;  					// 1 = Leech Fighter, 2 = Leech Helper, 3 = Passive Leecher
 
-	NTConfig_Script.push("NTUniversalBaalLeech.ntj");
+	//NTConfig_Script.push("NTUniversalBaalLeech.ntj");
 		NTConfig_LeechBaal = 1; 						// 1 = Leech Fighter(Walking), 2 = Leech Helper (Walking), 3 = Passive Leecher (Corner dunce).
 		NTConfig_FollowtoWorldStone = true;				// Go down to Baal in WS Chamber after waves?
 		
