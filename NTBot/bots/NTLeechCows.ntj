@@ -472,7 +472,7 @@ function NTCOW_ClearCowLevel() {
 		
 		Print("Rooms sorted.");
 		
-		Delay(40);
+		Delay(100);
 		
 		room = rooms.shift();
 		
@@ -494,6 +494,7 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 	var _distance, _mingid, _mindistance;
 	var _result;
 	var _firstAttack = true;
+	var _merc = NTC_GetMerc();
 	
 	switch(arguments.length)
 	{
@@ -516,7 +517,7 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 	{
 		while(_attackcount < (i+1)*5000)
 		{
-			Delay(40);
+			Delay(100);
 			_mindistance = 1E6;
 
 			_target = NTC_FindUnit(NTC_UNIT_MONSTER);
@@ -529,13 +530,13 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 					{
 						if(GetDistance(_orgx, _orgy, _target.x, _target.y) <= range && NTCOW_IsValidMonster(_target))
 						{
-							_distance = GetDistance(me, _target);
+							_distance = GetDistance(_merc, _target);
 
 							if(_distance < _mindistance)
 							{
 								_mingid = _target.gid;
 								_mindistance = _distance;
-								if(_mindistance <= 10){
+								if(_mindistance <= 3){
 									break;
 								}
 							}
@@ -552,7 +553,7 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 				{
 					if(_firstAttack){
 						NTC_CastSkill(78, NTC_HAND_RIGHT, _target); // Bone wall
-						Delay(40);
+						Delay(100);
 						_firstAttack = false;
 					}
 					

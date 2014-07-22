@@ -497,10 +497,6 @@ function NTA_IsValidMonster(monster)
 		return false;
 		
 	_classid = monster.classid;
-	
-	if(_classid == 391 || _classid == 773){
-		return true;
-	}
 
 	if(((_classid >= 110 && _classid <= 113) || _classid == 608) && monster.mode == 8) // ignore flying scavengers
 		return false;
