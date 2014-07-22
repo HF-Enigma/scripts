@@ -54,10 +54,106 @@ function NTSI_PickItems()
 		NTC_Delay(NTC_DELAY_FRAME);
 	}
 
-	if(i < parseInt(NTConfig_SnagDelay/NTC_DELAY_FRAME))
+	if(i < Math.floor(NTConfig_SnagDelay/NTC_DELAY_FRAME))
 		NTC_PingDelay(NTConfig_SnagDelay-(i*NTC_DELAY_FRAME));
 
 	NTSI_SnagIt();
+}
+
+function NTSI_PickItems_v2()
+{
+	var i, _mode;
+
+	for(i = 0 ; i < 50 ; i++)
+	{
+		_mode = me.mode;
+
+		if((_mode >= 1 && _mode <= 3) || _mode == 5 || _mode == 6)
+			break;
+
+		NTC_Delay(NTC_DELAY_FRAME);
+	}
+
+	if(i < Math.floor(NTConfig_SnagDelay/NTC_DELAY_FRAME))
+		NTC_PingDelay(NTConfig_SnagDelay-(i*NTC_DELAY_FRAME));
+
+	NTSI_SnagIt_v2();
+}
+
+function NTSI_SnagIt_v2(onlyPot)
+{
+	var i;
+	var _item;
+	var _checkeditem, _checkeditems;
+	var _value;
+	
+	_checkeditems = new Array();
+	
+	_item = NTC_FindUnit(NTC_UNIT_ITEM);
+
+	if(_item){
+		do {
+			if(NTSI_IsIgnoredItemInt(_item.classid) || (onlyPot && (_item.itemtype < 76 || _item.itemtype > 78)))
+				continue;
+				
+			if ((_item.mode === 3 || _item.mode === 5) && GetDistance(me, _item) <= NTConfig_SnagRange) {
+				_value = NTSI_CheckItem(_item);
+				if(_value)
+					_checkeditems.push(new NTSI_ItemInt(_item, _value));
+			}
+		} while (_item.GetNext());	
+	}
+	
+	while(_checkeditems.length > 0 && _checkeditems[0])
+	{
+		_item = NTC_FindUnit(NTC_UNIT_ITEM, _checkeditems[0].GID);
+		
+		if (_item && (_item.mode === 3 || _item.mode === 5)) {
+			if(!NTSI_IsLimitedItemInt(_item))
+			{
+				if((_item.itemtype >= 76 && _item.itemtype <= 78) ||  NTT_CheckSpace(_item.xsize, _item.ysize))
+				{
+					if(NTSI_PickUpItemInt(_item))
+					{
+						switch(_item.classid)
+						{
+						case 515: // Rejuvenation Potion
+						case 516: // Full Rejuvenation Potion
+						case 587: // Minor Healing Potion
+						case 588: // Light Healing Potion
+						case 589: // Healing Potion
+						case 590: // Greater Healing Potion
+						case 591: // Super Healing Potion
+						case 592: // Minor Mana Potion
+						case 593: // Light Mana Potion
+						case 594: // Mana Potion
+						case 595: // Greater Mana Potion
+						case 596: // Super Mana Potion
+							Print("Picked up potion");
+							break;
+						default:
+							Print("Picked up " + NTC_ItemQualityToD2Color[_item.quality] + _item.name.split("\n")[0]);
+							break;
+						}
+					}
+				}
+				else
+				{
+					if(!_checkeditems[0].Retry)
+					{
+						_checkeditems[0].Retry = true;
+
+						if(!NTTMGR_VisitTown())
+							return;
+
+						_checkeditems.push(_checkeditems[0]);
+					}
+				}
+			}
+		}
+		
+		_checkeditems.shift();
+	}
 }
 
 function NTSI_SnagIt(onlyPot)
@@ -191,7 +287,7 @@ function NTSI_SnagIt(onlyPot)
 
 function NTSI_CheckItem(item)
 {
-	if(!item) {return false;}
+	if(!item || item.quality == undefined) {return false;}
 		
 	var _result;
 
@@ -216,7 +312,7 @@ function NTSI_CheckItem(item)
 // Internal function
 function NTSI_ItemInt(item, checkedstatus)
 {
-	if(!item) {return false;}
+	if(!item || item.classid == undefined) {return false;}
 	
 	this.ClassID = item.classid;
 	this.GID = item.gid;
@@ -228,7 +324,7 @@ function NTSI_ItemInt(item, checkedstatus)
 
 function NTSI_PickUpItemInt(snagitem)
 {
-	if(!snagitem) {return false;}
+	if(!snagitem || snagitem.classid == undefined) {return false;}
 	
 	var i;
 	var _classid;
@@ -267,7 +363,7 @@ function NTSI_PickUpItemInt(snagitem)
 			}
 		}
 
-		NTC_Delay(NTC_DELAY_FRAME);
+		Delay(NTC_DELAY_FRAME);
 
 		if(_classid == 523)
 		{
@@ -303,7 +399,7 @@ function NTSI_IsIgnoredItemInt(classid)
 
 function NTSI_IsLimitedItemInt(item)
 {
-	if(!item) {return false;}
+	if(!item || item.classid == undefined) {return true;}
 	
 	var i;
 	var _items;

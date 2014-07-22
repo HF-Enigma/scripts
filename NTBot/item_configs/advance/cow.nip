@@ -1,25 +1,12 @@
 // ##### Armor #########################
-[Name] == MagePlate && [Quality] == superior && [Flag] != ethereal # ([Sockets] == 0 || [Sockets] == 3) && [EnhancedDefense] == 15 // Enigma
-[Name] == ArchonPlate && [Quality] == superior && [Flag] == ethereal # [Sockets] == 0 && [EnhancedDefense] >= 14 // Enigma
-[Type] == armor && [Quality] <= superior && [Flag] == ethereal # [Defense] >= 900 && [Sockets] == 0 // Cubing
+[Name] == MagePlate && [Quality] == superior && [Flag] != ethereal # ([Sockets] == 0 || [Sockets] == 3) && [EnhancedDefense] == 15
+[Name] == ArchonPlate && [Quality] == superior && [Flag] == ethereal # [Sockets] == 0 && [EnhancedDefense] >= 14
 
 // ##### Shields #######################
-[Name] == Monarch && [Quality] <= superior && [Flag] == ethereal # [Sockets] == 0 && [EnhancedDefense] >= 10 // New rune word
-
-// ##### Barbarian Helms ###############
-//[Type] == primalhelm && [Class] == elite && [Quality] <= superior && [Flag] != ethereal # [Sockets] == 3 && [SkillBattleOrders] == 3
-
-// ##### Paladin Shields ###############
-[Type] == auricshields && [Class] == elite && [Quality] <= superior && [Flag] == ethereal # [Sockets] == 0 && [FireResist] >= 40 
-
-// ##### Axes ##########################
-[Name] == BerserkerAxe && [Quality] == superior && [Flag] == ethereal # [Sockets] == 5 && [EnhancedDamage] >= 10 // Grief
-
-// ##### Bows ##########################
-[Name] == ShadowBow && [Quality] == superior # [Sockets] == 4 && [EnhancedDamage] == 15 // Faith
+[Name] == Monarch && [Quality] == superior && [Flag] == ethereal # [Sockets] == 0 && [EnhancedDefense] >= 10
 
 // ##### Polearms ######################
-[Type] == polearm && [Class] == elite && [Quality] <= superior && [Flag] == ethereal # [Sockets] >= 4 && [Sockets] <= 5// Variable
+[Name] == GreatPoleaxe && [Quality] == superior && [Flag] == ethereal # [Sockets] >= 4 && [Sockets] <= 5
 
 // ##### Runes #########################
 //[Name] == TalRune
@@ -39,7 +26,17 @@
 [Name] == PulRune
 [Name] == UmRune
 [Name] == MalRune
-[Name] >= IstRune && [Name] <= ZodRune
+[Name] == IstRune
+[Name] == GulRune
+[Name] == VexRune
+[Name] == OhmRune
+[Name] == LoRune
+[Name] == SurRune
+[Name] == BerRune
+[Name] == JahRune
+[Name] == ChamRune
+[Name] == ZodRune
+
 
 // ##### Gems ##########################
 //[Name] == FlawlessAmethyst

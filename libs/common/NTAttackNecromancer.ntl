@@ -11,7 +11,7 @@ function NTA_NecromancerAttackPatternInt() {
 }
 
 function NTA_NecromancerAttackInt(target, firstorder) {
-	if(!target) {return 1;}
+	if(!target || target.classid == undefined) {return 1;}
 	
 	if(me.areaid == 39){
 		if(!target.GetState(9)){		
@@ -25,9 +25,8 @@ function NTA_NecromancerAttackInt(target, firstorder) {
 
 			if (!NTC_CastSkill(66, NTC_HAND_RIGHT, target)) {
 				return 2;
-			}			
+			}
 			
-			Delay(100);
 			return 3;	
 		}
 		
@@ -116,6 +115,8 @@ function NTA_NecromancerCastSkillInt(index, target) {
 }
 
 function NTA_IsCursable(target) {
+	if(!target || target.classid == undefined) {return false;}
+	
 	if (target.name === undefined || target.name.indexOf(GetLocaleString(11086)) > -1) { // Possessed
 		return false;
 	}
@@ -137,7 +138,7 @@ function NTA_IsCursable(target) {
 }
 
 function NTA_IsValidCorpse(unit, revive) {
-	if (!unit) {
+	if (!unit || unit.classid == undefined) {
 		return false;
 	}
 	
@@ -184,7 +185,7 @@ function NTA_IsValidCorpse(unit, revive) {
 }
 
 function NTA_ExplodeCorpses(target) {
-	if(!target){
+	if(!target || target.mode == undefined){
 		return false;
 	}
 	
@@ -192,28 +193,33 @@ function NTA_ExplodeCorpses(target) {
 		return false;
 	}
 	
-	var corpseList = new Array(),
+	var corpseGIDList = new Array(),
 		exploded = 0,
 		corpse = NTC_FindUnit(NTC_UNIT_MONSTER);
 		
 	if (corpse) {
 		do {
 			if (GetDistance(corpse, target) <= NTConfig_ExplodeCorpsesRange && NTA_IsValidCorpse(corpse))	{
-				corpseList.push(corpse);
+				corpseGIDList.push(corpse.gid);
 				
-				if (corpseList.length >= 5) { // Explode 2 corpses per cycle
+				if (corpseGIDList.length >= 2) { // Explode 2 corpses per cycle
 					break;
 				}
 			}
 		} while (corpse.GetNext());
 	}
 	
-	while (corpseList.length > 0) {
-		corpse = corpseList.shift();
+	var corpseGID;
+	
+	while (corpseGIDList.length > 0) {
+		corpseGID = corpseGIDList.shift();
+		corpse = NTC_FindUnit(NTC_UNIT_MONSTER, corpseGID);
 		
-		if (corpse && NTC_CastSkill(NTConfig_ExplodeCorpses, NTC_HAND_RIGHT, corpse)) {		
-			//Print("ÿc1Exploded " + corpse.classid + " " + corpse.name);
-			exploded++;
+		if (corpse) {
+			if(NTC_CastSkill(NTConfig_ExplodeCorpses, NTC_HAND_RIGHT, corpse)){
+				//Print("ÿc1Exploded " + corpse.classid + " " + corpse.name);
+				exploded++;
+			}
 		}
 		
 		if (exploded >= 2) {
@@ -221,11 +227,11 @@ function NTA_ExplodeCorpses(target) {
 		}
 	}
 	
-	if(exploded>0){
-		Print("ÿc1NTA_ExplodeCorpses [exploded] " + exploded + ", [target.hp] " + target.hp);
-	}
+	// if(exploded>0){
+		// Print("ÿc1NTA_ExplodeCorpses [exploded] " + exploded + ", [target.hp] " + target.hp);
+	// }
 	
-	return target.hp <= 0 || target.mode == 12 || target.mode == 0;
+	return exploded >= 2;
 }
 
 

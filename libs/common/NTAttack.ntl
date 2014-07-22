@@ -126,7 +126,8 @@ function NTA_Initialize()
 				}
 			}
 		}
-		NTConfig_ExplodeCorpsesRange = Math.floor((NTC_GetSkillLevel(NTConfig_ExplodeCorpses) + 7) / 3) - 0.5;
+		NTConfig_ExplodeCorpsesRange = Math.floor((NTC_GetSkillLevel(NTConfig_ExplodeCorpses) + 7) / 3) - 1;
+		NTConfig_ExplodeCorpsesRange = NTConfig_ExplodeCorpsesRange>0?NTConfig_ExplodeCorpsesRange:0;
 	}
 }
 
