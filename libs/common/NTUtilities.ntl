@@ -148,7 +148,7 @@ function NTU_CursorILvl() {
 	var item = null;
 	if(me.itemoncursor) {
 		item = me.GetCursorItem();
-		Print(COLOR_4 + item.name.split("\n")[0] + COLOR_8 + " - " + COLOR_4 + "Item Level " + COLOR_8 + item.itemlevel);
+		Print(COLOR_4 + item.name.split("\n")[0] + COLOR_8 + " - " + COLOR_4 + "Item Level " + COLOR_8 + item.itemlevel + COLOR_8 + " - " + COLOR_4 + "Item classid " + COLOR_8 + item.classid);
 		
 		var itemStats;
 		for(var i=-100;i<9999;i++){

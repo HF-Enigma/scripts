@@ -471,7 +471,7 @@ function NTCOW_ClearCowLevel() {
 		Print("Rooms sorted, " + rooms.length + " left.");
 		
 		RunGC();
-		Delay(50);
+		Delay(40);
 		
 		room = rooms.shift();
 		
@@ -522,14 +522,15 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 		_attackcount = 0;
 		while(_attackcount < (i+1)*10000)
 		{
-			Delay(120);
 			_mindistance = 1E6;
 
 			_target = NTC_FindUnit(NTC_UNIT_MONSTER);
 			_merc = NTC_GetMerc();
 
 			if(_target)
-			{
+			{				
+				Delay(150);
+				
 				do
 				{
 					if(_target.IsAttackable())
@@ -594,7 +595,7 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 		// NTA_NecRaiseArmy();
 	// }
 	
-	Delay(100);
+	Delay(50);
 	
 	if(pickitem){
 		NTSI_PickItems_v2();

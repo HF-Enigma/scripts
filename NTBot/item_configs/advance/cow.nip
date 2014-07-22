@@ -1,5 +1,5 @@
 // ##### Armor #########################
-[Name] == MagePlate && [Quality] == superior && [Flag] != ethereal # ([Sockets] == 0 || [Sockets] == 3) && [EnhancedDefense] == 15
+[Name] == MagePlate && [Quality] == superior && [Flag] != ethereal # ([Sockets] == 0 || [Sockets] == 3) && [EnhancedDefense] >= 14
 [Name] == ArchonPlate && [Quality] == superior && [Flag] == ethereal # [Sockets] == 0 && [EnhancedDefense] >= 14
 
 // ##### Shields #######################

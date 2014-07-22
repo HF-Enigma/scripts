@@ -23,7 +23,7 @@ function NTA_NecromancerAttackInt(target, firstorder) {
 				}
 			}
 
-			if (!NTC_CastSkill(66, NTC_HAND_RIGHT, target)) {
+			if (!NTC_CastSkill(66, NTC_HAND_RIGHT, target.x, target.y)) {
 				return 2;
 			}
 			
