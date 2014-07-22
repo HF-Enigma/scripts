@@ -516,20 +516,22 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 
 	Print("NTCOW_ClearPosition()");
 	
-	for(var i = 0; i < 2; i++)
+	Delay(40);
+	
+	for(var i = 0; i < 1; i++)
 	{
 		Delay(40);
 		_attackcount = 0;
 		while(_attackcount < (i+1)*10000)
 		{
 			_mindistance = 1E6;
-
+			
 			_target = NTC_FindUnit(NTC_UNIT_MONSTER);
 			_merc = NTC_GetMerc();
 
 			if(_target)
 			{				
-				Delay(150);
+				Delay(160);
 				
 				do
 				{
