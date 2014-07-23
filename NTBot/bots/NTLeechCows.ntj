@@ -453,7 +453,7 @@ function NTCOW_BuildCowRooms() {
 
 function NTCOW_ClearCowLevel() {
 
-	var room, result, myRoom,
+	var i, room, result, myRoom,
 		rooms = NTCOW_BuildCowRooms();
 		
 	Print("Built cow rooms.");
@@ -483,6 +483,16 @@ function NTCOW_ClearCowLevel() {
 			// return false;
 			continue;
 		}
+		
+		// remove adjacent rooms
+		for(i=0; i<rooms.length;){
+			if(GetDistance(room[0], room[1], rooms[i][0], rooms[i][1]) <= 42){
+				rooms.splice(i, 1);
+				continue;
+			}
+			i++;
+		}
+		
 		myRoom = room;
 	}
 
@@ -516,11 +526,10 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 
 	Print("NTCOW_ClearPosition()");
 	
-	Delay(40);
+	Delay(100);
 	
-	for(var i = 0; i < 1; i++)
+	for(var i = 0; i < 2; i++)
 	{
-		Delay(40);
 		_attackcount = 0;
 		while(_attackcount < (i+1)*10000)
 		{
@@ -531,8 +540,6 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 
 			if(_target)
 			{				
-				Delay(160);
-				
 				do
 				{
 					if(_target.IsAttackable())
@@ -560,7 +567,8 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 			}
 
 			if(_mindistance < 1E6)
-			{
+			{								
+				Delay(160);
 				_target = NTC_FindUnit(NTC_UNIT_MONSTER, _mingid, 1);
 
 				if(_target)
@@ -597,7 +605,7 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 		// NTA_NecRaiseArmy();
 	// }
 	
-	Delay(50);
+	Delay(20);
 	
 	if(pickitem){
 		NTSI_PickItems_v2();
@@ -660,7 +668,7 @@ function NTCOW_MoveTo(areaId, x, y, retry, isClearPath){
 			_preX = me.x;
 			_preY = me.y;
 
-			if(!NTCOW_ClearPosition(30, true))
+			if(!NTCOW_ClearPosition(32, true))
 				return false;
 
 			NTP_DoPrecast();

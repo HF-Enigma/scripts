@@ -1,14 +1,19 @@
-function NTU_CheckCoord()	
-	{
-		_area = GetArea();
-	 	if(_area)
-			{
-				Print(COLOR_9 + " X=" + me.x + ", Y=" + me.y);
-				Print(COLOR_9 + "  In AreaID " + me.areaid + " , " + _area.name);
-			}
-	} 
+function NTU_CheckCoord()
+{
+	var _area = GetArea();
+	var _room = me.GetRoom();
+
+	Print(COLOR_9 + " X=" + me.x + ", Y=" + me.y);
 	
+	if(_area){
+		Print(COLOR_9 + "  In AreaID " + me.areaid + " , " + _area.name);
+	}
 	
+	if(_room){
+		Print(COLOR_9 + "  In Room " + _room.x*5 + " , " + _room.y*5 + " , room size " + _room.xsize + " , " + _room.ysize);
+	}
+}
+
 function NTU_HotKeyList()
 {
 	HotKeys = COLOR_1 + "Etal HotKeys" + ";";

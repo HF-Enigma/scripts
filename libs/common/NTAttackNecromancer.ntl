@@ -14,7 +14,7 @@ function NTA_NecromancerAttackInt(target, firstorder) {
 	if(!target || target.classid == undefined) {return 1;}
 	
 	if(me.areaid == 39){
-		if(!target.GetState(9)){		
+		if(!target.GetState(9) && && NTA_IsCursable(target)){		
 			if (GetDistance(me, target) > 25 || !CheckCollision(me, target, 4)) {
 				var _pos = me.GetOptimalAttackPos(target.areaid, target.x, target.y, 25, 4);
 
@@ -117,7 +117,7 @@ function NTA_NecromancerCastSkillInt(index, target) {
 function NTA_IsCursable(target) {
 	if(!target || target.classid == undefined) {return false;}
 	
-	if (target.name === undefined || target.name.indexOf(GetLocaleString(11086)) > -1) { // Possessed
+	if ((target.spectype & 0x04) && target.name === undefined || target.name.indexOf(GetLocaleString(11086)) > -1) { // Possessed
 		return false;
 	}
 	
