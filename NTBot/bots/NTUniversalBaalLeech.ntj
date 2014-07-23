@@ -198,7 +198,7 @@ function NT_LeechBaalFighter(){
 	}
 	
 	if(NTConfig_FollowtoWorldStone){
-		NTM_WalkTo(15092, 5015);
+		NTM_MoveTo(me.areaid, 15092, 5015);
 		
 		if(!CheckBaalMove()){
 			return false;
@@ -208,16 +208,16 @@ function NT_LeechBaalFighter(){
 		if(!_portal){
 			return false;
 		}
-		NTM_WalkTo(15092, 5011);
+		NTM_MoveTo(me.areaid, 15092, 5011);
 		NTP_DoPrecast(true);
 		
 		if(!NTM_UsePortal("Portal", 132, null, _portal)){
 			return false;
 		}
 		
-		NTM_WalkTo(15172, 5938);
-		NTM_WalkTo(15138, 5938);
-		NTM_WalkTo(15138, 5928);
+		NTM_MoveTo(me.areaid, 15172, 5938);
+		NTM_MoveTo(me.areaid, 15138, 5938);
+		NTM_MoveTo(me.areaid, 15138, 5928);
 		
 		if(!NTA_KillMonster(544)){
 			return false;
@@ -318,7 +318,7 @@ function NT_LeechBaalHelper(){
 	NT_File("logs/msg/"+me.charname+"-baal.txt", 1, " ");
 	
 	if(NTConfig_FollowtoWorldStone){
-		NTM_WalkTo(15092, 5015);
+		NTM_MoveTo(me.areaid, 15092, 5015);
 		
 		if(!CheckBaalMove()){
 			return false;
@@ -329,14 +329,14 @@ function NT_LeechBaalHelper(){
 		}
 		
 		NTP_DoPrecast(true);
-		NTM_WalkTo(15092, 5011);
+		NTM_MoveTo(me.areaid, 15092, 5011);
 		if(!NTM_UsePortal("Portal", 132, null, _portal)){
 			return false;
 		}
 		
-		NTM_WalkTo(15172, 5938);
-		NTM_WalkTo(15138, 5938);
-		NTM_WalkTo(15138, 5928);
+		NTM_MoveTo(me.areaid, 15172, 5938);
+		NTM_MoveTo(me.areaid, 15138, 5938);
+		NTM_MoveTo(me.areaid, 15138, 5928);
 		
 		if(!NTA_KillMonster(544)){
 			return false;
