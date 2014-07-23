@@ -514,7 +514,7 @@ function NTU_BuyIdScroll(_npc){
 }
 
 function NTU_GetIdScroll() {
-	var _idScrolls = me.GetItems(530);
+	var _idScrolls = me.GetItems(NTC_UNIT_ID_SCROLL);
 
 	if (_idScrolls && _idScrolls.length > 0)
 	{
@@ -527,18 +527,17 @@ function NTU_GetIdScroll() {
 function NTU_DevelopementTools()
 {
 	NTU_getlocalstringids = false;			// pretty much same as objects
-	NTU_objectids = false;
+	NTU_objectids = true;
 	NTU_monsterids = true;					// prints the name and id number of monsters.  Probably should set a range for it but been using it for summons
 	
 	var MonsterIdRange = [0, 999];	// set the range of id's you want to look for ie [420, 432] looks for druid summons
 										// you can set the MonsterRange = [0, 575] and it will give all monsters near you, but to be effective need to add a range to it										
-	var ObjectIdRange = [0, 600];		// this is range of object id's similar to above ranges
+	var ObjectIdRange = [0, 800];		// this is range of object id's similar to above ranges
 	var _objectlookrange = 5;			// this is the distance that you wish to look for objects from your toon
 	var StringIdRange = [2500, 4000];	// this is range getlocalstrings  id's similar to above ranges
 	var _stringlookrange = 5;			// this is the distance that you wish to look for getlocalstrings from your toon
 
 	Print(COLOR_2 + IdToName() + " - CharacterClass(" +me.classid+ ")");
-	Print("   ");
 	
 	if(NTU_monsterids){
 		for(var i = MonsterIdRange[0]; i < MonsterIdRange[1] ; i++){
@@ -559,9 +558,9 @@ function NTU_DevelopementTools()
 					 + " Poison " + _monster.GetStat(45));
 					 break;
 				}
-				Delay(50);
+				Delay(40);
 			}
-		}		
+		}
 		Print("   ");
 	}
 
@@ -570,8 +569,8 @@ function NTU_DevelopementTools()
 			var _object = NTC_FindUnit(NTC_UNIT_OBJECT, i);
 			if(_object && (GetDistance(me.x,me.y,_object.x,_object.y)<_objectlookrange))
 				Print(COLOR_14 + "object name is - " + _object.name + " - objectid - (" + i + ")" + " - objects mode is " + "[" + _object.mode + "]");
-			//Delay(500);
-		}		
+			Delay(40);
+		}
 		Print("   ");
 	}
 	
@@ -580,8 +579,8 @@ function NTU_DevelopementTools()
 			var _stringobject = NTC_FindUnit(NTC_UNIT_OBJECT, GetLocaleString(i));
 			if(NTC_FindUnit(NTC_UNIT_OBJECT, GetLocaleString(i)) && (GetDistance(me.x,me.y,_stringobject.x,_stringobject.y)<_stringlookrange))
 				Print(COLOR_14 + "String name is - " + _stringobject.name + " - stringid - (" + i + ")" + " - objects mode is " + "[" + _stringobject.mode + "]");
-			//Delay(30);
-		}		
+			Delay(40);
+		}
 		Print("   ");
 	}
 
