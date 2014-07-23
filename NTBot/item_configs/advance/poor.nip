@@ -26,6 +26,8 @@
 [Type] == amulet && [Quality] == rare # [ItemAddClassSkills] >= 2 && [FireResist]+[LightResist]+[ColdResist]+[PoisonResist] >= 30
 [Type] == amulet && [Quality] == rare # [ItemAddClassSkills] >= 2 && [FCR] >= 7 && [FireResist]+[LightResist]+[ColdResist]+[PoisonResist] >= 40 && [MaxMana] >= 40 && [Strength]+[Dexterity] >= 20
 
+([Type] == amulet || [Type] == ring) && [Quality] == rare # [itemaddexperience] >= 40
+
 // ##### Jewels ########################
 [Type] == jewel && [Quality] == magic # [EnhancedDamage] >= 30
 [Type] == jewel && [Quality] >= magic # [FireResist] >= 20 && ([Strength] >= 7 || [IAS] >= 15 || [EnhancedDamage] >= 20)

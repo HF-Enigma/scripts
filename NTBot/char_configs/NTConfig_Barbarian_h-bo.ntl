@@ -8,10 +8,10 @@ function NT_LoadConfig()
 	//------------------------------------------------------------------------------
 	NTConfig_PublicMode = false;
 
-	NTConfig_Script.push("NTLeechCows.ntj");			// There are currently NO options for this script, still working on it
+	//NTConfig_Script.push("NTLeechCows.ntj");			// There are currently NO options for this script, still working on it
 		NTConfig_LeechCowType = 3;  					// 1 = Leech Fighter, 2 = Leech Helper, 3 = Passive Leecher
 
-	//NTConfig_Script.push("NTUniversalBaalLeech.ntj");
+	NTConfig_Script.push("NTUniversalBaalLeech.ntj");
 		NTConfig_LeechBaal = 3; 						// 1 = Leech Fighter (Tele), 2 = Leech Fighter (Walking), 3 = Passive Leecher (Corner dunce).
 		NTConfig_FollowtoWorldStone = true;				// Go down to Baal in WS Chamber after waves?
 		
@@ -101,8 +101,8 @@ function NT_LoadConfig()
 	NTConfig_GambleStopGold = 500000;					// Gold amount to stop the gambling.
 
 
-	NTConfig_GambleItem.push(520);						// Amulets
-	NTConfig_GambleItem.push(522);						// Rings
+	NTConfig_GambleItem.push(520+3);						// Amulets
+	NTConfig_GambleItem.push(522+3);						// Rings
 	NTConfig_GambleItem.push(418);						// Circlets
 	NTConfig_GambleItem.push(419);						// Coronets
 

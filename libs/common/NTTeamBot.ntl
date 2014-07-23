@@ -11,13 +11,13 @@ const gameDoesNotExistDelay = 5;		// time to idle before trying if leader's game
 // =============================================================================
 // Leader, Helper and Leecher name settings, Only one leader allowed, Max number of Players <= 8
 // =============================================================================
-// const TB_leader = "h-sor";
-// const TB_helper = ["superman"];
-// const TB_leecher = ["h-bo","h-nec"];
+const TB_leader = "h-sor";
+const TB_helper = ["superman"];
+const TB_leecher = ["h-bo","h-nec"];
 
-const TB_leader = "h-nec";
-const TB_helper = ["h-sor"];
-const TB_leecher = ["h-bo"];
+// const TB_leader = "h-nec";
+// const TB_helper = ["h-sor"];
+// const TB_leecher = ["h-bo"];
 
 // =============================================================================
 // Baal Leech settings

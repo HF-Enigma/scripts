@@ -9,10 +9,10 @@ function NT_LoadConfig()
 	NTConfig_PublicMode = true;	
 	// NTConfig_PublicMode = false;
 
-	NTConfig_Script.push("NTLeechCows.ntj");			// There are currently NO options for this script, still working on it
+	//NTConfig_Script.push("NTLeechCows.ntj");			// There are currently NO options for this script, still working on it
 		NTConfig_LeechCowType = 2;  					// 1 = Leech Fighter, 2 = Leech Helper, 3 = Passive Leecher
 		
-	//NTConfig_Script.push("NTWorldstoneKeep.ntj");
+	NTConfig_Script.push("NTWorldstoneKeep.ntj");
 		NTConfig_CheckSoulKillers = false; 				// End script if Stygian Dolls are found in Throne
 		NTConfig_Wave2PSNCheck = false; 				// Heal after wave 2 if poisoned		
 		NTConfig_KillBaal = true;
@@ -126,8 +126,8 @@ function NT_LoadConfig()
 	NTConfig_GambleStartGold = 2500000;	// Gold amount to start the gambling
 	NTConfig_GambleStopGold = 500000;	// Gold amount to stop the gambling
 
-	NTConfig_GambleItem.push(520);	// Amulets
-	NTConfig_GambleItem.push(522);	// Rings
+	NTConfig_GambleItem.push(520+3);	// Amulets
+	NTConfig_GambleItem.push(522+3);	// Rings
 	NTConfig_GambleItem.push(418);	// Circlets
 	NTConfig_GambleItem.push(419);	// Coronets
 

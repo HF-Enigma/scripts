@@ -55,7 +55,9 @@ function NTA_NecromancerAttackInt(target, firstorder) {
 	if (!me.GetState(14)) { //check and recast bone armor
 		NTC_CastSkill(68, NTC_HAND_RIGHT);
 	}
-
+	
+	Delay(80);
+	
 	if (NTConfig_Curse[0] > 0 && (target.spectype & 0x08 && target.classid != 571) && !target.GetState(_NTA_CurseState[0]) && NTA_IsCursable(target))
 	{
 		// Print("ÿc1NTA_NecromancerAttackInt NTConfig_Curse[0]");
@@ -68,14 +70,18 @@ function NTA_NecromancerAttackInt(target, firstorder) {
 		}
 
 		if (!NTC_CastSkill(NTConfig_Curse[0], NTC_HAND_RIGHT, target)) {
+			Delay(40);
 			return 2;
 		}
+		
+		Delay(100);
 		
 		if(!NTA_ExplodeCorpses(target)) {
+			Delay(40);
 			return 2;
 		}
 		
-		Delay(40);
+		Delay(100);
 		
 		return 3;
 	}
@@ -91,20 +97,25 @@ function NTA_NecromancerAttackInt(target, firstorder) {
 		}
 
 		if (!NTC_CastSkill(NTConfig_Curse[1], NTC_HAND_RIGHT, target)) {
+			Delay(40);
 			return 2;
 		}
+		
+		Delay(100);
 		
 		if(!NTA_ExplodeCorpses(target)) {
+			Delay(40);
 			return 2;
 		}
 		
-		Delay(40);	
+		Delay(100);	
 		
 		return 3;
 	}
 	
 	if(NTA_ExplodeCorpses(target)) {
-			return 3;
+		Delay(100);
+		return 3;
 	}
 	
 	return 2;
@@ -268,7 +279,7 @@ function NTA_GetMinionCount(type) { // 0 - skeleton, 1 - mage, 2 - revive
 }
 
 function NTA_NecRaiseArmy(range) {
-	var i, count, countOriginal, corpse, corpseList, skill, maxSkeletons, maxMages, maxRevives;
+	var i, count, countOriginal, corpse, corpseList, corpseGID, skill, maxSkeletons, maxMages, maxRevives;
 	count = [0, 0, 0];
 	
 	if (arguments.length < 2) {
@@ -312,13 +323,14 @@ function NTA_NecRaiseArmy(range) {
 		if (corpse) {
 			do {
 				if (NTA_IsValidCorpse(corpse))	{
-					corpseList.push(corpse);
+					corpseList.push(corpse.gid);
 				}
 			} while (corpse.GetNext());
 		}	
 		
 		while (corpseList.length > 0) {
-			corpse = corpseList.shift();
+			corpseGID = corpseList.shift();
+			corpse = NTC_FindUnit(NTC_UNIT_MONSTER, corpseGID);
 			
 			if (corpse) {
 				if (count[0] < maxSkeletons) {						
@@ -340,7 +352,7 @@ function NTA_NecRaiseArmy(range) {
 				}
 			}
 		}
-		Delay(50);
+		Delay(80);
 	}
 	
 	var statusString = "ÿc1Summoning: ";

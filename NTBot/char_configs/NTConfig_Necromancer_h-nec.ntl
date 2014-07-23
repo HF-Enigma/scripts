@@ -20,10 +20,10 @@ function NT_LoadConfig()
 	//------------------------------------------------------------------------------	
 	NTConfig_PublicMode = false;
 
-	NTConfig_Script.push("NTLeechCows.ntj");			// There are currently NO options for this script, still working on it
+	//NTConfig_Script.push("NTLeechCows.ntj");			// There are currently NO options for this script, still working on it
 		NTConfig_LeechCowType = 1;  					// 1 = Leech Fighter, 2 = Leech Helper, 3 = Passive Leecher
 
-	//NTConfig_Script.push("NTUniversalBaalLeech.ntj");
+	NTConfig_Script.push("NTUniversalBaalLeech.ntj");
 		NTConfig_LeechBaal = 1; 						// 1 = Leech Fighter(Walking), 2 = Leech Helper (Walking), 3 = Passive Leecher (Corner dunce).
 		NTConfig_FollowtoWorldStone = true;				// Go down to Baal in WS Chamber after waves?
 		
@@ -97,7 +97,7 @@ function NT_LoadConfig()
 	NTConfig_Columns[2] = [1,1,1,1,1,1,0,0,0,0];
 	NTConfig_Columns[3] = [1,1,1,1,1,1,0,0,0,0];
 
-	NTConfig_MinGoldToStash = 200000;					// Maximum gold amount carried before going to stash
+	NTConfig_MinGoldToStash = 100000;					// Maximum gold amount carried before going to stash
 
 	//----------------------------------------------------------------------------------------------
 	// Belt Settings
@@ -117,12 +117,12 @@ function NT_LoadConfig()
 	// Pickit (SnagIt) Configuration
 	//-----------------------------------------------------------------------------------
 
-	// NTConfig_NIPFilePath.push("advance/normal.nip");
-	// NTConfig_NIPFilePath.push("advance/poor.nip");
-	// NTConfig_NIPFilePath.push("advance/set.nip");
-	// NTConfig_NIPFilePath.push("advance/unique.nip");
-	// NTConfig_NIPFilePath.push("advance/craft.nip");
-	NTConfig_NIPFilePath.push("advance/cow.nip");
+	NTConfig_NIPFilePath.push("advance/normal.nip");
+	NTConfig_NIPFilePath.push("advance/poor.nip");
+	NTConfig_NIPFilePath.push("advance/set.nip");
+	NTConfig_NIPFilePath.push("advance/unique.nip");
+	NTConfig_NIPFilePath.push("advance/craft.nip");
+	// NTConfig_NIPFilePath.push("advance/cow.nip");
 
 
 	NTConfig_SnagRange = 40;							// Radius to check for dropped items. 40 is a good number here
@@ -141,8 +141,8 @@ function NT_LoadConfig()
 	NTConfig_GambleStopGold = 500000;					// Gold amount to stop the gambling.
 
 
-	NTConfig_GambleItem.push(520);						// Amulets
-	NTConfig_GambleItem.push(522);						// Rings
+	NTConfig_GambleItem.push(520+3);						// Amulets
+	NTConfig_GambleItem.push(522+3);						// Rings
 	NTConfig_GambleItem.push(418);						// Circlets
 	NTConfig_GambleItem.push(419);						// Coronets
 

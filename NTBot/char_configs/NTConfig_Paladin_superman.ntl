@@ -122,8 +122,8 @@ function NT_LoadConfig()
 	NTConfig_GambleStartGold = 2500000;	// Gold amount to start the gambling
 	NTConfig_GambleStopGold = 500000;	// Gold amount to stop the gambling
 
-	NTConfig_GambleItem.push(520);	// Amulets
-	NTConfig_GambleItem.push(522);	// Rings
+	NTConfig_GambleItem.push(520+3);	// Amulets
+	NTConfig_GambleItem.push(522+3);	// Rings
 	NTConfig_GambleItem.push(418);	// Circlets
 	NTConfig_GambleItem.push(419);	// Coronets
 

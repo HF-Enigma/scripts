@@ -575,7 +575,7 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 				if(_target)
 				{
 					if(_firstAttack){
-						NTC_CastSkill(78, NTC_HAND_RIGHT, _target); // Bone wall
+						NTC_CastSkill(78, NTC_HAND_RIGHT, _target.x, _target.y); // Bone wall
 						_firstAttack = false;
 					}
 					
@@ -669,7 +669,7 @@ function NTCOW_MoveTo(areaId, x, y, retry, isClearPath){
 			_preX = me.x;
 			_preY = me.y;
 
-			if(!NTCOW_ClearPosition(32, true))
+			if(!NTCOW_ClearPosition(30, true))
 				return false;
 
 			NTP_DoPrecast();

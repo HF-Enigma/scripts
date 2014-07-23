@@ -1,14 +1,14 @@
 var _NTSI_IgnoredList = new Array(
-526, // Arrows quiver
-528, // Bolts quiver
-543, // Keys
-518, // Tome of Town Portal
-519, // Tome of Identify
-529, // Scroll of Town Portal
-530, // Scroll of Identify
-514, // Antidote potion
-513, // Stamina potion
-517, // Thawing potion
+526+3, // Arrows quiver
+528+3, // Bolts quiver
+543+3, // Keys
+518+3, // Tome of Town Portal
+519+3, // Tome of Identify
+529+3, // Scroll of Town Portal
+530+3, // Scroll of Identify
+514+3, // Antidote potion
+513+3, // Stamina potion
+517+3, // Thawing potion
 80, // Rancid Gas Pot
 81, // Oil Potion
 82, // Choking Gas Pot
@@ -363,7 +363,7 @@ function NTSI_PickUpItemInt(snagitem)
 
 		Delay(NTC_DELAY_FRAME);
 
-		if(_classid == 523)
+		if(_classid == 523+3)
 		{
 			Print("Picked up " + GetLocaleString(2215));
 
@@ -468,19 +468,19 @@ function NTSI_IsLimitedItemInt(item)
 				return true;
 		}
 	}
-	else if(item.quality == 7 && item.classid >= 603 && item.classid <= 605)
-	{
-		_items = me.GetItems(item.classid);
+	// else if(item.quality == 7 && item.classid >= 603+3 && item.classid <= 605+3)
+	// {
+		// _items = me.GetItems(item.classid);
 
-		if(_items)
-		{
-			for(i = 0 ; i < _items.length ; i++)
-			{
-				if(_items[i].quality == 7)
-					return true;
-			}
-		}
-	}
+		// if(_items)
+		// {
+			// for(i = 0 ; i < _items.length ; i++)
+			// {
+				// if(_items[i].quality == 7)
+					// return true;
+			// }
+		// }
+	// }
 
 	return false;
 }
