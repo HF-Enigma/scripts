@@ -209,6 +209,7 @@ function NTCOW_TakeCowPortal(){
 	var _portal;
 
 	_portal = NTC_FindUnit(NTC_UNIT_OBJECT, 60, 5);
+	NTM_MoveTo(me.areaid, _portal.x+1, _portal.y);
 
 	if(_portal){
 		return NTM_UsePortal("Portal", 39, "dummy", _portal);
@@ -677,6 +678,9 @@ function NTCOW_MoveTo(areaId, x, y, retry, isClearPath){
 			{
 				if (!NTM_MoveTo(me.areaid, _preX, _preY))
 					return false;
+					
+				Delay(10);	
+				NTSI_PickItems_v2();
 			}
 		}
 	}

@@ -117,18 +117,18 @@ function NTSI_SnagIt_v2(onlyPot)
 					{
 						switch(_item.classid)
 						{
-						case 515: // Rejuvenation Potion
-						case 516: // Full Rejuvenation Potion
-						case 587: // Minor Healing Potion
-						case 588: // Light Healing Potion
-						case 589: // Healing Potion
-						case 590: // Greater Healing Potion
-						case 591: // Super Healing Potion
-						case 592: // Minor Mana Potion
-						case 593: // Light Mana Potion
-						case 594: // Mana Potion
-						case 595: // Greater Mana Potion
-						case 596: // Super Mana Potion
+						case 515+3: // Rejuvenation Potion
+						case 516+3: // Full Rejuvenation Potion
+						case 587+3: // Minor Healing Potion
+						case 588+3: // Light Healing Potion
+						case 589+3: // Healing Potion
+						case 590+3: // Greater Healing Potion
+						case 591+3: // Super Healing Potion
+						case 592+3: // Minor Mana Potion
+						case 593+3: // Light Mana Potion
+						case 594+3: // Mana Potion
+						case 595+3: // Greater Mana Potion
+						case 596+3: // Super Mana Potion
 							Print("Picked up potion");
 							break;
 						default:
@@ -236,21 +236,19 @@ function NTSI_SnagIt(onlyPot)
 					{
 						switch(_checkeditem.ClassID)
 						{
-						case 515: // Rejuvenation Potion
-						case 516: // Full Rejuvenation Potion
-							Print("Picked up " + GetLocaleString(2209+_checkeditem.ClassID-515));
-							break;
-						case 587: // Minor Healing Potion
-						case 588: // Light Healing Potion
-						case 589: // Healing Potion
-						case 590: // Greater Healing Potion
-						case 591: // Super Healing Potion
-						case 592: // Minor Mana Potion
-						case 593: // Light Mana Potion
-						case 594: // Mana Potion
-						case 595: // Greater Mana Potion
-						case 596: // Super Mana Potion
-							Print("Picked up " + GetLocaleString(2266+_checkeditem.ClassID-587));
+						case 515+3: // Rejuvenation Potion
+						case 516+3: // Full Rejuvenation Potion
+						case 587+3: // Minor Healing Potion
+						case 588+3: // Light Healing Potion
+						case 589+3: // Healing Potion
+						case 590+3: // Greater Healing Potion
+						case 591+3: // Super Healing Potion
+						case 592+3: // Minor Mana Potion
+						case 593+3: // Light Mana Potion
+						case 594+3: // Mana Potion
+						case 595+3: // Greater Mana Potion
+						case 596+3: // Super Mana Potion
+							Print("Picked up Potion");
 							break;
 						default:
 							Print("Picked up " + NTC_ItemQualityToD2Color[_item.quality] + _item.name.split("\n")[0]);

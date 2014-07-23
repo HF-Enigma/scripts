@@ -493,11 +493,8 @@ function NTM_ChangeAreaInt(how, dest, ownername, myportal)
 
 				NTC_CastSkill(43, NTC_HAND_RIGHT, _portal);
 			}
-			else{
-				if(NTC_GetSkillLevel(54) < 1){
-					NTC_DoClick(NTC_CLICK_LDOWN, NTC_SHIFT_NONE, _portal);
-				}
-				else if(NTM_GetCloserIntS(_portal)){// added to fix walking to portal bug
+			else{				
+				if(NTM_GetCloserIntS(_portal)){// added to fix walking to portal bug
 					NTC_DoClick(NTC_CLICK_LDOWN, NTC_SHIFT_NONE, _portal);
 				}
 			}
