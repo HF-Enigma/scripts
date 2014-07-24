@@ -140,7 +140,7 @@
 
 // ##### Amulets #######################
 //[Type] == amulet && [Quality] == unique # [Strength] == 12 && [ColdResist] >= 25 // Saracen's Chance
-[Type] == amulet && [Quality] == unique # [Dexterity] == 25 // The Cat's Eye
+//[Type] == amulet && [Quality] == unique # [Dexterity] == 25 // The Cat's Eye
 //[Type] == amulet && [Quality] == unique # [LifeLeech] >= 6 && [ManaLeech] >= 15 // Crescent Moon
 //[Type] == amulet && [Quality] == unique # [PoisonResist] == 75 // Atma's Scarab
 [Type] == amulet && [Quality] == unique # [HPRegen] == 10 // The Rising Sun

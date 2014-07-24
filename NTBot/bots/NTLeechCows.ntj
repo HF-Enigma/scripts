@@ -527,7 +527,7 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 
 	Print("NTCOW_ClearPosition()");
 	
-	Delay(100);
+	Delay(40);
 	
 	for(var i = 0; i < 2; i++)
 	{
@@ -569,7 +569,7 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 
 			if(_mindistance < 1E6)
 			{								
-				Delay(160);
+				Delay(40);
 				_target = NTC_FindUnit(NTC_UNIT_MONSTER, _mingid, 1);
 
 				if(_target)
@@ -606,7 +606,7 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 		// NTA_NecRaiseArmy();
 	// }
 	
-	Delay(20);
+	Delay(40);
 	
 	if(pickitem){
 		NTSI_PickItems_v2();

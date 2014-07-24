@@ -24,16 +24,20 @@ function NTA_NecromancerAttackInt(target, firstorder) {
 			}
 
 			if (!NTC_CastSkill(66, NTC_HAND_RIGHT, target.x, target.y)) {
+				Delay(100);
 				return 2;
 			}
 			
+			Delay(40);
 			return 3;	
 		}
 		
 		if(!NTA_ExplodeCorpses(target)) {
+			Delay(100);
 			return 2;
 		}
 		
+		Delay(40);
 		return 3;	
 	}
 	

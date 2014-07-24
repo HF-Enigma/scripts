@@ -11,7 +11,7 @@
 
 // New
 //[Name] == VampireboneGloves && [Quality] == set
-[Name] == SpiderwebSash && [Quality] == set
+//[Name] == SpiderwebSash && [Quality] == set
 
-[Type] == ring && [Quality] == set # [ItemAllSkills] == 1
+//[Type] == ring && [Quality] == set # [ItemAllSkills] == 1
 [Type] == amulet && [Quality] == set # [barbarianskills] == 3 || [necromancerskills] == 3 || [paladinskills] == 3

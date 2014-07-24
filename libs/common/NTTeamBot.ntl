@@ -95,7 +95,7 @@ function TB_KillTransformedMonster(){
 				if(i==4){
 					Delay(Math.round(Math.random()*2000));
 					NTM_MakeTP(NTC_AREA_ID_ACT_5);
-					Delay(5000);
+					Delay(2000);
 					NTM_UsePortal("BluePortal", 132, me.charname);
 					
 					if(!TB_KillMonster(TB_BaalTransformClassid[4])){
@@ -121,7 +121,7 @@ function TB_KillTransformedMonster(){
 			if(i==4){
 				Delay(Math.round(Math.random()*2000));
 				NTM_MakeTP(NTC_AREA_ID_ACT_5);
-				Delay(5000);
+				Delay(2000);
 				NTM_UsePortal("BluePortal", 132, me.charname);
 				
 				if(!TB_KillMonster(TB_BaalTransformClassid[4])){
