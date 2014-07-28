@@ -1,12 +1,25 @@
 // ##### Armor #########################
-[Name] == MagePlate && [Quality] == superior && [Flag] != ethereal # ([Sockets] == 0 || [Sockets] == 3) && [EnhancedDefense] >= 14
-[Name] == ArchonPlate && [Quality] == superior && [Flag] == ethereal # [Sockets] == 0 && [EnhancedDefense] >= 10
+//[Name] == MagePlate && [Quality] == superior && [Flag] != ethereal # ([Sockets] == 0 || [Sockets] == 3) && [EnhancedDefense] == 15
+[Name] == ArchonPlate && [Quality] == superior && [Flag] == ethereal # [Sockets] == 0 && [EnhancedDefense] >= 1
 
 // ##### Shields #######################
-[Name] == Monarch && [Quality] == superior && [Flag] == ethereal # [Sockets] == 0 && [EnhancedDefense] >= 10
+[Name] == Monarch && [Quality] == superior && [Flag] == ethereal # [Sockets] == 0 && [EnhancedDefense] >= 5
 
 // ##### Polearms ######################
-[Name] == GreatPoleaxe && [Quality] == superior && [Flag] == ethereal # [Sockets] >= 4 && [Sockets] <= 5
+[Name] == GreatPoleaxe && [Quality] <= superior && [Flag] == ethereal # ([Sockets] == 0 || [Sockets] == 4 || [Sockets] == 5) // && [EnhancedDamage] >= 0
+//[Type] == polearm && [Class] == elite && [Quality] <= superior # [Sockets] == 4 // Insight for Iron Golem
+
+// ##### Barbarian Helms ###############
+[Type] == primalhelm && [Class] == elite && [Quality] <= superior && [Flag] != ethereal # [Sockets] == 3 && [SkillBattleOrders] == 3
+
+// ##### Paladin Shields ###############
+[Type] == auricshields && [Class] == elite && [Quality] == superior && [Flag] == ethereal # [Sockets] == 0 && [EnhancedDefense] >= 5 && [FireResist] >= 40
+
+// ##### Necromancer Shrunken Heads ####
+[Type] == voodooheads && [Class] == elite && [Quality] <= superior && [Flag] != ethereal # [Sockets] == 2 && [SkillPoisonExplosion]+[SkillPoisonNova] >= 4
+
+// ##### Axes ##########################
+[Name] == BerserkerAxe && [Quality] == superior && [Flag] == ethereal # [Sockets] == 5 && [EnhancedDamage] >= 12
 
 // ##### Runes #########################
 //[Name] == TalRune
@@ -55,7 +68,7 @@
 //[Name] == PerfectTopaz
 
 // ##### Potions #######################
-[Name] == GreaterHealingPotion
+//[Name] == GreaterHealingPotion
 [Name] == GreaterManaPotion
 
 [Name] == SuperHealingPotion
@@ -66,4 +79,4 @@
 
 
 // ##### Gold ##########################
-[Type] == gold # [Gold] >= 5000
+[Type] == gold # [Gold] >= 7000

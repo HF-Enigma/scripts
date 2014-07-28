@@ -120,7 +120,7 @@
 //[Name] == MatriarchalJavelin && [Quality] == unique
 
 // ##### Assassin Katars ###############
-[Name] == GreaterTalons && [Quality] == unique # [EnhancedDamage] >= 180 && [LifeLeech] >= 7 // Bartuc's Cut-Throat
+//[Name] == GreaterTalons && [Quality] == unique # [EnhancedDamage] >= 180 && [LifeLeech] >= 7 // Bartuc's Cut-Throat
 
 // ##### Sorceress Orbs ################
 //[Name] == SwirlingCrystal && [Quality] == unique // The Oculus
@@ -178,7 +178,7 @@
 [Name] == hellforgeplate && [Quality] == unique
 [Name] == lacqueredplate && [Quality] == unique
 
-[Name] == SacredArmor && [Quality] == unique # [ItemAllSkills] >= 1 // Tyrael's Might
+[Name] == SacredArmor && [Quality] == unique  // Tyrael's Might # [ItemAllSkills] >= 1
 
 // belt
 [Name] == colossusgirdle && [Quality] == unique
@@ -199,6 +199,10 @@
 [Name] == greatpoleaxe && [Quality] == unique
 
 [Name] == wardbow && [Quality] == unique # [ItemAllSkills] == 2
+
+[Name] == scourge && [Quality] == unique # [ItemAllSkills] >= 2
+
+[Name] == scissorssuwayyah && [Quality] == unique # [ItemAllSkills] >= 2
 
 // shield
 [Name] == sacredtarge && [Quality] == unique

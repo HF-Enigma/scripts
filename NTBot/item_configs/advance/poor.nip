@@ -29,7 +29,6 @@
 ([Type] == amulet || [Type] == ring) && [Quality] == rare # [itemaddexperience] >= 40
 
 // ##### Jewels ########################
-[Type] == jewel && [Quality] == magic # [EnhancedDamage] >= 30
 [Type] == jewel && [Quality] >= magic # [FireResist] >= 20 && ([Strength] >= 7 || [IAS] >= 15 || [EnhancedDamage] >= 20)
 [Type] == jewel && [Quality] == magic # [IAS] >= 15 && ([EnhancedDamage] >= 15 || [MinDamage]+[MaxDamage] >= 10 || [Strength] >= 7 || [FireResist] >= 25)
 [Type] == jewel && [Quality] == rare # [FHR] >= 7 && ([Strength] >= 7 || [Dexterity] >= 7)

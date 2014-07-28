@@ -80,6 +80,26 @@ function NTSI_PickItems_v2()
 	NTSI_SnagIt_v2();
 }
 
+function NTSI_PickRunes()
+{
+	var i, _mode;
+
+	for(i = 0 ; i < 50 ; i++)
+	{
+		_mode = me.mode;
+
+		if((_mode >= 1 && _mode <= 3) || _mode == 5 || _mode == 6)
+			break;
+
+		NTC_Delay(NTC_DELAY_FRAME);
+	}
+
+	if(i < Math.floor(NTConfig_SnagDelay/NTC_DELAY_FRAME))
+		NTC_PingDelay(NTConfig_SnagDelay-(i*NTC_DELAY_FRAME));
+
+	NTSI_SnagRune();
+}
+
 function NTSI_SnagIt_v2(onlyPot)
 {
 	var i;
@@ -105,8 +125,14 @@ function NTSI_SnagIt_v2(onlyPot)
 	}
 	
 	while(_checkeditems.length > 0 && _checkeditems[0])
-	{
+	{				
 		_item = NTC_FindUnit(NTC_UNIT_ITEM, _checkeditems[0].GID);
+		
+		if(!_item && GetDistance(me.x, me.y, _checkeditems[0].x, _checkeditems[0].y) > 25)
+		{
+			NTM_MoveTo(me.areaid, _checkeditems[0].x, _checkeditems[0].y);
+			_item = NTC_FindUnit(NTC_UNIT_ITEM, _checkeditems[0].GID);
+		}
 		
 		if (_item && (_item.mode === 3 || _item.mode === 5)) {
 			if(!NTSI_IsLimitedItemInt(_item))
@@ -129,7 +155,7 @@ function NTSI_SnagIt_v2(onlyPot)
 						case 594+3: // Mana Potion
 						case 595+3: // Greater Mana Potion
 						case 596+3: // Super Mana Potion
-							Print("Picked up potion");
+							//Print("Picked up potion");
 							break;
 						default:
 							Print("Picked up " + NTC_ItemQualityToD2Color[_item.quality] + _item.name.split("\n")[0]);
@@ -148,6 +174,64 @@ function NTSI_SnagIt_v2(onlyPot)
 
 						_checkeditems.push(_checkeditems[0]);
 					}
+				}
+			}
+		}
+		
+		_checkeditems.shift();
+	}
+}
+
+function NTSI_SnagRune()
+{
+	var i;
+	var _item;
+	var _checkeditem, _checkeditems;
+	var _value;
+	
+	_checkeditems = new Array();
+	
+	_item = NTC_FindUnit(NTC_UNIT_ITEM);
+
+	if(_item){
+		do {
+			if(_item.classid < 633 || _item.classid > 645)
+				continue;
+				
+			if ((_item.mode === 3 || _item.mode === 5) && GetDistance(me, _item) <= NTConfig_SnagRange) {
+				_checkeditems.push(new NTSI_ItemInt(_item, 1));
+			}
+		} while (_item.GetNext());	
+	}
+	
+	while(_checkeditems.length > 0 && _checkeditems[0])
+	{		
+		_item = NTC_FindUnit(NTC_UNIT_ITEM, _checkeditems[0].GID);
+		
+		if(!_item && GetDistance(me.x, me.y, _checkeditems[0].x, _checkeditems[0].y) > 20)
+		{
+			NTM_MoveTo(me.areaid, _checkeditems[0].x, _checkeditems[0].y);
+			_item = NTC_FindUnit(NTC_UNIT_ITEM, _checkeditems[0].GID);
+		}
+		
+		if (_item && (_item.mode === 3 || _item.mode === 5)) {
+			if(NTT_CheckSpace(_item.xsize, _item.ysize))
+			{
+				if(NTSI_PickUpItemInt(_item))
+				{
+					Print("Picked up " + NTC_ItemQualityToD2Color[_item.quality] + _item.name.split("\n")[0]);
+				}
+			}
+			else
+			{
+				if(!_checkeditems[0].Retry)
+				{
+					_checkeditems[0].Retry = true;
+
+					if(!NTTMGR_VisitTown())
+						return;
+
+					_checkeditems.push(_checkeditems[0]);
 				}
 			}
 		}
@@ -288,7 +372,7 @@ function NTSI_CheckItem(item)
 	if(!item || item.quality == undefined) {return false;}
 		
 	var _result;
-
+	
 	switch(item.quality)
 	{
 	case 5:
@@ -324,7 +408,7 @@ function NTSI_PickUpItemInt(snagitem)
 {
 	if(!snagitem || snagitem.classid == undefined) {return false;}
 	
-	var i;
+	var i, j;
 	var _classid;
 
 	_classid = snagitem.classid;
@@ -333,16 +417,6 @@ function NTSI_PickUpItemInt(snagitem)
 	{
 		if((i % 10) == 0 && (snagitem.mode == 3 || snagitem.mode == 5))
 		{
-			// if(i==20){
-				// NTM_MoveTo(snagitem.areaid, snagitem.x+2, snagitem.y);
-			// }
-			// else if(i==30){
-				// NTM_MoveTo(snagitem.areaid, snagitem.x, snagitem.y-2);
-			// }
-			// else if(i==40){
-				// NTM_MoveTo(snagitem.areaid, snagitem.x-2, snagitem.y);
-			// }
-			
 			var distance = GetDistance(me, snagitem);
 			if(distance>3 && NTC_GetSkillLevel(43)>=1 && (snagitem.itemtype == 4 || (snagitem.itemtype >= 76 && snagitem.itemtype <= 78)) && GetDistance(me, snagitem) <= 16.6)
 			{
@@ -356,6 +430,17 @@ function NTSI_PickUpItemInt(snagitem)
 				{
 					NTM_MoveTo(snagitem.areaid, snagitem.x, snagitem.y);
 				}
+				
+				if(i>=30 && !CheckCollision(me, snagitem, 4)){
+					var positions = [snagitem.x+3, snagitem.y, snagitem.x-3, snagitem.y, snagitem.x, snagitem.y+3, snagitem.x, snagitem.y-3];
+					
+					for(j=0;j<positions.length-2;j=j+2){						
+						NTM_MoveTo(snagitem.areaid, positions[j], positions[j+1]);
+						if(CheckCollision(me, snagitem, 4))
+							break;
+					}
+				}
+				
 				if(NTC_ClearCursor())
 					NTC_DoClick(NTC_CLICK_LDOWN, NTC_SHIFT_NONE, snagitem);
 			}

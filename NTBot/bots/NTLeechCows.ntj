@@ -1,4 +1,4 @@
-var NTCOW_PickItemsInstantly = false;
+var NTCOW_PickRunesInstantly = true;
 
 function NTMain(){
 	Include("libs/common/NTCommon.ntl");
@@ -35,7 +35,9 @@ function NTMain(){
 		return;
 	}
 	
-	NTTMGR_TownManager();
+	if(me.charname != TB_leecher[0]){
+		NTTMGR_TownManager();
+	}
 	
 	switch(NTConfig_LeechCowType)
 	{
@@ -80,7 +82,11 @@ function NT_LeechFighter(){
 	}
 	
 	NTP_DoPrecast(true);
-	Delay(8000);
+	Delay(2000);
+	NTM_MoveTo(me.areaid, me.x+1, me.y+1);
+	Delay(2000);
+	NTM_MoveTo(me.areaid, me.x-1, me.y-1);
+	Delay(4000);
 	
 	NTTM_CheckAct(1);
 	
@@ -209,13 +215,14 @@ function NTCOW_TakeCowPortal(){
 	var _portal;
 
 	_portal = NTC_FindUnit(NTC_UNIT_OBJECT, 60, 5);
-	NTM_MoveTo(me.areaid, _portal.x+1, _portal.y);
-
-	if(_portal){
-		return NTM_UsePortal("Portal", 39, "dummy", _portal);
+	
+	if(!_portal){
+		return false;
 	}
 	
-	return false;
+	NTM_MoveTo(me.areaid, _portal.x+1, _portal.y);
+	
+	return NTM_UsePortal("Portal", 39, "dummy", _portal);
 }
 
 function NTCOW_SecondTomeTP(npc, type, amount){
@@ -457,6 +464,8 @@ function NTCOW_ClearCowLevel() {
 	var i, room, result, myRoom,
 		rooms = NTCOW_BuildCowRooms();
 		
+	NTConfig_ExplodeCorpsesRange = 8;
+		
 	Print("Built cow rooms.");
 	Delay(1000);
 
@@ -466,10 +475,11 @@ function NTCOW_ClearCowLevel() {
 
 	myRoom = [me.x, me.y];
 	
-	while (rooms.length > 0) {
+	while (rooms.length > 6) {	
 		rooms.sort(RoomSort);
 		
-		Print("Rooms sorted, " + rooms.length + " left.");
+		if((rooms.length % 10) == 0)
+			Print("Rooms sorted, " + rooms.length + " left.");
 		
 		RunGC();
 		Delay(40);
@@ -483,7 +493,10 @@ function NTCOW_ClearCowLevel() {
 		if(!NTCOW_MoveTo(me.areaid, room[0], room[1], 3, true)){
 			// return false;
 			continue;
-		}
+		}		
+		
+		NTP_DoPrecast();
+		NTCOW_ClearPosition(30, true);
 		
 		// remove adjacent rooms
 		for(i=0; i<rooms.length;){
@@ -525,14 +538,14 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 	_orgx = me.x;
 	_orgy = me.y;
 
-	Print("NTCOW_ClearPosition()");
+	//Print("NTCOW_ClearPosition()");
 	
-	Delay(40);
+	Delay(100);
 	
-	for(var i = 0; i < 2; i++)
+	for(var i = 0; i < 1; i++)
 	{
 		_attackcount = 0;
-		while(_attackcount < (i+1)*10000)
+		while(_attackcount < (i+1)*5000)
 		{
 			_mindistance = 1E6;
 			
@@ -587,8 +600,8 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 							break;
 						case 2:
 						case 3:
-							if(NTCOW_PickItemsInstantly)
-								NTSI_PickItems();
+							if(NTCOW_PickRunesInstantly && (_attackcount % 4) == 0)
+								NTSI_PickRunes();
 							_attackcount++;
 							break;
 						default:
@@ -606,17 +619,15 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 		// NTA_NecRaiseArmy();
 	// }
 	
-	Delay(40);
-	
 	if(pickitem){
 		NTSI_PickItems_v2();
-		Print("NTSI_PickItems_v2() finished.");
+		//Print("NTSI_PickItems_v2() finished.");
 	}
 		
 	switch(safelevel)
 	{
 		case 1:
-			return NTTMGR_CheckSafe(0x00, NTConfig_CheckMercSafe&0x01);
+			return NTTMGR_CheckSafe(0x00, 0x01);
 		case 2:
 			return NTTMGR_CheckSafe(NTConfig_CheckSelfSafe, NTConfig_CheckMercSafe);
 	}
@@ -657,33 +668,114 @@ function NTCOW_MoveTo(areaId, x, y, retry, isClearPath){
 	{
 		for (j = 0; j < retry; j++)
 		{
-			if (NTM_MoveTo(me.areaid, _path[i][0], _path[i][1]))
+			if (NTCOW_MoveToXY(me.areaid, _path[i][0], _path[i][1]))
 				break;
 		}
 
 		if (j >= retry)
-			return false;
-				
-		if (isClearPath)
-		{
-			_preX = me.x;
-			_preY = me.y;
-
-			if(!NTCOW_ClearPosition(30, true))
-				return false;
-
-			NTP_DoPrecast();
+			return false;			
 			
-			if (me.x != _preX || me.y != _preY)
-			{
-				if (!NTM_MoveTo(me.areaid, _preX, _preY))
-					return false;
-					
-				Delay(10);	
-				NTSI_PickItems_v2();
-			}
+		_preX = me.x;
+		_preY = me.y;
+		
+		NTSI_PickRunes();
+		
+		if (me.x != _preX || me.y != _preY)
+		{
+			if (!NTCOW_MoveToXY(me.areaid, _preX, _preY))
+				return false;				
 		}
 	}
 	
 	return true;
+}
+
+function NTCOW_MoveToXY(areaid, x, y, retry, clearpath)
+{
+	var i, n;
+	var _teleport;
+	var _path;
+	var _retry = 0;
+
+	if(x == me.x && y == me.y)
+		return true;
+
+	if(arguments.length < 4)
+		retry = 3;
+
+	if(arguments.length < 5)
+		clearpath = false;
+
+	if(NTC_InTown() || NTC_GetSkillLevel(54) < 1)
+		_teleport = false;
+	else
+		_teleport = true;
+
+	if (_teleport && GetDistance(me.x, me.y, x, y) < 20) {// houstin add
+        return NTCOW_TeleportTo(x, y);
+	}
+		
+	_path = GetPath(areaid, me.x, me.y, x, y, _teleport);
+
+	if(!_path)
+		return false;
+
+	for(i = 0 ; i < _path.length ; i++)
+	{
+		for(n = 0 ; n < 2 ; n++)
+		{
+			if(_teleport)
+			{
+				if(NTCOW_TeleportTo(_path[i][0], _path[i][1]))
+					break;
+			}
+			else
+			{
+				if(NTM_WalkTo(_path[i][0], _path[i][1]))
+					break;
+			}
+		}
+
+		if(n < 2)
+		{
+			if(clearpath)
+			{
+				if(!NTA_ClearPosition(20, true, 2))
+					return false;
+
+				NTP_DoPrecast(false);
+
+				NTM_MoveTo(me.areaid, _path[i][0], _path[i][1], 1);
+			}
+		}
+		else if(_retry < retry)
+		{
+			_path = GetPath(areaid, me.x, me.y, x, y, _teleport);
+
+			if(!_path)
+				return false;
+
+			i = -1;
+			_retry++;
+		}
+		else
+			return false;
+	}
+
+	return true;
+}
+
+function NTCOW_TeleportTo(x, y)
+{
+	NTC_CastSkill(54, NTC_HAND_RIGHT, x, y);
+	
+	for(var i = 0; i < 15; i++)
+	{
+		if(Math.abs(me.x - x) <= 6 && Math.abs(me.y - y) <= 6)
+			return true;
+
+		NTC_Delay(NTC_DELAY_FRAME);
+	}
+
+	return false;
 }

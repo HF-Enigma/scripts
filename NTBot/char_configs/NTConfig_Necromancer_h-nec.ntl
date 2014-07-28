@@ -20,10 +20,10 @@ function NT_LoadConfig()
 	//------------------------------------------------------------------------------	
 	NTConfig_PublicMode = false;
 
-	//NTConfig_Script.push("NTLeechCows.ntj");			// There are currently NO options for this script, still working on it
+	NTConfig_Script.push("NTLeechCows.ntj");			// There are currently NO options for this script, still working on it
 		NTConfig_LeechCowType = 1;  					// 1 = Leech Fighter, 2 = Leech Helper, 3 = Passive Leecher
 
-	NTConfig_Script.push("NTUniversalBaalLeech.ntj");
+	//NTConfig_Script.push("NTUniversalBaalLeech.ntj");
 		NTConfig_LeechBaal = 1; 						// 1 = Leech Fighter(Walking), 2 = Leech Helper (Walking), 3 = Passive Leecher (Corner dunce).
 		NTConfig_FollowtoWorldStone = true;				// Go down to Baal in WS Chamber after waves?
 		
@@ -75,11 +75,11 @@ function NT_LoadConfig()
 	NTConfig_UseMerc = true;	// Set to true if you use a mercenary, will revive merc at a reviver npc.
 	NTConfig_ResetWeapon = false;	// Set to true to reset weapon when reviving merc
 
-	NTConfig_LifeThresh = 80;							// Drink a health potion if under this percent of life.
-	NTConfig_LifeRejuvThresh = 40;						// Drink a rejuvenation potion if under this percent of life. (Will not use health potions under this %)
-	NTConfig_ManaThresh = 10;							// Drink a mana potion if under this percent of mana.
-	NTConfig_ManaRejuvThresh = 0;						// Drink a rejuvenation potion if under this percent of mana. (Will not use mana potions under this %)
-	NTConfig_LifeChicken = 30;							// This is your D2NT chicken life percent. If you go below this life total, exit game.
+	NTConfig_LifeThresh = 85;							// Drink a health potion if under this percent of life.
+	NTConfig_LifeRejuvThresh = 60;						// Drink a rejuvenation potion if under this percent of life. (Will not use health potions under this %)
+	NTConfig_ManaThresh = 15;							// Drink a mana potion if under this percent of mana.
+	NTConfig_ManaRejuvThresh = 10;						// Drink a rejuvenation potion if under this percent of mana. (Will not use mana potions under this %)
+	NTConfig_LifeChicken = 35;							// This is your D2NT chicken life percent. If you go below this life total, exit game.
 	NTConfig_ManaChicken = 0;							// This is your D2NT chicken mana percent. If you go below this mana total, exit game.
 
 	NTConfig_MercLifeThresh = 80;						// Give merc a health potion if under this percent of life.
@@ -108,21 +108,21 @@ function NT_LoadConfig()
 	// 		Rejuvenations MUST, I REPEAT MUST be at the end of the belt (last x columns).
 	// 		To use rejuvenations only, put "rv" in all columns.
 	//----------------------------------------------------------------------------------------------
-	NTConfig_BeltColType[0] = "hp";
-	NTConfig_BeltColType[1] = "hp";
-	NTConfig_BeltColType[2] = "mp";
+	NTConfig_BeltColType[0] = "mp";
+	NTConfig_BeltColType[1] = "rv";
+	NTConfig_BeltColType[2] = "rv";
 	NTConfig_BeltColType[3] = "rv";
 
 	//-----------------------------------------------------------------------------------
 	// Pickit (SnagIt) Configuration
 	//-----------------------------------------------------------------------------------
 
-	NTConfig_NIPFilePath.push("advance/normal.nip");
-	NTConfig_NIPFilePath.push("advance/poor.nip");
-	NTConfig_NIPFilePath.push("advance/set.nip");
-	NTConfig_NIPFilePath.push("advance/unique.nip");
-	NTConfig_NIPFilePath.push("advance/craft.nip");
-	// NTConfig_NIPFilePath.push("advance/cow.nip");
+	// NTConfig_NIPFilePath.push("advance/normal.nip");
+	// NTConfig_NIPFilePath.push("advance/poor.nip");
+	// NTConfig_NIPFilePath.push("advance/set.nip");
+	// NTConfig_NIPFilePath.push("advance/unique.nip");
+	// NTConfig_NIPFilePath.push("advance/craft.nip");
+	NTConfig_NIPFilePath.push("advance/cow.nip");
 
 
 	NTConfig_SnagRange = 40;							// Radius to check for dropped items. 40 is a good number here
@@ -186,7 +186,7 @@ function NT_LoadConfig()
 	NTConfig_Curse[1] = 66; 				// Curse to others. Set to 0 if you won't
 
 	NTConfig_SkeletonArmy = "max"; 				// Skeleton army size. (Set 0 to disable.)
-	NTConfig_MageArmy = "max"; 					// Skeleton Mage army size. (Set 0 to disable.)
+	NTConfig_MageArmy = 0; 					// Skeleton Mage army size. (Set 0 to disable.)
 	NTConfig_ReviveArmy = "max"; 				// Revive army size. (Set 0 to disable.)
 
 	NTConfig_ExplodeCorpses = 74; 			// 0 = Don't Explode / 74 = Corpse Explosion / 83 = Poison Explosion
