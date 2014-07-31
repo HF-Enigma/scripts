@@ -6,8 +6,8 @@ function NT_LoadConfig()
 	//------------------------------------------------------------------------------
 	// TeamBoot configuration
 	//------------------------------------------------------------------------------
-	NTConfig_PublicMode = true;	
-	// NTConfig_PublicMode = false;
+	// NTConfig_PublicMode = true;	
+	NTConfig_PublicMode = false;
 
 	NTConfig_Script.push("NTLeechCows.ntj");			// There are currently NO options for this script, still working on it
 		NTConfig_LeechCowType = 2;  					// 1 = Leech Fighter, 2 = Leech Helper, 3 = Passive Leecher
@@ -24,6 +24,8 @@ function NT_LoadConfig()
 	//NTConfig_Script.push("NTCow.ntj");
 	
 	//NTConfig_Script.push("NTPindleskin.ntj"); NTConfig_NihlathakExtension = false;
+	//NTConfig_Script.push("NTCountess.ntj");
+	//NTConfig_Script.push("NTSummoner.ntj"); NTConfig_KillFireEye = false;
 	//NTConfig_Script.push("NTNihlathak.ntj"); NTConfig_PindleskinExtension = false;
 	//NTConfig_Script.push("NTEldritch.ntj"); NTConfig_ShenkExtension = false;
 	//NTConfig_Script.push("NTThreshSocket.ntj");
@@ -38,13 +40,11 @@ function NT_LoadConfig()
 	//NTConfig_Script.push("NTTravincal.ntj");
 	//NTConfig_Script.push("NTKurastTravel.ntj");
 	//NTConfig_Script.push("NTAct3Sewers.ntj"); NTConfig_ClearA3SewersLevel1 = 1; // 0 : don't clear, 1 : clear path only, 2 : clear all
-	//NTConfig_Script.push("NTSummoner.ntj"); NTConfig_KillFireEye = false;
 	//NTConfig_Script.push("NTDuriel.ntj");
 	//NTConfig_Script.push("NTAncientTunnels.ntj");
 	//NTConfig_Script.push("NTColdworm.ntj");
 	//NTConfig_Script.push("NTRadament.ntj");
 	//NTConfig_Script.push("NTAndariel.ntj");
-	//NTConfig_Script.push("NTCountess.ntj");
 	//NTConfig_Script.push("NTTreehead.ntj");
 	//NTConfig_Script.push("NTPit.ntj"); NTConfig_ClearPitLevel1 = 1; // 0 : don't clear, 1 : clear path only, 2 : clear all
 	//NTConfig_Script.push("NTMausoleum.ntj"); NTConfig_KillBloodRaven = true;
@@ -143,15 +143,16 @@ function NT_LoadConfig()
 	// Attack configuration
 	//------------------------------------------------------------------------------
 	NTConfig_AttackSkill[0] = -1;	// First skill. Set to 0 if you won't
-	NTConfig_AttackSkill[1] = 56;	// Primary skill to super unique/champion.
-	NTConfig_AttackSkill[2] = 47;	// Primary untimed skill to super unique/champion.
-	NTConfig_AttackSkill[3] = 56;	// Primary skill to others.
-	NTConfig_AttackSkill[4] = 47;	// Primary untimed skill to others. Set to 0 if you won't
+	NTConfig_AttackSkill[1] = 49;	// Primary skill to super unique/champion.
+	NTConfig_AttackSkill[2] = -1;	// Primary untimed skill to super unique/champion.
+	NTConfig_AttackSkill[3] = 53;	// Primary skill to others.
+	NTConfig_AttackSkill[4] = -1;	// Primary untimed skill to others. Set to 0 if you won't
 	NTConfig_AttackSkill[5] = -1;	// Secondary skill in case monster is immune to primary skill. Set to 0 if you won't
 	NTConfig_AttackSkill[6] = -1;	// Secondary untimed skill. Set to 0 if you won't
 	
 	// ice 59 55
 	// fire 56 47
+	// lightning 49 53
 
 	//------------------------------------------------------------------------------
 	// Check Safe Settings

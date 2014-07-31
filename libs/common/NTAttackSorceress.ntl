@@ -124,7 +124,10 @@ function NTA_SorceressAttackInt(target, firstorder) {
 	}
 	
 	if(NTC_GetMerc()) {
-		Delay(300);
+		if (GetDistance(me, target) > 2) {
+			NTM_MoveTo(target.areaid, target.x, target.y, 0, false, false);
+		}
+		NTA_SorceressCastSkillInt(3, target);
 		return 2;
 	}
 

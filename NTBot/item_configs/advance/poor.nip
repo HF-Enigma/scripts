@@ -2,9 +2,8 @@
 //[Name] == Monarch && [Quality] == magic && [Flag] != ethereal # [Sockets] >= 4 && [FBR] >= 30
 
 // ##### Gloves ########################
-[Type] == gloves && [Quality] == rare && [Flag] != ethereal # [IAS] >= 20 && [ItemAddSkillTab] >= 2 && [Strength]+[Dexterity] >= 20
-[Type] == gloves && [Quality] == rare && [Flag] != ethereal # [IAS] >= 20 && [Strength]+[Dexterity] >= 20
-[Type] == gloves && [Quality] == rare && [Flag] != ethereal # [IAS] >= 20 && [Strength]+[Dexterity] >= 10 && [FireResist]+[LightResist] >=15
+[Type] == gloves && [Quality] == rare && [Flag] != ethereal # [IAS] >= 20 && [ItemAddSkillTab] >= 2 && [Strength]+[Dexterity] >= 10
+[Type] == gloves && [Quality] == rare && [Flag] != ethereal # [IAS] >= 20 && [martialartsskilltab] >= 2
 
 // ##### Boots #########################
 [Type] == boots && [Quality] == rare && [Flag] != ethereal # [FRW] >= 20 && [FHR] >= 10 && [FireResist]+[LightResist]+[ColdResist]+[PoisonResist] >= 50

@@ -28,7 +28,7 @@ function NTMain()
 		return;
 	}
 
-	NTTMGR_TownManager();
+	//NTTMGR_TownManager();
 
 	if(!NTTM_TownMove("waypoint"))
 	{
@@ -70,11 +70,11 @@ function NTMain()
 		return;
 	}
 
-	if(!NTTMGR_CheckSafe(NTConfig_CheckSelfSafe, NTConfig_CheckMercSafe))
-	{
-		NTC_SendMsgToScript("NTBotGame.ntj", "NTTMGR_CheckSafe()");
-		return;
-	}
+	// if(!NTTMGR_CheckSafe(NTConfig_CheckSelfSafe, NTConfig_CheckMercSafe))
+	// {
+		// NTC_SendMsgToScript("NTBotGame.ntj", "NTTMGR_CheckSafe()");
+		// return;
+	// }
 
 	if(NTA_KillMonster(526))
 	{

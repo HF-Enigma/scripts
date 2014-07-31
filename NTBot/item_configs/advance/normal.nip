@@ -37,6 +37,7 @@
 [Type] == amazonbow && [Class] == elite && [Quality] == superior # [Sockets] == 4 && [EnhancedDamage] >= 10 && [BowAndCrossbowSkillTab] >= 2 // Faith
 
 // ##### Runes #########################
+//[Name] == IthRune
 //[Name] == TalRune
 //[Name] == RalRune
 //[Name] == OrtRune
@@ -88,4 +89,4 @@
 [Name] == KeyOfDestruction
 
 // ##### Gold ##########################
-[Type] == gold # [Gold] >= 5000
+[Type] == gold # [Gold] >= 10000
