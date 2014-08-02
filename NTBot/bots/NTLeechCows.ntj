@@ -67,7 +67,7 @@ function NTMain(){
 	NTC_SendMsgToScript("NTBotGame.ntj", "SCRIPT_END");
 }
 
-function NT_LeechFighter(){	
+function NT_LeechFighter(){
 	NTTM_TownMove("portalspot");
 	
 	var _starttick, _prev_areaid;
@@ -87,20 +87,27 @@ function NT_LeechFighter(){
 		NTM_UsePortal("BluePortal", 131, TB_helper[0]);
 	}
 	
+	var leecherBo = TB_GetPlayerUnit(TB_leecher[0]);
+	
+	while(!leecherBo || leecherBo.areaid != me.areaid){
+		Delay(500);
+		leecherBo = TB_GetPlayerUnit(TB_leecher[0]);
+	}
+	
 	NTP_DoPrecast(true);
-	Delay(1000);
+	Delay(500);
 	NTM_MoveTo(me.areaid, me.x+1, me.y+1);
-	Delay(1000);
+	Delay(500);
 	NTM_MoveTo(me.areaid, me.x-1, me.y-1);
-	Delay(1000);
+	Delay(500);
 	NTM_MoveTo(me.areaid, me.x+1, me.y+1);
-	Delay(1000);
+	Delay(500);
 	NTM_MoveTo(me.areaid, me.x-1, me.y-1);
-	Delay(1000);
+	Delay(500);
 	NTM_MoveTo(me.areaid, me.x+1, me.y+1);
-	Delay(1000);
+	Delay(500);
 	NTM_MoveTo(me.areaid, me.x-1, me.y-1);
-	Delay(6000);
+	Delay(9000);
 	
 	NTM_UsePortal("BluePortal", NTC_AREA_ID_ACT_1, TB_helper[0]);
 	
@@ -144,10 +151,14 @@ function NT_LeechHelper(){
 		}
 		
 		NTM_MakeTP();
-		Delay(2000);
-		NTP_DoPrecast(true);
-		Delay(2000);
-		NTP_DoPrecast(true);
+		
+		var leecherBo = TB_GetPlayerUnit(TB_leecher[0]);
+		
+		while(!leecherBo || leecherBo.areaid != me.areaid){
+			Delay(500);
+			leecherBo = TB_GetPlayerUnit(TB_leecher[0]);
+		}
+		
 		Delay(2000);
 		NTP_DoPrecast(true);
 		
@@ -523,7 +534,7 @@ function NTCOW_ClearCowLevel() {
 
 	myRoom = [me.x, me.y];
 	
-	while (rooms.length > 3) {	
+	while (rooms.length > 4) {	
 		rooms.sort(RoomSort);
 		
 		if((rooms.length % 10) == 0 || rooms.length < 10)
@@ -641,18 +652,24 @@ function NTCOW_ClearPosition(range, pickitem, safelevel){
 
 				if(_target)
 				{
-					if(_firstAttack){
-						NTC_CastSkill(78, NTC_HAND_RIGHT, _target.x, _target.y); // Bone wall
-						_firstAttack = false;
-					}
+					_result = NTA_Attack(_target, _firstAttack);					
 					
-					_result = NTA_Attack(_target, (_attackcount % 30) == 0);
+					if(_firstAttack){
+						_firstAttack = false;
+					}					
 
 					switch(_result)
 					{
 						case 1:
 							break;
 						case 2:
+							if(NTCOW_MercUnit){
+								NTC_CastSkill(NTConfig_ExplodeCorpses, NTC_HAND_RIGHT, NTCOW_MercUnit.x, NTCOW_MercUnit.y);
+							}
+							else{
+								NTC_CastSkill(NTConfig_ExplodeCorpses, NTC_HAND_RIGHT, me.x, me.y);
+							}
+							Delay(40);
 						case 3:
 							if(NTCOW_PickRunesInstantly && (_attackcount % 4) == 0)
 								NTSI_PickRunes();
@@ -776,7 +793,7 @@ function NTCOW_MoveToXY(areaid, x, y, retry, clearpath)
 
 	for(i = 0 ; i < _path.length ; i++)
 	{
-		if((i == (_path.length-1)) && (i>=1) && GetDistance(_path[i-1][0], _path[i-1][1], _path[i][0], _path[i][1]) <= 5)
+		if((i == (_path.length-1)) && (i>=1) && GetDistance(_path[i-1][0], _path[i-1][1], _path[i][0], _path[i][1]) <= 6)
 			return true;
 			
 		for(n = 0 ; n < 2 ; n++)

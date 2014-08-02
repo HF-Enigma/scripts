@@ -12,7 +12,7 @@ function NT_LoadConfig()
 	NTConfig_Script.push("NTLeechCows.ntj");			// There are currently NO options for this script, still working on it
 		NTConfig_LeechCowType = 2;  					// 1 = Leech Fighter, 2 = Leech Helper, 3 = Passive Leecher
 		
-	//NTConfig_Script.push("NTWorldstoneKeep.ntj");
+	// NTConfig_Script.push("NTWorldstoneKeep.ntj");
 		NTConfig_CheckSoulKillers = false; 				// End script if Stygian Dolls are found in Throne
 		NTConfig_Wave2PSNCheck = false; 				// Heal after wave 2 if poisoned		
 		NTConfig_KillBaal = true;

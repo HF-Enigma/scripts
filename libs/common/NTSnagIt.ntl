@@ -370,6 +370,10 @@ function NTSI_SnagIt(onlyPot)
 function NTSI_CheckItem(item)
 {
 	if(!item || item.quality == undefined) {return false;}
+	
+	// if(item.code == "uar" || item.classid == 442 || item.name.toLowerCase().indexOf("sacred armor") != -1){
+		// return 1;
+	// }
 		
 	var _result;
 	

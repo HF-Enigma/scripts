@@ -73,13 +73,13 @@ function NT_LoadConfig()
 
 	//------------------------------------------------------------------------------
 	//------------------------------------------------------------------------------
-	NTConfig_FreeSpace = 7;		// Number of free columns. If less full columns are free stashing is set.
+	NTConfig_FreeSpace = 6;		// Number of free columns. If less full columns are free stashing is set.
 
 	// The numbers correspond to your inventory. Set 0 to keep whatever is there, 1 to stash it.
-	NTConfig_Columns[0] = [1,1,1,1,1,1,1,0,0,0];
-	NTConfig_Columns[1] = [1,1,1,1,1,1,1,0,0,0];
-	NTConfig_Columns[2] = [1,1,1,1,1,1,1,0,0,0];
-	NTConfig_Columns[3] = [1,1,1,1,1,1,1,0,0,0];
+	NTConfig_Columns[0] = [1,1,1,1,1,1,0,0,0,0];
+	NTConfig_Columns[1] = [1,1,1,1,1,1,0,0,0,0];
+	NTConfig_Columns[2] = [1,1,1,1,1,1,0,0,0,0];
+	NTConfig_Columns[3] = [1,1,1,1,1,1,0,0,0,0];
 
 	NTConfig_MinGoldToStash = 50000;	// Maximum gold amount carried before going to stash
 
@@ -142,11 +142,11 @@ function NT_LoadConfig()
 	NTConfig_AttackSkill[1] = 97;	// Primary skill to boss.
 	NTConfig_AttackSkill[2] = 123;	// Primary aura to boss. Set to 0 if you won't
 	NTConfig_AttackSkill[3] = 97;	// Primary skill to others.
-	NTConfig_AttackSkill[4] = 122;	// Primary aura to others. Set to 0 if you won't
+	NTConfig_AttackSkill[4] = 123;	// Primary aura to others. Set to 0 if you won't
 	NTConfig_AttackSkill[5] = -1;	// Secondary skill in case monster is immune to primary skill. Set to 0 if you won't
 	NTConfig_AttackSkill[6] = -1;	// Secondary aura. Set to 0 if you won't
 	
-	// 97 smite 122 fanaticism conviction
+	// 97 smite 122 fanaticism 123 conviction
 
 	// Check self safe in field (NOT in town). Set to 0 if you won't
 	// 0x01 : Potion, 0x02 : Poison, 0x04 : Amplify Damage, 0x08 : Weaken, 0x10 : Iron Maiden, 0x20 : Decrepify, 0x40 : Lower Resist

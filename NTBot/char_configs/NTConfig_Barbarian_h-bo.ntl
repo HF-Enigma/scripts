@@ -11,7 +11,7 @@ function NT_LoadConfig()
 	NTConfig_Script.push("NTLeechCows.ntj");			// There are currently NO options for this script, still working on it
 		NTConfig_LeechCowType = 3;  					// 1 = Leech Fighter, 2 = Leech Helper, 3 = Passive Leecher
 
-	//NTConfig_Script.push("NTUniversalBaalLeech.ntj");
+	// NTConfig_Script.push("NTUniversalBaalLeech.ntj");
 		NTConfig_LeechBaal = 3; 						// 1 = Leech Fighter (Tele), 2 = Leech Fighter (Walking), 3 = Passive Leecher (Corner dunce).
 		NTConfig_FollowtoWorldStone = true;				// Go down to Baal in WS Chamber after waves?
 		
@@ -72,7 +72,7 @@ function NT_LoadConfig()
 	NTConfig_BeltColType[0] = "hp";
 	NTConfig_BeltColType[1] = "hp";
 	NTConfig_BeltColType[2] = "mp";
-	NTConfig_BeltColType[3] = "rv";
+	NTConfig_BeltColType[3] = "mp";
 
 	//-----------------------------------------------------------------------------------
 	// Pickit (SnagIt) Configuration
@@ -145,6 +145,5 @@ function NT_LoadConfig()
 	//------------------------------------------------------------------------------
 	NTConfig_UseFindItem = false; 						// Loot corpses of slain Monsters when clearing positions or areas
 	NTConfig_FindItemRange = 40; 						// Default range to check for corpses to loot when clearing positions or areas.
-
 
 }

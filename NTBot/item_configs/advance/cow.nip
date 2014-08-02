@@ -22,8 +22,9 @@
 [Name] == BerserkerAxe && [Quality] == superior && [Flag] == ethereal # [Sockets] == 5 && [EnhancedDamage] >= 12
 
 // ##### Runes #########################
-//[Name] == TalRune
-//[Name] == RalRune
+//[Name] == TirRune	// 3
+//[Name] == TalRune	// 7
+//[Name] == RalRune	// 8
 //[Name] == OrtRune
 //[Name] == ThulRune
 //[Name] == AmnRune

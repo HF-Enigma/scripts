@@ -279,3 +279,21 @@ function TB_MoveTo(areaid, x, y, retry, clearpath)
 	
 	return NTM_MoveTo(areaid, x, y, retry, clearpath);
 }
+
+function TB_GetPlayerUnit(playerName)
+{
+	var _player;
+
+	_player = GetPlayerUnit();
+
+	if(_player)
+	{
+		do
+		{
+			if(_player.name == playerName)
+				return _player;
+		} while(_player.GetNext());
+	}
+
+	return null;
+}

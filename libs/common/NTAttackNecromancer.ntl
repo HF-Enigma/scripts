@@ -21,16 +21,20 @@ function NTA_NecromancerAttackInt(target, firstorder) {
 				NTM_MoveTo(target.areaid, _pos[0], _pos[1], 0);
 			}
 		}
+		
+		if(firstorder){
+			NTC_CastSkill(78, NTC_HAND_RIGHT, target.x, target.y); // Bone wall
+		}
 	
 		if(!target.GetState(9) && NTA_IsCursable(target)){
 			if (!NTC_CastSkill(66, NTC_HAND_RIGHT, target.x, target.y)) {
-				Delay(120);
+				Delay(100);
 			}			
 			//Delay(40);
 		}
 		
 		if(!NTA_ExplodeCorpses(target)) {
-			Delay(120);
+			Delay(100);
 			return 2;
 		}
 		
@@ -59,7 +63,7 @@ function NTA_NecromancerAttackInt(target, firstorder) {
 	
 	Delay(80);
 	
-	if (NTConfig_Curse[0] > 0 && (target.spectype & 0x08 && target.classid != 571) && !target.GetState(_NTA_CurseState[0]) && NTA_IsCursable(target))
+	if (NTConfig_Curse[0] > 0 && (target.spectype & 0x08) && !target.GetState(_NTA_CurseState[0]) && NTA_IsCursable(target))
 	{
 		// Print("ÿc1NTA_NecromancerAttackInt NTConfig_Curse[0]");
 		if (GetDistance(me, target) > 25 || !CheckCollision(me, target, 4)) {
@@ -87,7 +91,7 @@ function NTA_NecromancerAttackInt(target, firstorder) {
 		return 3;
 	}
 	
-	if (NTConfig_Curse[1] > 0 && (!(target.spectype&0x08) || target.classid == 571) && !target.GetState(_NTA_CurseState[1]) && NTA_IsCursable(target)) {
+	if (NTConfig_Curse[1] > 0 && !(target.spectype&0x08) && !target.GetState(_NTA_CurseState[1]) && NTA_IsCursable(target)) {
 		// Print("ÿc1NTA_NecromancerAttackInt NTConfig_Curse[1]");
 		if (GetDistance(me, target) > 25 || !CheckCollision(me, target, 4))	{
 			var _pos = me.GetOptimalAttackPos(target.areaid, target.x, target.y, 25, 4);
@@ -154,14 +158,18 @@ function NTA_IsValidCorpse(unit, revive) {
 		return false;
 	}
 	
-	if(unit.classid == 391 || unit.classid == 773){	
-		if (unit.hp <= 0 && (unit.mode === 0 || unit.mode === 12) && GetDistance(me, unit) < 25 && CheckCollision(me, unit, 4) &&
-			!unit.GetState(1) && // freeze
-			!unit.GetState(104) && // nodraw
-			!unit.GetState(107) && // shatter
-			!unit.GetState(118) // noselect
-			){ 
-			return true;
+	if(me.areaid == 39){	
+		if(unit.classid == 391){	
+			if (unit.hp <= 0 && (unit.mode === 0 || unit.mode === 12) && GetDistance(me, unit) < 25 && CheckCollision(me, unit, 4) &&
+				!unit.GetState(1) && // freeze
+				!unit.GetState(104) && // nodraw
+				!unit.GetState(107) && // shatter
+				!unit.GetState(118) // noselect
+				){ 
+				return true;
+			}
+			
+			return false;
 		}
 		
 		return false;
@@ -229,7 +237,7 @@ function NTA_ExplodeCorpses(target) {
 		
 		if (corpse) {
 			if(NTC_CastSkill(NTConfig_ExplodeCorpses, NTC_HAND_RIGHT, corpse)){
-				//Print("ÿc1Exploded " + corpse.classid + " " + corpse.name);
+				//Print(COLOR_2 + "Corpse GID" + corpse.gid + " mode " + corpse.mode);
 				exploded++;
 			}
 		}
