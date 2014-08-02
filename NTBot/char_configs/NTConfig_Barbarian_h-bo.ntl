@@ -36,14 +36,14 @@ function NT_LoadConfig()
 	NTConfig_UseMerc = true;	// Set to true if you use a mercenary, will revive merc at a reviver npc.
 	NTConfig_ResetWeapon = false;	// Set to true to reset weapon when reviving merc
 
-	NTConfig_LifeThresh = 85;							// Drink a health potion if under this percent of life.
+	NTConfig_LifeThresh = 70;							// Drink a health potion if under this percent of life.
 	NTConfig_LifeRejuvThresh = 45;						// Drink a rejuvenation potion if under this percent of life. (Will not use health potions under this %)
 	NTConfig_ManaThresh = 10;							// Drink a mana potion if under this percent of mana.
 	NTConfig_ManaRejuvThresh = 0;						// Drink a rejuvenation potion if under this percent of mana. (Will not use mana potions under this %)
 	NTConfig_LifeChicken = 30;							// This is your D2NT chicken life percent. If you go below this life total, exit game.
 	NTConfig_ManaChicken = 0;							// This is your D2NT chicken mana percent. If you go below this mana total, exit game.
 
-	NTConfig_MercLifeThresh = 80;						// Give merc a health potion if under this percent of life.
+	NTConfig_MercLifeThresh = 70;						// Give merc a health potion if under this percent of life.
 	NTConfig_MercRejuvThresh = 30;						// Give merc a rejuvenation potion if under this percent of life. (Will not use health potions under this %)
 	NTConfig_MercChicken = 0;							// This is your mercs chicken life percent. If he goes below this, exit game. (Set 0 to disable.)
 
