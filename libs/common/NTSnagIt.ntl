@@ -352,9 +352,9 @@ function NTSI_SnagIt(onlyPot)
 								var _area;
 								_area = GetArea();
 								if(_area != undefined)
-									NTC_SendLogToOOG(NTC_LOG_ITEM, COLOR_0 + "Kept " + NTC_ItemQualityToMGRColor[_item.quality] + _item.name.split("\n")[0] + " iLvl " + _item.itemlevel + " (" + _area.name + ")" + ";" + _item.itemdesc);
+									NTC_SendLogToOOG(NTC_LOG_ITEM, "Kept " + NTC_ItemQualityToMGRColor[_item.quality] + _item.name.split("\n")[0] + " iLvl " + _item.itemlevel + " (" + _area.name + ")" + ";" + _item.itemdesc);
 								else
-									NTC_SendLogToOOG(NTC_LOG_ITEM, COLOR_0 + "Kept " + NTC_ItemQualityToMGRColor[_item.quality] + _item.name.split("\n")[0] + ";" + _item.itemdesc);
+									NTC_SendLogToOOG(NTC_LOG_ITEM, "Kept " + NTC_ItemQualityToMGRColor[_item.quality] + _item.name.split("\n")[0] + ";" + _item.itemdesc);
 							}
 							break;
 						}

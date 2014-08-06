@@ -23,8 +23,6 @@ function NTMain()
 	var _merc;
 	var _player, _mypartyid;
 	
-	var TB_follower_string = TB_helper.concat(TB_leecher).toString();
-
 	//Print("ÿc3Loaded ToolsThread script");
 
 	NT_LoadConfig();

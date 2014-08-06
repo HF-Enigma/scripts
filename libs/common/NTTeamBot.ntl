@@ -19,6 +19,8 @@ const TB_leader = "h-nec";
 const TB_helper = ["h-sor"];
 const TB_leecher = ["h-bo"];
 
+const TB_follower_string = TB_helper.concat(TB_leecher).toString();
+
 // =============================================================================
 // Baal Leech settings
 // =============================================================================
