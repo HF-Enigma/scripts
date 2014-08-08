@@ -128,7 +128,8 @@ function NTSI_SnagIt_v2(onlyPot)
 	{				
 		_item = NTC_FindUnit(NTC_UNIT_ITEM, _checkeditems[0].GID);
 		
-		if(!_item && GetDistance(me.x, me.y, _checkeditems[0].x, _checkeditems[0].y) > 25)
+		if( !_item && GetDistance(me.x, me.y, _checkeditems[0].x, _checkeditems[0].y) > 25 &&
+			(_checkeditems[0].ItemType < 76 || _checkeditems[0].ItemType > 78) )
 		{
 			NTM_MoveTo(me.areaid, _checkeditems[0].x, _checkeditems[0].y);
 			_item = NTC_FindUnit(NTC_UNIT_ITEM, _checkeditems[0].GID);
@@ -411,6 +412,7 @@ function NTSI_ItemInt(item, checkedstatus)
 	if(!item || item.classid == undefined) {return false;}
 	
 	this.ClassID = item.classid;
+	this.ItemType = item.itemtype;
 	this.GID = item.gid;
 	this.x = item.x;
 	this.y = item.y;
