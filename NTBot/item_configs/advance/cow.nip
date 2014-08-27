@@ -20,7 +20,10 @@
 [Type] == voodooheads && [Class] == elite && [Quality] <= superior && [Flag] == ethereal # ([Sockets] == 0 || [Sockets] == 3) && ([SkillPoisonExplosion]+[SkillPoisonNova]) >= 4
 
 // ##### Axes ##########################
-[Name] == BerserkerAxe && [Quality] == superior && [Flag] == ethereal # ([Sockets] == 0 || [Sockets] == 5) && [EnhancedDamage] >= 12
+[Name] == BerserkerAxe && [Quality] == superior && [Flag] == ethereal # ([Sockets] == 0 || [Sockets] == 6) && [EnhancedDamage] >= 12
+
+// ##### Amazon Weapons ################
+[Name] == grandmatronbow && [Quality] == superior # ([Sockets] == 0 || [Sockets] == 5) && [EnhancedDamage] >= 10 && [BowAndCrossbowSkillTab] == 3
 
 // ##### Runes #########################
 //[Name] == TirRune
